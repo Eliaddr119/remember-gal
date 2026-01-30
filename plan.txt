@@ -1,0 +1,46 @@
+The Enhanced Prompt
+Role: Act as a Senior Full-Stack Developer and UI/UX Designer specializing in React and RTL (Right-to-Left) localization.
+
+Objective: Build a responsive, accessible memorial web application in Hebrew dedicated to "Gal," who passed away from cancer. The design must be "Sunflower-themed"—evoking warmth, light, and memory.
+
+1. Technical Stack & Layout
+
+Framework: React (Next.js preferred) with Tailwind CSS for styling.
+
+Localization: Entire UI must be RTL (Right-to-Left). Use dir="rtl" and fonts that support Hebrew (like 'Assistant' or 'Heebo').
+
+Responsiveness: Mobile-first design. Use a persistent navigation bar with a Hamburger Menu on mobile and a standard nav on desktop.
+
+Accessibility: Integrate a floating accessibility menu (allowing font scaling, high contrast, and screen-reader optimizations). Ensure WCAG 2.1 compliance.
+
+2. Design System (Sunflower Theme)
+
+Palette: Warm yellows (#FFD700), earthy browns (#5D4037), and soft creams (#FFFDD0). Use these for buttons, hover states, and backgrounds.
+
+Visual Elements: Subtle sunflower motifs in backgrounds or section dividers. Use a dummy circular logo placeholder in the header.
+
+Vibe: Clean, minimalist, respectful, and comforting.
+
+3. Navigation & Content Structure
+
+The Hamburger Menu should contain the following routes, each with its own placeholder page:
+
+קצת על גל (About Gal): A biographical page with a featured image and text block.
+
+חברים ומשפחה מספרים (Stories): A feed-style layout for testimonials and memories.
+
+אירועים (Events): A chronological list or card view for memorial events.
+
+גלריה (Gallery): A responsive grid for photos.
+
+יחידות הדרכה (Educational Units): A structured list of resources or lessons learned.
+
+4. Component Requirements
+
+Navigation: A fixed Header component with the dummy logo (right-aligned) and the menu (left-aligned).
+
+Accessibility Toggle: A functional component that toggles a "Contrast Mode" and "Text Size."
+
+Animations: Use Framer Motion for soft "fade-in" transitions between pages to maintain a calm atmosphere.
+
+Initial Task: Please generate the project structure, the main layout wrapper with RTL support, the sunflower-themed CSS configuration, and the navigation logic for the five pages listed above.

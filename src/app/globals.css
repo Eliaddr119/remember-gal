@@ -1,0 +1,321 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #FFFEF7;
+  --foreground: #3D2B1F;
+  --font-scale: 1;
+
+  /* Sunflower theme colors */
+  --sunflower-gold: #F59E0B;
+  --sunflower-center: #78350F;
+  --earth-warm: #6B5344;
+}
+
+.high-contrast {
+  --background: #ffffff;
+  --foreground: #000000;
+}
+
+.high-contrast .bg-ivory-50,
+.high-contrast .bg-ivory-100,
+.high-contrast .bg-ivory-200 {
+  background-color: #ffffff !important;
+}
+
+.high-contrast .bg-sunflower-400,
+.high-contrast .bg-sunflower-500 {
+  background-color: #ffff00 !important;
+}
+
+.high-contrast .text-earth-700,
+.high-contrast .text-earth-600 {
+  color: #000000 !important;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-size: calc(1rem * var(--font-scale));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Accessibility - focus styles */
+*:focus-visible {
+  outline: 3px solid var(--sunflower-gold);
+  outline-offset: 2px;
+}
+
+/* Skip link styles */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--earth-warm);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  z-index: 100;
+  border-radius: 0 0 0.5rem 0.5rem;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ================================
+   SUNFLOWER DECORATIVE ELEMENTS
+   ================================ */
+
+/* CSS Sunflower - reusable decorative element */
+.sunflower {
+  --size: 80px;
+  --petal-color: #FBBF24;
+  --center-color: #78350F;
+  --center-inner: #92400E;
+
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+}
+
+.sunflower::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    /* Center */
+    radial-gradient(circle at 50% 50%, var(--center-inner) 0%, var(--center-inner) 15%, var(--center-color) 15%, var(--center-color) 25%, transparent 25%),
+    /* Petals - using conic gradient for rays */
+    repeating-conic-gradient(
+      from 0deg,
+      var(--petal-color) 0deg 8deg,
+      transparent 8deg 20deg
+    );
+  border-radius: 50%;
+  mask: radial-gradient(circle, black 25%, transparent 26%),
+        repeating-conic-gradient(from 0deg, black 0deg 8deg, transparent 8deg 20deg);
+  mask-composite: add;
+  -webkit-mask-composite: source-over;
+}
+
+/* Simpler sunflower using multiple box shadows */
+.sunflower-icon {
+  --petal: #FBBF24;
+  --center: #78350F;
+  width: 20px;
+  height: 20px;
+  background: var(--center);
+  border-radius: 50%;
+  position: relative;
+  box-shadow:
+    /* Top petals */
+    0 -14px 0 -4px var(--petal),
+    10px -10px 0 -4px var(--petal),
+    14px 0 0 -4px var(--petal),
+    10px 10px 0 -4px var(--petal),
+    0 14px 0 -4px var(--petal),
+    -10px 10px 0 -4px var(--petal),
+    -14px 0 0 -4px var(--petal),
+    -10px -10px 0 -4px var(--petal);
+}
+
+/* Large decorative sunflower for backgrounds */
+.sunflower-decoration {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.08;
+}
+
+.sunflower-decoration svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Sunflower border/divider */
+.sunflower-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem 0;
+}
+
+.sunflower-divider::before,
+.sunflower-divider::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #E8DDD4, transparent);
+}
+
+/* Page header with sunflower accent */
+.page-header {
+  position: relative;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.page-header::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #FBBF24, #F59E0B, #D97706);
+  margin: 1rem auto 0;
+  border-radius: 2px;
+}
+
+/* Warm card style */
+.card-warm {
+  background: linear-gradient(135deg, #FFFEF7 0%, #FAF6E9 100%);
+  border: 1px solid #E8DDD4;
+  box-shadow: 0 4px 14px 0 rgba(139, 115, 85, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card-warm:hover {
+  box-shadow: 0 8px 25px 0 rgba(139, 115, 85, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Featured card with sunflower accent */
+.card-featured {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+  border: 2px solid #FDE68A;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-featured::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle at top right, rgba(251, 191, 36, 0.3) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Sunflower corner decoration */
+.sunflower-corner {
+  position: relative;
+}
+
+.sunflower-corner::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.2) 30%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Elegant button styles */
+.btn-sunflower {
+  background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+  color: #3D2B1F;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-sunflower:hover {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-earth {
+  background: linear-gradient(135deg, #6B5344 0%, #4A3728 100%);
+  color: #FFFEF7;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: 0 2px 8px rgba(74, 55, 40, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-earth:hover {
+  background: linear-gradient(135deg, #4A3728 0%, #3D2B1F 100%);
+  box-shadow: 0 4px 12px rgba(74, 55, 40, 0.4);
+}
+
+/* Background pattern - subtle sunflower seeds pattern */
+.bg-seeds-pattern {
+  background-image: radial-gradient(circle at 25% 25%, #E8DDD4 1px, transparent 1px),
+                    radial-gradient(circle at 75% 75%, #E8DDD4 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* Warm gradient backgrounds */
+.bg-warm-gradient {
+  background: linear-gradient(180deg, #FFFEF7 0%, #FAF6E9 50%, #F5EED8 100%);
+}
+
+.bg-sunflower-gradient {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%);
+}
+
+/* Quote styling */
+.quote-sunflower {
+  position: relative;
+  padding-right: 2rem;
+  border-right: 4px solid #FBBF24;
+  font-style: italic;
+}
+
+.quote-sunflower::before {
+  content: "״";
+  position: absolute;
+  top: -0.5rem;
+  right: 0.5rem;
+  font-size: 3rem;
+  color: #FDE68A;
+  font-family: serif;
+  line-height: 1;
+}
+
+/* Section with decorative border */
+.section-decorated {
+  position: relative;
+  padding: 3rem 0;
+}
+
+.section-decorated::before,
+.section-decorated::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #FBBF24, #78350F, #FBBF24, transparent);
+}
+
+.section-decorated::before {
+  top: 0;
+}
+
+.section-decorated::after {
+  bottom: 0;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
