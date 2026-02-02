@@ -54,25 +54,32 @@ export default function StoriesPage() {
           סיפורים וזיכרונות מאנשים שחייהם נגעו בגל
         </p>
 
-        <div className="max-w-2xl mx-auto space-y-5">
-          {stories.map((story) => (
-            <Card key={story.id}>
-              <CardContent className="p-5 md:p-6">
-                <div className="quote-sunflower">
-                  <blockquote className="text-base md:text-lg text-earth-700 mb-4 leading-relaxed">
-                    {story.content}
-                  </blockquote>
-                </div>
-                <footer className="flex justify-between items-center pt-3 border-t border-earth-200">
-                  <cite className="font-medium text-earth-500 not-italic text-sm">
-                    — {story.author}
-                  </cite>
-                  <time className="text-earth-400 text-sm">{story.date}</time>
-                </footer>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <section aria-label="סיפורים וזיכרונות">
+          <div className="max-w-2xl mx-auto space-y-5" role="list" aria-label={`${stories.length} סיפורים`}>
+            {stories.map((story) => (
+              <article key={story.id} role="listitem" className="relative">
+                <Card>
+                  <CardContent className="p-5 md:p-6">
+                    <figure className="quote-sunflower">
+                      <blockquote
+                        className="text-base md:text-lg text-earth-700 mb-4 leading-relaxed"
+                        cite={`#story-${story.id}`}
+                      >
+                        <p>{story.content}</p>
+                      </blockquote>
+                      <figcaption className="flex justify-between items-center pt-3 border-t border-earth-200">
+                        <cite className="font-medium text-earth-500 not-italic text-sm">
+                          — {story.author}
+                        </cite>
+                        <time dateTime={story.date} className="text-earth-400 text-sm">{story.date}</time>
+                      </figcaption>
+                    </figure>
+                  </CardContent>
+                </Card>
+              </article>
+            ))}
+          </div>
+        </section>
 
         {/* Call to action */}
         <div className="mt-12 max-w-lg mx-auto">

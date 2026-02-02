@@ -13,6 +13,20 @@
   --earth-warm: #FF7700;
 }
 
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* High Contrast Mode */
 .high-contrast {
   --background: #ffffff;
   --foreground: #000000;
@@ -20,18 +34,48 @@
 
 .high-contrast .bg-ivory-50,
 .high-contrast .bg-ivory-100,
-.high-contrast .bg-ivory-200 {
-  background-color: #ffffff !important;
+.high-contrast .bg-ivory-200,
+.high-contrast .bg-warm-gradient,
+.high-contrast .bg-sunflower-gradient {
+  background: #ffffff !important;
 }
 
 .high-contrast .bg-sunflower-400,
-.high-contrast .bg-sunflower-500 {
+.high-contrast .bg-sunflower-500,
+.high-contrast .bg-sunflower-600 {
   background-color: #ffff00 !important;
 }
 
 .high-contrast .text-earth-700,
-.high-contrast .text-earth-600 {
+.high-contrast .text-earth-600,
+.high-contrast .text-earth-500,
+.high-contrast .text-earth-400,
+.high-contrast .text-earth-800 {
   color: #000000 !important;
+}
+
+.high-contrast .border-earth-200,
+.high-contrast .border-earth-300,
+.high-contrast .border-sunflower-300 {
+  border-color: #000000 !important;
+}
+
+.high-contrast a,
+.high-contrast button {
+  text-decoration: underline;
+}
+
+.high-contrast .btn-sunflower,
+.high-contrast .btn-earth {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #000000 !important;
+}
+
+.high-contrast .card-warm,
+.high-contrast .card-featured {
+  background: #ffffff !important;
+  border: 2px solid #000000 !important;
 }
 
 body {
@@ -55,6 +99,36 @@ html {
   outline-offset: 2px;
 }
 
+/* Enhanced focus for high contrast mode */
+.high-contrast *:focus-visible {
+  outline: 3px solid #000000;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px #ffff00;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Ensure interactive elements have visible focus */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--sunflower-gold);
+  outline-offset: 2px;
+}
+
 /* Skip link styles */
 .skip-link {
   position: absolute;
@@ -64,13 +138,24 @@ html {
   background: var(--earth-warm);
   color: white;
   padding: 0.75rem 1.5rem;
-  z-index: 100;
+  z-index: 9999;
   border-radius: 0 0 0.5rem 0.5rem;
   transition: top 0.2s;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .skip-link:focus {
   top: 0;
+  outline: 3px solid var(--sunflower-gold);
+  outline-offset: 2px;
+}
+
+.high-contrast .skip-link {
+  background: #000000;
+  color: #ffffff;
+  border: 2px solid #ffff00;
 }
 
 /* ================================

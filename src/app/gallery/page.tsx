@@ -37,6 +37,7 @@ const PhotoIcon = () => (
     strokeWidth={1}
     stroke="currentColor"
     className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mx-auto mb-2"
+    aria-hidden="true"
   >
     <path
       strokeLinecap="round"
@@ -66,24 +67,43 @@ export default function GalleryPage() {
         </p>
 
         {/* Masonry Photo Grid using CSS columns */}
-        <div className="max-w-6xl mx-auto columns-2 sm:columns-3 md:columns-4 gap-3 sm:gap-4 md:gap-5">
-          {galleryItems.map((item) => (
-            <div
-              key={item.id}
-              className="mb-3 sm:mb-4 md:mb-5 break-inside-avoid bg-gradient-to-br from-ivory-100 to-ivory-200 rounded-2xl overflow-hidden border-2 border-dashed border-earth-300 hover:border-sunflower-400 transition-all duration-300 cursor-pointer group shadow-warm hover:shadow-warm-lg"
-            >
-              <div
-                className="w-full flex items-center justify-center text-earth-400 group-hover:text-sunflower-600 transition-colors"
-                style={{ aspectRatio: `${item.width} / ${item.height}` }}
+        <section aria-label="גלריית תמונות" className="max-w-6xl mx-auto">
+          <ul
+            role="list"
+            className="columns-2 sm:columns-3 md:columns-4 gap-3 sm:gap-4 md:gap-5"
+            aria-label={`${galleryItems.length} תמונות בגלריה`}
+          >
+            {galleryItems.map((item, index) => (
+              <li
+                key={item.id}
+                className="mb-3 sm:mb-4 md:mb-5 break-inside-avoid list-none"
               >
-                <div className="text-center p-2 sm:p-4">
-                  <PhotoIcon />
-                  <p className="text-xs sm:text-sm font-medium">{item.alt}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+                <article
+                  className="bg-gradient-to-br from-ivory-100 to-ivory-200 rounded-2xl overflow-hidden border-2 border-dashed border-earth-300 hover:border-sunflower-400 transition-all duration-300 cursor-pointer group shadow-warm hover:shadow-warm-lg"
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`${item.alt} - לחצו לצפייה בתמונה`}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      // Future: open lightbox
+                    }
+                  }}
+                >
+                  <figure
+                    className="w-full flex items-center justify-center text-earth-400 group-hover:text-sunflower-600 transition-colors"
+                    style={{ aspectRatio: `${item.width} / ${item.height}` }}
+                  >
+                    <div className="text-center p-2 sm:p-4">
+                      <PhotoIcon />
+                      <figcaption className="text-xs sm:text-sm font-medium">{item.alt}</figcaption>
+                    </div>
+                  </figure>
+                </article>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         {/* Note about adding photos */}
         <div className="mt-10 sm:mt-16 max-w-xl mx-auto px-2">

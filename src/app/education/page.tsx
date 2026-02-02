@@ -66,66 +66,76 @@ export default function EducationPage() {
         </p>
 
         {/* Resource Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {educationResources.map((resource) => (
-            <Card key={resource.id}>
-              <CardHeader>
-                <div className="flex justify-between items-start gap-3">
-                  <h3 className="text-xl font-bold text-earth-700">
-                    {resource.title}
-                  </h3>
-                  <span
-                    className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap shadow-sm ${
-                      categoryColors[resource.category] ||
-                      "bg-ivory-300 text-earth-700"
-                    }`}
-                  >
-                    {resource.category}
-                  </span>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-earth-600 mb-5">{resource.description}</p>
-                <div className="flex flex-wrap gap-4 text-sm text-earth-500">
-                  <span className="flex items-center gap-2 bg-ivory-200 px-3 py-1.5 rounded-lg">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-4 h-4 text-sunflower-600"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                      />
-                    </svg>
-                    {resource.duration}
-                  </span>
-                  <span className="flex items-center gap-2 bg-ivory-200 px-3 py-1.5 rounded-lg">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-4 h-4 text-sunflower-600"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
-                      />
-                    </svg>
-                    {resource.audience}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <section aria-labelledby="resources-heading" className="max-w-5xl mx-auto">
+          <h2 id="resources-heading" className="sr-only">רשימת יחידות הדרכה</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6" role="list" aria-label={`${educationResources.length} יחידות הדרכה`}>
+            {educationResources.map((resource) => (
+              <article key={resource.id} role="listitem">
+                <Card>
+                  <CardHeader>
+                    <div className="flex justify-between items-start gap-3">
+                      <h3 className="text-xl font-bold text-earth-700">
+                        {resource.title}
+                      </h3>
+                      <span
+                        className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap shadow-sm ${
+                          categoryColors[resource.category] ||
+                          "bg-ivory-300 text-earth-700"
+                        }`}
+                        aria-label={`קטגוריה: ${resource.category}`}
+                      >
+                        {resource.category}
+                      </span>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-earth-600 mb-5">{resource.description}</p>
+                    <div className="flex flex-wrap gap-4 text-sm text-earth-500">
+                      <span className="flex items-center gap-2 bg-ivory-200 px-3 py-1.5 rounded-lg">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-4 h-4 text-sunflower-600"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                          />
+                        </svg>
+                        <span className="sr-only">משך:</span>
+                        {resource.duration}
+                      </span>
+                      <span className="flex items-center gap-2 bg-ivory-200 px-3 py-1.5 rounded-lg">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-4 h-4 text-sunflower-600"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+                          />
+                        </svg>
+                        <span className="sr-only">קהל יעד:</span>
+                        {resource.audience}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </article>
+            ))}
+          </div>
+        </section>
 
         {/* Contact for resources */}
         <div className="mt-16 max-w-2xl mx-auto">
@@ -135,7 +145,7 @@ export default function EducationPage() {
             </h2>
 
             {/* Decorative divider */}
-            <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="flex items-center justify-center gap-2 mb-4" aria-hidden="true">
               <span className="w-8 h-px bg-sunflower-400"></span>
               <span className="w-2 h-2 rounded-full bg-sunflower-400"></span>
               <span className="w-8 h-px bg-sunflower-400"></span>

@@ -69,63 +69,83 @@ export default function EventsPage() {
         <div className="max-w-3xl mx-auto">
           {/* Upcoming Events */}
           {upcomingEvents.length > 0 && (
-            <section className="mb-10">
-              <h2 className="text-xl font-bold text-earth-700 mb-4 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-sunflower-400 animate-pulse"></span>
+            <section className="mb-10" aria-labelledby="upcoming-events-heading">
+              <h2 id="upcoming-events-heading" className="text-xl font-bold text-earth-700 mb-4 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-sunflower-400 animate-pulse" aria-hidden="true"></span>
                 אירועים קרובים
               </h2>
-              <div className="space-y-4">
+              <div className="space-y-4" role="list" aria-label="רשימת אירועים קרובים">
                 {upcomingEvents.map((event) => (
-                  <Card key={event.id} variant="featured">
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                        <h3 className="text-lg font-bold text-earth-800">
-                          {event.title}
-                        </h3>
-                        <span className="bg-sunflower-500 text-earth-900 px-3 py-1 rounded-full text-xs font-bold">
-                          קרוב
-                        </span>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-earth-600 mb-4 text-sm">{event.description}</p>
-                      <div className="flex flex-wrap gap-3 text-xs text-earth-500">
-                        <span className="flex items-center gap-1 bg-ivory-200 px-2 py-1 rounded">
-                          {formatDate(event.date)}
-                        </span>
-                        <span className="flex items-center gap-1 bg-ivory-200 px-2 py-1 rounded">
-                          {event.time}
-                        </span>
-                        <span className="flex items-center gap-1 bg-ivory-200 px-2 py-1 rounded">
-                          {event.location}
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <article key={event.id} role="listitem">
+                    <Card variant="featured">
+                      <CardHeader>
+                        <div className="flex justify-between items-start">
+                          <h3 className="text-lg font-bold text-earth-800">
+                            {event.title}
+                          </h3>
+                          <span
+                            className="bg-sunflower-500 text-earth-900 px-3 py-1 rounded-full text-xs font-bold"
+                            role="status"
+                            aria-label="אירוע קרוב"
+                          >
+                            קרוב
+                          </span>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-earth-600 mb-4 text-sm">{event.description}</p>
+                        <div className="flex flex-wrap gap-3 text-xs text-earth-500">
+                          <time
+                            dateTime={event.date}
+                            className="flex items-center gap-1 bg-ivory-200 px-2 py-1 rounded"
+                          >
+                            <span className="sr-only">תאריך:</span>
+                            {formatDate(event.date)}
+                          </time>
+                          <span className="flex items-center gap-1 bg-ivory-200 px-2 py-1 rounded">
+                            <span className="sr-only">שעה:</span>
+                            {event.time}
+                          </span>
+                          <span className="flex items-center gap-1 bg-ivory-200 px-2 py-1 rounded">
+                            <span className="sr-only">מיקום:</span>
+                            {event.location}
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </article>
                 ))}
               </div>
             </section>
           )}
 
           {/* Past Events */}
-          <section>
-            <h2 className="text-xl font-bold text-earth-700 mb-4">
+          <section aria-labelledby="past-events-heading">
+            <h2 id="past-events-heading" className="text-xl font-bold text-earth-700 mb-4">
               אירועים שהיו
             </h2>
-            <div className="space-y-3">
+            <div className="space-y-3" role="list" aria-label="רשימת אירועים שעברו">
               {pastEvents.map((event) => (
-                <Card key={event.id}>
-                  <CardContent className="p-4">
-                    <h3 className="font-bold text-earth-700 mb-1">
-                      {event.title}
-                    </h3>
-                    <p className="text-earth-500 text-sm mb-2">{event.description}</p>
-                    <div className="flex flex-wrap gap-3 text-xs text-earth-400">
-                      <span>{formatDate(event.date)}</span>
-                      <span>{event.location}</span>
-                    </div>
-                  </CardContent>
-                </Card>
+                <article key={event.id} role="listitem">
+                  <Card>
+                    <CardContent className="p-4">
+                      <h3 className="font-bold text-earth-700 mb-1">
+                        {event.title}
+                      </h3>
+                      <p className="text-earth-500 text-sm mb-2">{event.description}</p>
+                      <div className="flex flex-wrap gap-3 text-xs text-earth-400">
+                        <time dateTime={event.date}>
+                          <span className="sr-only">תאריך:</span>
+                          {formatDate(event.date)}
+                        </time>
+                        <span>
+                          <span className="sr-only">מיקום:</span>
+                          {event.location}
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </article>
               ))}
             </div>
           </section>

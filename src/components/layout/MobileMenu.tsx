@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navigation } from "./Navigation";
 import { Logo } from "../ui/Logo";
@@ -11,15 +11,41 @@ interface MobileMenuProps {
 
 export function MobileMenu({ className = "" }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Handle keyboard navigation and close on Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+        buttonRef.current?.focus();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   return (
     <div className={className}>
       {/* Hamburger Button */}
       <button
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className="p-2 rounded-lg hover:bg-sunflower-300/50 transition-colors"
         aria-label={isOpen ? "סגור תפריט" : "פתח תפריט"}
         aria-expanded={isOpen}
+        aria-haspopup="menu"
+        aria-controls="mobile-menu-panel"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -28,6 +54,7 @@ export function MobileMenu({ className = "" }: MobileMenuProps) {
           strokeWidth={2}
           stroke="currentColor"
           className="w-6 h-6 text-earth-700"
+          aria-hidden="true"
         >
           {isOpen ? (
             <path
@@ -56,15 +83,21 @@ export function MobileMenu({ className = "" }: MobileMenuProps) {
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-earth-900/40 backdrop-blur-sm z-40"
               onClick={() => setIsOpen(false)}
+              aria-hidden="true"
             />
 
-            {/* Menu Panel */}
+            {/* Menu Panel - opens from left in RTL */}
             <motion.div
-              initial={{ x: "100%" }}
+              ref={menuRef}
+              id="mobile-menu-panel"
+              role="dialog"
+              aria-modal="true"
+              aria-label="תפריט ניווט"
+              initial={{ x: "-100%" }}
               animate={{ x: 0 }}
-              exit={{ x: "100%" }}
+              exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-72 bg-gradient-to-b from-ivory-50 to-ivory-200 shadow-warm-lg z-50"
+              className="fixed top-0 left-0 h-full w-72 bg-gradient-to-b from-ivory-50 to-ivory-200 shadow-warm-lg z-50"
             >
               <div className="p-6">
                 {/* Header with logo */}
@@ -82,6 +115,7 @@ export function MobileMenu({ className = "" }: MobileMenuProps) {
                       strokeWidth={2}
                       stroke="currentColor"
                       className="w-6 h-6 text-earth-700"
+                      aria-hidden="true"
                     >
                       <path
                         strokeLinecap="round"
@@ -93,7 +127,7 @@ export function MobileMenu({ className = "" }: MobileMenuProps) {
                 </div>
 
                 {/* Decorative divider */}
-                <div className="flex items-center gap-2 mb-6">
+                <div className="flex items-center gap-2 mb-6" aria-hidden="true">
                   <span className="flex-1 h-px bg-gradient-to-r from-sunflower-400 to-transparent"></span>
                   <span className="w-1.5 h-1.5 rounded-full bg-sunflower-400"></span>
                 </div>

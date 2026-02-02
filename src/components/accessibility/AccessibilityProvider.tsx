@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useState, useEffect, useCallback, useRef } from "react";
 import {
   ACCESSIBILITY_STORAGE_KEY,
   FONT_SIZES,
@@ -17,6 +17,7 @@ interface AccessibilityContextType extends AccessibilityState {
   toggleHighContrast: () => void;
   increaseFontSize: () => void;
   decreaseFontSize: () => void;
+  announce: (message: string) => void;
 }
 
 const defaultState: AccessibilityState = {
@@ -35,6 +36,8 @@ export function AccessibilityProvider({
 }) {
   const [state, setState] = useState<AccessibilityState>(defaultState);
   const [mounted, setMounted] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
+  const announcementTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -91,6 +94,16 @@ export function AccessibilityProvider({
     });
   }, []);
 
+  const announce = useCallback((message: string) => {
+    if (announcementTimeoutRef.current) {
+      clearTimeout(announcementTimeoutRef.current);
+    }
+    setAnnouncement("");
+    announcementTimeoutRef.current = setTimeout(() => {
+      setAnnouncement(message);
+    }, 100);
+  }, []);
+
   return (
     <AccessibilityContext.Provider
       value={{
@@ -99,9 +112,19 @@ export function AccessibilityProvider({
         toggleHighContrast,
         increaseFontSize,
         decreaseFontSize,
+        announce,
       }}
     >
       {children}
+      {/* Screen reader announcements */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      >
+        {announcement}
+      </div>
     </AccessibilityContext.Provider>
   );
 }

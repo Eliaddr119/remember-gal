@@ -4,7 +4,7 @@ import { RealisticSunflower, Sunflower1, Sunflower2, Sunflower3, Sunflower4, Sun
 
 export function SunflowerBackground() {
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true" role="presentation">
       {/* Left side sunflowers - column 1 (edge) */}
       <div className="absolute top-[3%] left-[0%] opacity-[0.06]">
         <RealisticSunflower className="w-16 h-16 md:w-24 md:h-24" />

@@ -21,7 +21,7 @@ export default function AboutPage() {
 
         <div className="max-w-3xl mx-auto">
           {/* Featured Image Placeholder */}
-          <div className="relative mb-8">
+          <figure className="relative mb-8" role="img" aria-label="מיקום לתמונה ראשית של גל">
             <div className="aspect-[16/9] bg-gradient-to-br from-ivory-100 to-ivory-200 rounded-2xl flex items-center justify-center border-2 border-dashed border-earth-300 shadow-warm">
               <div className="text-center text-earth-400">
                 <svg
@@ -31,6 +31,7 @@ export default function AboutPage() {
                   strokeWidth={1}
                   stroke="currentColor"
                   className="w-16 h-16 mx-auto mb-2"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -41,20 +42,23 @@ export default function AboutPage() {
                 <p>תמונה ראשית</p>
               </div>
             </div>
-          </div>
+          </figure>
 
           {/* Biography Card */}
-          <article className="card-warm rounded-2xl p-6 md:p-8">
+          <article className="card-warm rounded-2xl p-6 md:p-8" aria-labelledby="about-title">
+            <h2 id="about-title" className="sr-only">על גל</h2>
             {/* Opening quote */}
-            <div className="quote-sunflower mb-6">
-              <p className="text-xl md:text-2xl leading-relaxed text-earth-700">
-                גל הייתה אדם מיוחד, מלא אור וחום. היא נגעה בחייהם של רבים והשאירה חותם
-                בל יימחה בליבותיהם של כל מי שהכיר אותה.
-              </p>
-            </div>
+            <figure className="quote-sunflower mb-6">
+              <blockquote className="text-xl md:text-2xl leading-relaxed text-earth-700">
+                <p>
+                  גל הייתה אדם מיוחד, מלא אור וחום. היא נגעה בחייהם של רבים והשאירה חותם
+                  בל יימחה בליבותיהם של כל מי שהכיר אותה.
+                </p>
+              </blockquote>
+            </figure>
 
             {/* Decorative divider */}
-            <div className="sunflower-divider">
+            <div className="sunflower-divider" aria-hidden="true">
               <span className="w-2 h-2 rounded-full bg-sunflower-400"></span>
             </div>
 
