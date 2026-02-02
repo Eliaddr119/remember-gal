@@ -1,4 +1,4 @@
-import { Logo, SunflowerDecoration } from "../ui/Logo";
+import { Logo, SunflowerDecoration, Signature } from "../ui/Logo";
 
 export function Footer() {
   return (
@@ -12,20 +12,25 @@ export function Footer() {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 text-center">
-          {/* Logo */}
-          <Logo size="sm" />
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6">
+            {/* Logo */}
+            <Logo size="sm" />
 
-          {/* Title */}
-          <p className="text-lg font-bold text-sunflower-300">לזכרה של גל חפץ ז״ל</p>
+            {/* Title */}
+            <p className="text-lg font-bold text-sunflower-300">לזכרה של גל חפץ ז״ל</p>
 
-          {/* Divider - hidden on mobile */}
-          <span className="hidden md:block w-px h-6 bg-sunflower-500/30"></span>
+            {/* Divider - hidden on mobile */}
+            <span className="hidden md:block w-px h-6 bg-sunflower-500/30"></span>
 
-          {/* Subtitle */}
-          <p className="text-sm text-ivory-400">
-            נבנה באהבה על ידי המשפחה והחברים
-          </p>
+            {/* Subtitle */}
+            <p className="text-sm text-ivory-400">
+              נבנה באהבה על ידי המשפחה והחברים
+            </p>
+          </div>
+
+          {/* Signature */}
+          <Signature className="w-28 h-auto opacity-70 brightness-0 invert" />
         </div>
       </div>
     </footer>

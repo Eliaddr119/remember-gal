@@ -10,7 +10,7 @@
   /* Sunflower theme colors */
   --sunflower-gold: #F59E0B;
   --sunflower-center: #78350F;
-  --earth-warm: #6B5344;
+  --earth-warm: #FF7700;
 }
 
 .high-contrast {
@@ -38,6 +38,11 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-size: calc(1rem * var(--font-scale));
+}
+
+/* Headings use display font */
+h1, h2, h3 {
+  font-family: var(--font-secular), var(--font-rubik), sans-serif;
 }
 
 html {
@@ -239,19 +244,19 @@ html {
 }
 
 .btn-earth {
-  background: linear-gradient(135deg, #6B5344 0%, #4A3728 100%);
+  background: linear-gradient(135deg, #FF7700 0%, #E66A00 100%);
   color: #FFFEF7;
   font-weight: 600;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   border: none;
-  box-shadow: 0 2px 8px rgba(74, 55, 40, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 119, 0, 0.35);
   transition: all 0.3s ease;
 }
 
 .btn-earth:hover {
-  background: linear-gradient(135deg, #4A3728 0%, #3D2B1F 100%);
-  box-shadow: 0 4px 12px rgba(74, 55, 40, 0.4);
+  background: linear-gradient(135deg, #E66A00 0%, #CC5500 100%);
+  box-shadow: 0 4px 12px rgba(255, 119, 0, 0.45);
 }
 
 /* Background pattern - subtle sunflower seeds pattern */
@@ -312,6 +317,36 @@ html {
 
 .section-decorated::after {
   bottom: 0;
+}
+
+/* Mobile Navigation Styles */
+.mobile-nav ul {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mobile-nav a {
+  display: block;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(139, 115, 85, 0.1);
+  transition: all 0.2s ease;
+}
+
+.mobile-nav a:hover {
+  background: rgba(251, 191, 36, 0.3);
+  border-color: rgba(251, 191, 36, 0.4);
+}
+
+.mobile-nav a[aria-current="page"] {
+  background: #FF7700;
+  color: #FFFEF7;
+  border-color: #FF7700;
+  font-weight: 600;
 }
 
 @layer utilities {

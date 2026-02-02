@@ -1,59 +1,37 @@
-// Main App Logo - elegant memorial design with candle/flame and heart
+import Image from "next/image";
+
+// Main App Logo - uses the custom Gal logo
 export function Logo({ className = "", size = "md" }: { className?: string; size?: "sm" | "md" | "lg" }) {
   const sizes = {
-    sm: "w-8 h-8",
-    md: "w-10 h-10",
-    lg: "w-16 h-16",
+    sm: { width: 48, height: 48, class: "w-12 h-12" },
+    md: { width: 64, height: 64, class: "w-16 h-16" },
+    lg: { width: 96, height: 96, class: "w-24 h-24" },
   };
 
+  const sizeConfig = sizes[size];
+
   return (
-    <svg
-      viewBox="0 0 100 100"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`${sizes[size]} ${className}`}
-      aria-hidden="true"
-    >
-      {/* Outer circle with gradient */}
-      <circle cx="50" cy="50" r="46" fill="url(#logoGradient)" />
-      <circle cx="50" cy="50" r="42" fill="#FFFEF7" />
+    <Image
+      src="/gal-logo.svg"
+      alt="לוגו לזכרה של גל"
+      width={sizeConfig.width}
+      height={sizeConfig.height}
+      className={`${sizeConfig.class} ${className}`}
+      priority
+    />
+  );
+}
 
-      {/* Heart shape */}
-      <path
-        d="M50 75 C50 75 25 55 25 40 C25 30 35 25 50 35 C65 25 75 30 75 40 C75 55 50 75 50 75Z"
-        fill="url(#heartGradient)"
-      />
-
-      {/* Candle flame inside heart */}
-      <ellipse cx="50" cy="45" rx="6" ry="10" fill="#FBBF24" />
-      <ellipse cx="50" cy="43" rx="3" ry="6" fill="#FDE68A" />
-
-      {/* Small sunflower accent at top */}
-      <circle cx="50" cy="18" r="8" fill="#FBBF24" />
-      <circle cx="50" cy="18" r="5" fill="#92400E" />
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
-        <ellipse
-          key={angle}
-          cx="50"
-          cy="10"
-          rx="2"
-          ry="5"
-          fill="#FCD34D"
-          transform={`rotate(${angle} 50 18)`}
-        />
-      ))}
-
-      <defs>
-        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FBBF24" />
-          <stop offset="100%" stopColor="#F59E0B" />
-        </linearGradient>
-        <linearGradient id="heartGradient" x1="50%" y1="0%" x2="50%" y2="100%">
-          <stop offset="0%" stopColor="#F59E0B" />
-          <stop offset="100%" stopColor="#B45309" />
-        </linearGradient>
-      </defs>
-    </svg>
+// Gal's Signature
+export function Signature({ className = "", dark = false }: { className?: string; dark?: boolean }) {
+  return (
+    <Image
+      src="/gal-signature.svg"
+      alt="החתימה של גל"
+      width={300}
+      height={105}
+      className={`${className} ${dark ? "invert brightness-200" : ""}`}
+    />
   );
 }
 

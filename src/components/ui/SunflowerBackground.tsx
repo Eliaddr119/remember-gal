@@ -39,6 +39,63 @@ export function SunflowerBackground() {
         <Sunflower3 className="w-10 h-10 md:w-14 md:h-14" />
       </div>
 
+      {/* Center-left scattered sunflowers */}
+      <div className="absolute top-[8%] left-[20%] opacity-[0.04]">
+        <Sunflower4 className="w-12 h-12 md:w-16 md:h-16" />
+      </div>
+      <div className="absolute top-[28%] left-[15%] opacity-[0.03]">
+        <RealisticSunflower className="w-14 h-14 md:w-20 md:h-20" />
+      </div>
+      <div className="absolute top-[55%] left-[18%] opacity-[0.04]">
+        <Sunflower1 className="w-10 h-10 md:w-14 md:h-14" />
+      </div>
+      <div className="absolute top-[75%] left-[22%] opacity-[0.03]">
+        <Sunflower5 className="w-12 h-12 md:w-16 md:h-16" />
+      </div>
+      <div className="absolute top-[88%] left-[12%] opacity-[0.04]">
+        <Sunflower2 className="w-10 h-10 md:w-14 md:h-14" />
+      </div>
+
+      {/* Center sunflowers (sparse, very subtle) */}
+      <div className="absolute top-[12%] left-[35%] opacity-[0.03]">
+        <Sunflower3 className="w-10 h-10 md:w-14 md:h-14" />
+      </div>
+      <div className="absolute top-[35%] left-[45%] opacity-[0.025]">
+        <RealisticSunflower className="w-16 h-16 md:w-22 md:h-22" />
+      </div>
+      <div className="absolute top-[58%] left-[38%] opacity-[0.03]">
+        <Sunflower4 className="w-10 h-10 md:w-14 md:h-14" />
+      </div>
+      <div className="absolute top-[82%] left-[42%] opacity-[0.025]">
+        <Sunflower1 className="w-12 h-12 md:w-16 md:h-16" />
+      </div>
+      <div className="absolute top-[22%] left-[55%] opacity-[0.03]">
+        <Sunflower5 className="w-10 h-10 md:w-14 md:h-14" />
+      </div>
+      <div className="absolute top-[48%] left-[52%] opacity-[0.025]">
+        <Sunflower2 className="w-14 h-14 md:w-18 md:h-18" />
+      </div>
+      <div className="absolute top-[70%] left-[58%] opacity-[0.03]">
+        <RealisticSunflower className="w-10 h-10 md:w-14 md:h-14" />
+      </div>
+
+      {/* Center-right scattered sunflowers */}
+      <div className="absolute top-[6%] right-[18%] opacity-[0.04]">
+        <Sunflower2 className="w-12 h-12 md:w-16 md:h-16" />
+      </div>
+      <div className="absolute top-[25%] right-[22%] opacity-[0.03]">
+        <Sunflower4 className="w-10 h-10 md:w-14 md:h-14" />
+      </div>
+      <div className="absolute top-[45%] right-[15%] opacity-[0.04]">
+        <RealisticSunflower className="w-14 h-14 md:w-18 md:h-18" />
+      </div>
+      <div className="absolute top-[65%] right-[20%] opacity-[0.03]">
+        <Sunflower1 className="w-12 h-12 md:w-16 md:h-16" />
+      </div>
+      <div className="absolute top-[85%] right-[16%] opacity-[0.04]">
+        <Sunflower3 className="w-10 h-10 md:w-14 md:h-14" />
+      </div>
+
       {/* Right side sunflowers - column 1 (edge) */}
       <div className="absolute top-[5%] right-[0%] opacity-[0.05]">
         <Sunflower2 className="w-14 h-14 md:w-20 md:h-20" />
@@ -73,10 +130,14 @@ export function SunflowerBackground() {
         <Sunflower5 className="w-10 h-10 md:w-14 md:h-14" />
       </div>
 
-      {/* Very subtle golden glow on sides */}
+      {/* Very subtle golden glows spread across */}
       <div className="absolute top-0 left-0 w-[100px] h-[300px] bg-sunflower-300/[0.04] rounded-full blur-[40px]"></div>
       <div className="absolute top-1/3 left-0 w-[80px] h-[200px] bg-sunflower-400/[0.03] rounded-full blur-[30px]"></div>
       <div className="absolute bottom-0 left-0 w-[100px] h-[300px] bg-sunflower-300/[0.04] rounded-full blur-[40px]"></div>
+
+      <div className="absolute top-[15%] left-[30%] w-[150px] h-[150px] bg-sunflower-200/[0.03] rounded-full blur-[50px]"></div>
+      <div className="absolute top-[50%] left-[50%] w-[200px] h-[200px] bg-sunflower-300/[0.02] rounded-full blur-[60px] -translate-x-1/2"></div>
+      <div className="absolute top-[75%] right-[25%] w-[150px] h-[150px] bg-sunflower-200/[0.03] rounded-full blur-[50px]"></div>
 
       <div className="absolute top-0 right-0 w-[100px] h-[300px] bg-sunflower-300/[0.04] rounded-full blur-[40px]"></div>
       <div className="absolute top-1/2 right-0 w-[80px] h-[200px] bg-sunflower-400/[0.03] rounded-full blur-[30px]"></div>

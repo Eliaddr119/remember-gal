@@ -98,10 +98,13 @@ export function MobileMenu({ className = "" }: MobileMenuProps) {
                   <span className="w-1.5 h-1.5 rounded-full bg-sunflower-400"></span>
                 </div>
 
-                <Navigation
-                  className="flex flex-col"
-                  onItemClick={() => setIsOpen(false)}
-                />
+                {/* Navigation with improved mobile styling */}
+                <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 shadow-warm">
+                  <Navigation
+                    className="flex flex-col gap-1 mobile-nav"
+                    onItemClick={() => setIsOpen(false)}
+                  />
+                </div>
               </div>
             </motion.div>
           </>

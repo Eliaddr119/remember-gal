@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Heebo } from "next/font/google";
+import { Rubik, Secular_One } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -7,9 +7,16 @@ import { AccessibilityProvider } from "@/components/accessibility/AccessibilityP
 import { AccessibilityMenu } from "@/components/accessibility/AccessibilityMenu";
 import { SkipLink } from "@/components/accessibility/SkipLink";
 
-const heebo = Heebo({
+const rubik = Rubik({
   subsets: ["hebrew", "latin"],
-  variable: "--font-heebo",
+  variable: "--font-rubik",
+  display: "swap",
+});
+
+const secularOne = Secular_One({
+  weight: "400",
+  subsets: ["hebrew", "latin"],
+  variable: "--font-secular",
   display: "swap",
 });
 
@@ -25,11 +32,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="he" dir="rtl">
-      <body className={`${heebo.variable} font-heebo antialiased min-h-screen flex flex-col`}>
+      <body className={`${rubik.variable} ${secularOne.variable} font-rubik antialiased min-h-screen flex flex-col`}>
         <AccessibilityProvider>
           <SkipLink />
           <Header />
-          <main id="main-content" className="flex-1 pt-14 md:pt-16">
+          <main id="main-content" className="flex-1 pt-20 md:pt-24">
             {children}
           </main>
           <Footer />

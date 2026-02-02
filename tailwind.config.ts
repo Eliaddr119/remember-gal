@@ -22,18 +22,18 @@ const config: Config = {
           800: "#92400E",
           900: "#78350F",
         },
-        // Rich earth tones
+        // Vibrant orange secondary tones
         earth: {
-          50: "#FDFCFB",
-          100: "#F5F0EB",
-          200: "#E8DDD4",
-          300: "#D4C4B5",
-          400: "#B8A089",
-          500: "#8B7355",
-          600: "#6B5344",
-          700: "#4A3728",
-          800: "#3D2B1F",
-          900: "#2C1810",
+          50: "#FFF4E6",
+          100: "#FFE4CC",
+          200: "#FFC999",
+          300: "#FFAD66",
+          400: "#FF9233",
+          500: "#FF7700",
+          600: "#E66A00",
+          700: "#CC5500",
+          800: "#B34700",
+          900: "#993D00",
         },
         // Warm ivory/cream
         ivory: {
@@ -48,14 +48,15 @@ const config: Config = {
         foreground: "var(--foreground)",
       },
       fontFamily: {
-        heebo: ["var(--font-heebo)", "sans-serif"],
+        rubik: ["var(--font-rubik)", "sans-serif"],
+        secular: ["var(--font-secular)", "sans-serif"],
       },
       backgroundImage: {
         "sunflower-pattern": "url('/images/sunflower-pattern.svg')",
       },
       boxShadow: {
-        "warm": "0 4px 14px 0 rgba(139, 115, 85, 0.15)",
-        "warm-lg": "0 10px 40px 0 rgba(139, 115, 85, 0.2)",
+        "warm": "0 4px 14px 0 rgba(255, 119, 0, 0.18)",
+        "warm-lg": "0 10px 40px 0 rgba(255, 119, 0, 0.25)",
       },
     },
   },

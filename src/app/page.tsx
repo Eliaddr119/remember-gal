@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Logo } from "@/components/ui/Logo";
+import { Logo, Signature } from "@/components/ui/Logo";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 
 export default function Home() {
@@ -11,18 +11,21 @@ export default function Home() {
       <div className="relative z-10 container mx-auto px-4 py-8 md:py-12">
         <div className="max-w-3xl mx-auto text-center">
           {/* Logo */}
-          <div className="flex justify-center mb-6">
-            <Logo size="lg" className="w-20 h-20 md:w-24 md:h-24" />
+          <div className="flex justify-center -mb-2">
+            <Logo size="lg" className="w-44 h-35 md:w-60 md:h-35 lg:w-80 lg:h-40" />
           </div>
 
           {/* Main Title */}
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-earth-800 mb-4 leading-tight">
             לזכרה של
-            <br />
-            <span className="text-sunflower-600">גל חפץ</span>
-            <br />
-            <span className="text-2xl md:text-3xl lg:text-4xl text-earth-600">ז״ל</span>
           </h1>
+
+          {/* Gal's Signature as name */}
+          <div className="flex justify-center my-4">
+            <Signature className="w-56 md:w-72 lg:w-80 h-auto" />
+          </div>
+
+          <p className="text-2xl md:text-3xl lg:text-4xl text-earth-600 font-bold">ז״ל</p>
 
           {/* Simple decorative divider */}
           <div className="flex items-center justify-center gap-2 my-5">
