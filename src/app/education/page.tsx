@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
+import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 
 export const metadata: Metadata = {
   title: "יחידות הדרכה | לזכר גל",
@@ -53,8 +54,10 @@ const categoryColors: Record<string, string> = {
 
 export default function EducationPage() {
   return (
-    <div className="bg-warm-gradient min-h-screen">
-      <div className="container mx-auto px-4 py-12">
+    <div className="min-h-screen bg-warm-gradient relative">
+      <SunflowerBackground />
+
+      <div className="container mx-auto px-4 py-12 relative z-10">
         {/* Page Header */}
         <div className="page-header mb-4">
           <h1 className="text-4xl md:text-5xl font-bold text-earth-800">

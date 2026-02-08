@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { SunflowerDecoration } from "@/components/ui/Logo";
+import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import GalleryGrid from "@/components/gallery/GalleryGrid";
 
 export const metadata: Metadata = {
@@ -9,11 +9,8 @@ export const metadata: Metadata = {
 
 export default function GalleryPage() {
   return (
-    <div className="bg-warm-gradient min-h-screen relative">
-      {/* Background decoration */}
-      <div className="absolute top-1/4 left-0 opacity-5 pointer-events-none hidden sm:block">
-        <SunflowerDecoration className="w-96 h-96 -translate-x-1/2" />
-      </div>
+    <div className="min-h-screen bg-warm-gradient relative">
+      <SunflowerBackground />
 
       <div className="container mx-auto px-3 sm:px-4 py-8 sm:py-12 relative z-10">
         {/* Page Header */}
