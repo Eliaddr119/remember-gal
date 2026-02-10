@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 
@@ -10,33 +11,30 @@ export const metadata: Metadata = {
 const events = [
   {
     id: 1,
-    title: "טקס יום הזיכרון",
-    date: "2024-04-15",
+    title: "מארון הבגדים של גל",
+    date: "2025-10-24",
     time: "10:00",
-    location: "בית העלמין",
+    location: "",
     description:
-      "טקס אזכרה שנתי לציון יום הזיכרון. המשפחה והחברים מתאספים לזכור ולחלוק.",
+      "לגל תמיד הייתה חיבה ואהבה גדולה לבגדים, לאקססוריז, תכשיטים, נעליים ועוד… ועוד…\nעם היופי, הגובה והתעוזה גם הבגדים אהבו אותה.\nשהבגד מיצה את עצמו עבורה או סתם שנמאס לה ממנו היא הייתה נוהגת לרענן את המלתחה ולהכריז: ״בנות, מוזמנות להתחדש ולקחת מה שאתן רוצות….״\nומה שהיה נשאר לאחר בחירתן והולך לתרומה.",
     upcoming: false,
+    photos: [                                                                                                                                                                                                                                                
+    "/images/events/closet/closet-1.jpg",                                                                                                                                                                                                                         
+    "/images/events/closet/closet-2.JPG",
+    "/images/events/closet/closet-3.JPG",
+    "/images/events/closet/closet-4.JPG",
+  ]as string[],
   },
   {
     id: 2,
-    title: "מפגש שנתי לזכר גל",
-    date: "2024-06-20",
-    time: "18:00",
-    location: "פארק הירקון",
+    title: "יריד תחפושות לזכותה",
+    date: "2024-02-13",
+    time: "116:00",
+    location: "שבט המושבה",
     description:
-      "מפגש חברתי שנתי בו נזכור את גל דרך פעילויות שהיא אהבה - מוזיקה, אוכל טוב וצחוק.",
-    upcoming: false,
-  },
-  {
-    id: 3,
-    title: "פעילות התנדבותית לזכרה",
-    date: "2025-03-15",
-    time: "09:00",
-    location: "עמותת 'יד לילד'",
-    description:
-      "יום התנדבות בעמותה שגל תמכה בה. הזדמנות להמשיך את דרכה ולתת לקהילה.",
+      "גל נולדה בחודש מרץ, ואהבתה לפורים הייתה יוצאת דופן. מדי שנה הייתה משקיעה ומכינה את התחפושות הכי מגניבות, מקוריות ומיוחדות.\nבנוסף, לגל הייתה אהבה גדולה לבגדים, אקססוריז ותכשיטים.\n\nמתוך החיבור המיוחד בין שתי האהבות האלו, בחרנו להקים יריד תחפושות לזכרה.\nאת האירוע עשינו בשיתוף שבט המושבה- השבט באם המושבות פתח תקווה, בו גדלה גל, התחנכה, ובילתה את רוב שעות היום שלה בתקופת התיכון.\nלאחר שגל נפטרה, השבט העניק לגדוד בשכבת ז׳ את השם ׳גדוד גל׳ על שמה של גל, שיוביל את כל האירועים לזכרה במהלך השנה, את יריד התחפושות הגדוד וצוות המדריכים מובילים ביחד, מנחילים את הערכים של גל לשאר השבט והקהילה של השכונה, בעזרת תחנות נלוות אשר מדברות על הערכים של גל, עמדת תרומות שיער ומשפטים שמקשטים את השבט עם הדברים שגל האמינה בהם.\nאתם מוזמנים להסתובב, לבחור תחפושות שאהבתם –\nויחד איתנו, להמשיך ולהפיץ את האור של גל ✨",
     upcoming: true,
+    photos: [] as string[],
   },
 ];
 
@@ -93,7 +91,18 @@ export default function EventsPage() {
                         </div>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-earth-600 mb-4 text-sm">{event.description}</p>
+                        {event.description.split("\n").map((line, i) => (
+                          <p key={i} className="text-earth-600 text-sm mb-1 last:mb-4">{line}</p>
+                        ))}
+                        {event.photos.length > 0 && (
+                          <div className="grid grid-cols-4 gap-1.5 mb-4">
+                            {event.photos.map((photo, i) => (
+                              <div key={i} className="relative aspect-square rounded-md overflow-hidden">
+                                <Image src={photo} alt={`${event.title} - תמונה ${i + 1}`} fill className="object-cover" />
+                              </div>
+                            ))}
+                          </div>
+                        )}
                         <div className="flex flex-wrap gap-3 text-xs text-earth-500">
                           <time
                             dateTime={event.date}
@@ -132,7 +141,18 @@ export default function EventsPage() {
                       <h3 className="font-bold text-earth-700 mb-1">
                         {event.title}
                       </h3>
-                      <p className="text-earth-500 text-sm mb-2">{event.description}</p>
+                      {event.description.split("\n").map((line, i) => (
+                        <p key={i} className="text-earth-500 text-sm mb-1 last:mb-2">{line}</p>
+                      ))}
+                      {event.photos.length > 0 && (
+                        <div className="grid grid-cols-4 gap-1.5 mb-3">
+                          {event.photos.map((photo, i) => (
+                            <div key={i} className="relative aspect-square rounded-md overflow-hidden">
+                              <Image src={photo} alt={`${event.title} - תמונה ${i + 1}`} fill className="object-cover" />
+                            </div>
+                          ))}
+                        </div>
+                      )}
                       <div className="flex flex-wrap gap-3 text-xs text-earth-400">
                         <time dateTime={event.date}>
                           <span className="sr-only">תאריך:</span>

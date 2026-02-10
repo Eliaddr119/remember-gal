@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Logo, Signature } from "@/components/ui/Logo";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 
@@ -34,33 +35,22 @@ export default function Home() {
             <span className="w-12 h-0.5 bg-gradient-to-l from-transparent to-sunflower-400 rounded-full"></span>
           </div>
 
-          {/* Hero Image Placeholder */}
-          <figure className="relative mx-auto max-w-md mb-8" role="img" aria-label="מיקום תמונה של גל">
-            <div className="aspect-[4/3] bg-gradient-to-br from-ivory-100 via-ivory-200 to-ivory-300 rounded-2xl shadow-warm-lg border-4 border-sunflower-300/50 flex items-center justify-center overflow-hidden">
-              <div className="text-center text-earth-400 p-6">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={0.8}
-                  stroke="currentColor"
-                  className="w-16 h-16 mx-auto mb-3"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                  />
-                </svg>
-                <p className="text-base font-medium">תמונה של גל</p>
-              </div>
+          {/* Hero Image */}
+          <figure className="relative mx-auto max-w-md mb-8" role="img" aria-label="תמונה של גל">
+            <div className="aspect-[4/3] rounded-2xl shadow-warm-lg border-4 border-sunflower-300/50 overflow-hidden relative">
+              <Image
+                src="/images/main_page_photo.PNG"
+                alt="תמונה של גל"
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
           </figure>
 
           {/* Subtitle */}
           <p className="text-base md:text-lg text-earth-600 mb-8 max-w-lg mx-auto leading-relaxed">
-            אתר הנצחה לזכרה של גל, מלא אור, חום ואהבה - כמוה
+           "השמיים הם הגבול והדרך דרך ארץ"
           </p>
 
           {/* CTA Button */}

@@ -379,6 +379,25 @@ textarea:focus-visible,
   line-height: 1;
 }
 
+/* Story content (rendered from markdown) */
+.story-content p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #6B4F3A;
+  margin-bottom: 1rem;
+}
+
+.story-content p:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .story-content p {
+    font-size: 1.125rem;
+    line-height: 2;
+  }
+}
+
 /* Section with decorative border */
 .section-decorated {
   position: relative;

@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "קצת על גל | לזכרה של גל חפץ ז״ל",
@@ -21,41 +22,27 @@ export default function AboutPage() {
 
         <div className="max-w-3xl mx-auto">
           {/* Featured Image Placeholder */}
-          <figure className="relative mb-8" role="img" aria-label="מיקום לתמונה ראשית של גל">
-            <div className="aspect-[16/9] bg-gradient-to-br from-ivory-100 to-ivory-200 rounded-2xl flex items-center justify-center border-2 border-dashed border-earth-300 shadow-warm">
-              <div className="text-center text-earth-400">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1}
-                  stroke="currentColor"
-                  className="w-16 h-16 mx-auto mb-2"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                  />
-                </svg>
-                <p>תמונה ראשית</p>
-              </div>
+          <figure className="relative mb-8 max-w-md mx-auto" aria-label="תמונה של גל">
+            <div className="rounded-2xl overflow-hidden shadow-warm">
+              <Image
+                src="/images/about-page-photo.jpg"
+                alt="תמונה של גל"
+                width={800}
+                height={600}
+                className="w-full h-auto"
+                priority
+              />
             </div>
           </figure>
 
           {/* Biography Card */}
-          <article className="card-warm rounded-2xl p-6 md:p-8" aria-labelledby="about-title">
-            <h2 id="about-title" className="sr-only">על גל</h2>
-            {/* Opening quote */}
-            <figure className="quote-sunflower mb-6">
-              <blockquote className="text-xl md:text-2xl leading-relaxed text-earth-700">
-                <p>
-                  גל הייתה אדם מיוחד, מלא אור וחום. היא נגעה בחייהם של רבים והשאירה חותם
-                  בל יימחה בליבותיהם של כל מי שהכיר אותה.
-                </p>
-              </blockquote>
-            </figure>
+          <article
+            className="card-warm rounded-2xl p-6 md:p-8"
+            aria-labelledby="about-title"
+          >
+            <h2 id="about-title" className="sr-only">
+              על גל
+            </h2>
 
             {/* Decorative divider */}
             <div className="sunflower-divider" aria-hidden="true">
@@ -64,20 +51,32 @@ export default function AboutPage() {
 
             <div className="space-y-5 text-earth-600 text-base md:text-lg leading-relaxed">
               <p>
-                היא אהבה את החיים בכל ליבה - מהרגעים הקטנים ועד להרפתקאות הגדולות.
-                החיוך שלה האיר כל חדר שנכנסה אליו, והיא תמיד ידעה לגרום לאחרים להרגיש
-                מיוחדים וחשובים.
+                בצער עמוק וכאב גדול נפרדנו מגל, שהלכה לעולמה בגיל 24 לאחר מאבק
+                ארוך ואמיץ במחלת הסרטן. גל הייתה מודל יוצא דופן לחיים של עוצמה,
+                מודעות ובחירה מתמדת בטוב. גם ברגעים הקשים ביותר, גל שמרה על
+                אופטימיות מעוררת השראה. היא בחרה לראות את האור שבכל מכשול,
+                להוקיר תודה על כל רגע, ולחיות מתוך הודיה ותקווה – עד הרגע
+                האחרון. מעבר להיותה ג’ינג’ית יפה ומיוחדת, גל הייתה אדם שגרם לכל
+                מי שסביבה להרגיש אהוב וחשוב. היא עטפה את הקרובים לה בחום
+                ובנתינה, והאהבה שהעניקה חזרה אליה בעוצמה – בחברים ובמשפחה שתמיד
+                היו לצידה.
               </p>
 
               <p>
-                גל האמינה בטוב שבאנשים ותמיד חיפשה דרכים לעזור לאחרים. היא הייתה חברה
-                נאמנה, בת משפחה אוהבת, ואדם שהשראה את כל מי שהכיר אותה.
+                גל נולדה ב־12.03.2001 להוריה טלי ואורן, אחות לעמרי, נמרוד ועפר.
+                כבר בילדותה בלטה בעקשנותה ובדעתנותה – ילדה שידעה מגיל צעיר בדיוק
+                מה היא רוצה, קיבלה החלטות בעצמה וניהלה את סביבתה בביטחון. היא
+                הייתה מלאת שמחת חיים, יצירתיות ואור, נסיכה אחת בין שלושה אחים.
+                גל גדלה והתחנכה בתנועת הצופים, שם ליוותה חניכים במשך שנים ולקחה
+                חלק משמעותי ופעיל בשבט המושבה. לאחר סיום לימודיה התגייסה לשירות
+                קרבי כלוחמת מעברים, ושימשה כמפקדת טירונים בהכשרה. בצבא מספרים על
+                מפקדת מקצועית ונחושה, שלמרות הדיסטנס הנדרש – זכתה לאהבה ולהערצה
+                רבה מחייליה. הקשר העמוק שיצרה עמם נמשך גם לאחר שחרורה.
               </p>
 
               <p>
-                האתר הזה נבנה כדי לשמר את זכרה ולחלוק את הסיפורים והרגעים המיוחדים
-                שחווינו איתה. כל סיפור, כל תמונה, כל זיכרון - הם חלק מהמורשת היפה
-                שהשאירה אחריה.
+                גל הותירה אחריה מורשת של כוח, אהבה, בחירה בטוב ואמונה בחיים –
+                מורשת שתמשיך ללוות את כל מי שזכה להכיר אותה.
               </p>
             </div>
           </article>
