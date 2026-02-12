@@ -1,7 +1,7 @@
 ---
 id: 1
 author: "טלי"
-relation: "אמא"
+relation: "אמא של גל"
 date: "2024"
 ---
 

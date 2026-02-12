@@ -81,7 +81,12 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-size: calc(1rem * var(--font-scale));
+}
+
+@media (min-width: 768px) {
+  body {
+    font-size: 1.0625rem;
+  }
 }
 
 /* Headings use display font */
@@ -90,6 +95,7 @@ h1, h2, h3 {
 }
 
 html {
+  font-size: calc(100% * var(--font-scale));
   scroll-behavior: smooth;
 }
 
@@ -393,7 +399,7 @@ textarea:focus-visible,
 
 @media (min-width: 768px) {
   .story-content p {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     line-height: 2;
   }
 }

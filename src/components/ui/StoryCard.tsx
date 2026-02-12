@@ -17,8 +17,8 @@ export function StoryCard({ author, relation, contentHtml }: StoryCardProps) {
       <div className="bg-gradient-to-l from-sunflower-100/80 to-sunflower-50/40 border-b border-sunflower-200/50 px-6 md:px-8 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div>
-            <h2 className="text-lg font-bold text-earth-800">{author}</h2>
-            <p className="text-sm text-earth-500">{relation}</p>
+            <h2 className="text-lg md:text-xl font-bold text-earth-800">{author}</h2>
+            <p className="text-sm md:text-base text-earth-500">{relation}</p>
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@ export function StoryCard({ author, relation, contentHtml }: StoryCardProps) {
 
           <button
             onClick={() => setExpanded(!expanded)}
-            className="mt-3 text-sm font-medium text-sunflower-600 hover:text-sunflower-700 transition-colors flex items-center gap-1"
+            className="mt-3 text-sm md:text-base font-medium text-sunflower-600 hover:text-sunflower-700 transition-colors flex items-center gap-1"
           >
             <span>{expanded ? "הצג פחות" : "קרא עוד"}</span>
             <svg

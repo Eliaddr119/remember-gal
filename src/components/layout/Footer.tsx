@@ -16,7 +16,7 @@ export function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6">
             {/* Logo */}
             <div aria-hidden="true">
-              <Logo size="sm" />
+              <Logo size="md" />
             </div>
 
             {/* Title */}
@@ -26,7 +26,7 @@ export function Footer() {
             <span className="hidden md:block w-px h-6 bg-sunflower-500/30" aria-hidden="true"></span>
 
             {/* Subtitle */}
-            <p className="text-sm text-ivory-400">
+            <p className="text-sm md:text-base text-ivory-400">
               נבנה באהבה על ידי המשפחה והחברים
             </p>
           </div>

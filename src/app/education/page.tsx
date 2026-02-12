@@ -92,8 +92,8 @@ export default function EducationPage() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-earth-600 mb-5">{resource.description}</p>
-                    <div className="flex flex-wrap gap-4 text-sm text-earth-500">
+                    <p className="text-base md:text-lg text-earth-600 mb-5">{resource.description}</p>
+                    <div className="flex flex-wrap gap-4 text-sm md:text-base text-earth-500">
                       <span className="flex items-center gap-2 bg-ivory-200 px-3 py-1.5 rounded-lg">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

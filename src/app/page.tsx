@@ -49,8 +49,8 @@ export default function Home() {
           </figure>
 
           {/* Subtitle */}
-          <p className="text-base md:text-lg text-earth-600 mb-8 max-w-lg mx-auto leading-relaxed">
-           "השמיים הם הגבול והדרך דרך ארץ"
+          <p className="text-base md:text-lg lg:text-xl text-earth-600 mb-8 max-w-lg mx-auto leading-relaxed">
+           &ldquo;השמיים הם הגבול והדרך דרך ארץ&rdquo;
           </p>
 
           {/* CTA Button */}
@@ -101,7 +101,7 @@ export default function Home() {
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d={link.icon} />
                 </svg>
-                <span className="text-sm text-earth-700 group-hover:text-earth-800 font-medium">
+                <span className="text-sm md:text-base text-earth-700 group-hover:text-earth-800 font-medium">
                   {link.label}
                 </span>
               </Link>

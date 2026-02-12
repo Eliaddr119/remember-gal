@@ -22,7 +22,7 @@ export function Navigation({ className = "", onItemClick }: NavigationProps) {
               <Link
                 href={item.href}
                 onClick={onItemClick}
-                className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+                className={`text-base md:text-lg px-4 py-2 rounded-lg transition-all duration-200 ${
                   isActive
                     ? "bg-earth-700 text-ivory-50 shadow-warm"
                     : "text-earth-700 hover:bg-sunflower-300/50 hover:text-earth-800"

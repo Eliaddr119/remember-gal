@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { Lightbox } from "@/components/ui/Lightbox";
+
 interface GalleryItem {
   id: number;
   alt: string;
@@ -42,6 +45,13 @@ const galleryItems: GalleryItem[] = [
 ];
 
 export default function GalleryGrid() {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  const lightboxImages = galleryItems.map((item) => ({
+    src: `/images/gallery/${item.id}.jpg`,
+    alt: item.alt,
+  }));
+
   return (
     <section aria-label="גלריית תמונות" className="max-w-6xl mx-auto">
       <ul
@@ -59,10 +69,11 @@ export default function GalleryGrid() {
               tabIndex={0}
               role="button"
               aria-label={`${item.alt} - לחצו לצפייה בתמונה`}
+              onClick={() => setSelectedIndex(galleryItems.indexOf(item))}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  // Future: open lightbox
+                  setSelectedIndex(galleryItems.indexOf(item));
                 }
               }}
             >
@@ -79,6 +90,14 @@ export default function GalleryGrid() {
           </li>
         ))}
       </ul>
+
+      {selectedIndex !== null && (
+        <Lightbox
+          images={lightboxImages}
+          initialIndex={selectedIndex}
+          onClose={() => setSelectedIndex(null)}
+        />
+      )}
     </section>
   );
 }

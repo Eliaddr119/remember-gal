@@ -22,12 +22,12 @@ export default async function StoriesPage() {
             חברים ומשפחה מספרים
           </h1>
         </div>
-        <p className="text-center text-earth-500 mb-10 max-w-2xl mx-auto">
+        <p className="text-center text-earth-500 mb-10 max-w-2xl mx-auto md:text-lg">
           סיפורים וזיכרונות מאנשים שחייהם נגעו בגל
         </p>
 
         <section aria-label="סיפורים וזיכרונות">
-          <div className="max-w-3xl mx-auto space-y-8" role="list" aria-label={`${stories.length} סיפורים`}>
+          <div className="max-w-3xl lg:max-w-4xl mx-auto space-y-8" role="list" aria-label={`${stories.length} סיפורים`}>
             {stories.map((story) => (
               <article key={story.id} role="listitem" className="relative">
                 <StoryCard
@@ -43,10 +43,10 @@ export default async function StoriesPage() {
         {/* Call to action */}
         <div className="mt-12 max-w-lg mx-auto">
           <div className="bg-sunflower-gradient rounded-xl p-6 text-center shadow-warm">
-            <h2 className="text-xl font-bold text-earth-800 mb-2">
+            <h2 className="text-xl md:text-2xl font-bold text-earth-800 mb-2">
               יש לכם סיפור לשתף?
             </h2>
-            <p className="text-earth-600 text-sm">
+            <p className="text-earth-600 text-sm md:text-base">
               צרו קשר עם המשפחה לשיתוף סיפורים נוספים
             </p>
           </div>

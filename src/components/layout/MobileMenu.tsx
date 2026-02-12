@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import { Navigation } from "./Navigation";
 import { Logo } from "../ui/Logo";
 
@@ -102,7 +103,9 @@ export function MobileMenu({ className = "" }: MobileMenuProps) {
               <div className="p-6">
                 {/* Header with logo */}
                 <div className="flex items-center justify-between mb-8">
-                  <Logo size="sm" />
+                  <Link href="/" onClick={() => setIsOpen(false)} aria-label="חזרה לדף הבית">
+                    <Logo size="sm" />
+                  </Link>
                   <button
                     onClick={() => setIsOpen(false)}
                     className="p-2 rounded-lg hover:bg-sunflower-300/50 transition-colors"
