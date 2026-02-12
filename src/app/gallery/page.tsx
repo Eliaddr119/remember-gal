@@ -3,7 +3,7 @@ import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import GalleryGrid from "@/components/gallery/GalleryGrid";
 
 export const metadata: Metadata = {
-  title: "גלריה | לזכר גל",
+  title: "גלריה | לזכות גל",
   description: "תמונות וזיכרונות חזותיים של גל",
 };
 

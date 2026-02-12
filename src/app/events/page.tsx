@@ -4,8 +4,8 @@ import { EventPhotoGrid } from "@/components/ui/EventPhotoGrid";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 
 export const metadata: Metadata = {
-  title: "אירועים | לזכרה של גל חפץ ז״ל",
-  description: "אירועים וטקסים לזכרה של גל",
+  title: "אירועים | לזכותה של גל חפץ ז״ל",
+  description: "אירועים וטקסים לזכותה של גל",
 };
 
 const events = [

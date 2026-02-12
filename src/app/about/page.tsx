@@ -3,8 +3,8 @@ import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "קצת על גל | לזכרה של גל חפץ ז״ל",
-  description: "הכירו את גל - סיפור חייה והמורשת שהשאירה",
+  title: "קצת על גל | לזכותה של גל חפץ ז״ל",
+  description: "הכירו את גל",
 };
 
 export default function AboutPage() {
@@ -18,6 +18,11 @@ export default function AboutPage() {
           <h1 className="text-3xl md:text-4xl font-bold text-earth-800">
             קצת על גל
           </h1>
+
+          <p className="text-base md:text-lg lg:text-xl text-earth-600 mb-8 max-w-lg mx-auto leading-relaxed">
+           &ldquo;השמיים הם הגבול והדרך דרך ארץ&rdquo;
+          </p>
+
         </div>
 
         <div className="max-w-3xl mx-auto">

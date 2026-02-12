@@ -4,7 +4,7 @@ import { StoryCard } from "@/components/ui/StoryCard";
 import { getStories } from "@/lib/stories";
 
 export const metadata: Metadata = {
-  title: "חברים ומשפחה מספרים | לזכרה של גל חפץ ז״ל",
+  title: "חברים ומשפחה מספרים | לזכותה של גל חפץ ז״ל",
   description: "סיפורים וזיכרונות מחברים ומשפחה על גל",
 };
 

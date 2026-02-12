@@ -20,7 +20,7 @@ export function Footer() {
             </div>
 
             {/* Title */}
-            <p className="text-lg font-bold text-sunflower-300">לזכרה של גל חפץ ז״ל</p>
+            <p className="text-lg font-bold text-sunflower-300">לזכותה של גל חפץ ז״ל</p>
 
             {/* Divider - hidden on mobile */}
             <span className="hidden md:block w-px h-6 bg-sunflower-500/30" aria-hidden="true"></span>

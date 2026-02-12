@@ -3,46 +3,26 @@ import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 
 export const metadata: Metadata = {
-  title: "יחידות הדרכה | לזכר גל",
-  description: "חומרים חינוכיים ויחידות הדרכה לזכרה של גל",
+  title: "יחידות הדרכה | לזכות גל",
+  description: "חומרים חינוכיים ויחידות הדרכה לזכותה של גל",
 };
 
 const educationResources = [
   {
     id: 1,
-    title: "סדנת ערכים - על נתינה וחסד",
-    category: "ערכים",
-    description:
-      "יחידת הדרכה העוסקת בערך הנתינה, בהשראת דרכה של גל. מתאימה לקבוצות נוער ומבוגרים.",
-    duration: "90 דקות",
-    audience: "נוער ומבוגרים",
-  },
-  {
-    id: 2,
-    title: "פעילות זיכרון - לזכור ולהנציח",
-    category: "הנצחה",
-    description:
-      "פעילות קבוצתית על משמעות הזיכרון וההנצחה, עם כלים מעשיים ליצירת מורשת אישית.",
-    duration: "60 דקות",
-    audience: "כל הגילאים",
-  },
-  {
-    id: 3,
-    title: "שיחה על אופטימיות",
-    category: "כלי חיים",
-    description:
-      "יחידה על חשיבות הגישה החיובית לחיים, עם דוגמאות מחייה של גל ותרגילים מעשיים.",
-    duration: "45 דקות",
-    audience: "נוער",
-  },
-  {
-    id: 4,
-    title: "על חברות אמיתית",
+    title: "על חברות אמיתית - בעקבות פו הדוב",
     category: "ערכים",
     description:
       "סדנה על משמעות החברות והקשרים האנושיים, בהשראת הקשרים שגל יצרה עם סביבתה.",
-    duration: "60 דקות",
-    audience: "ילדים ונוער",
+    downloadHref: "/education/pdfs/friendship.pdf",
+  },
+  {
+    id: 2,
+    title: "לראות את הטוב",
+    category: "כלי חיים",
+    description:
+      "יחידה על חשיבות הגישה החיובית לחיים, עם דוגמאות מחייה של גל ותרגילים מעשיים.",
+    downloadHref: "/education/pdfs/seeing-the-good.pdf",
   },
 ];
 
@@ -93,75 +73,34 @@ export default function EducationPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-base md:text-lg text-earth-600 mb-5">{resource.description}</p>
-                    <div className="flex flex-wrap gap-4 text-sm md:text-base text-earth-500">
-                      <span className="flex items-center gap-2 bg-ivory-200 px-3 py-1.5 rounded-lg">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-4 h-4 text-sunflower-600"
-                          aria-hidden="true"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                          />
-                        </svg>
-                        <span className="sr-only">משך:</span>
-                        {resource.duration}
-                      </span>
-                      <span className="flex items-center gap-2 bg-ivory-200 px-3 py-1.5 rounded-lg">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-4 h-4 text-sunflower-600"
-                          aria-hidden="true"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
-                          />
-                        </svg>
-                        <span className="sr-only">קהל יעד:</span>
-                        {resource.audience}
-                      </span>
-                    </div>
+                    <a
+                      href={resource.downloadHref}
+                      download
+                      className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 bg-sunflower-400 hover:bg-sunflower-500 text-earth-800 font-medium rounded-lg transition-colors"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-5 h-5"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                        />
+                      </svg>
+                      הורדת PDF
+                    </a>
                   </CardContent>
                 </Card>
               </article>
             ))}
           </div>
         </section>
-
-        {/* Contact for resources */}
-        <div className="mt-16 max-w-2xl mx-auto">
-          <div className="card-warm rounded-2xl p-8 md:p-10 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-earth-800 mb-4">
-              מעוניינים בחומרים?
-            </h2>
-
-            {/* Decorative divider */}
-            <div className="flex items-center justify-center gap-2 mb-4" aria-hidden="true">
-              <span className="w-8 h-px bg-sunflower-400"></span>
-              <span className="w-2 h-2 rounded-full bg-sunflower-400"></span>
-              <span className="w-8 h-px bg-sunflower-400"></span>
-            </div>
-
-            <p className="text-earth-600 mb-3">
-              ניתן לקבל את החומרים המלאים ליחידות ההדרכה ללא עלות
-            </p>
-            <p className="text-sm text-earth-500">
-              צרו קשר עם המשפחה לקבלת החומרים
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   );
