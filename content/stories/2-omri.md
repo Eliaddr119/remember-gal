@@ -1,6 +1,6 @@
 ---
 id: 3
-author: "עומרי"
+author: "עמרי"
 relation: "אחיה הגדול"
 date: "2025"
 ---
