@@ -46,9 +46,17 @@ export default async function StoriesPage() {
             <h2 className="text-xl md:text-2xl font-bold text-earth-800 mb-2">
               יש לכם סיפור לשתף?
             </h2>
-            <p className="text-earth-600 text-sm md:text-base">
+            <p className="text-earth-600 text-sm md:text-base mb-4">
               צרו קשר עם המשפחה לשיתוף סיפורים נוספים
             </p>
+            <a
+              href="https://forms.gle/ekM9aDUnRahvSm3v7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-earth-700 text-ivory-50 px-6 py-2.5 rounded-lg font-bold text-sm md:text-base hover:bg-earth-800 active:bg-earth-900 transition-colors shadow-warm"
+            >
+              לשיתוף סיפור
+            </a>
           </div>
         </div>
       </div>
