@@ -1,5 +1,5 @@
-export const SITE_NAME = "לזכר גל";
-export const SITE_DESCRIPTION = "אתר הנצחה לזכרה של גל";
+export const SITE_NAME = "לזכותה גל";
+export const SITE_DESCRIPTION = "אתר הנצחה לזכותה של גל";
 
 export const ACCESSIBILITY_STORAGE_KEY = "gal-memorial-accessibility";
 
