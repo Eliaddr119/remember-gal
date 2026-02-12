@@ -4,7 +4,7 @@ import { InstagramPost } from "@/components/ui/InstagramPost";
 import { getPosts } from "@/lib/posts";
 
 export const metadata: Metadata = {
-  title: "הפוסטים של גל | לזכותה של גל חפץ ז״ל",
+  title: "במילים של גל | לזכותה של גל חפץ ז״ל",
   description: "פוסטים ששיתפה גל",
 };
 
@@ -19,7 +19,7 @@ export default function PostsPage() {
         {/* Page Header */}
         <div className="page-header mb-3 sm:mb-4">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-earth-800">
-            הפוסטים של גל
+            במילים של גל
           </h1>
         </div>
         <p className="text-center text-earth-500 mb-6 sm:mb-10 max-w-2xl mx-auto text-base sm:text-lg px-2">

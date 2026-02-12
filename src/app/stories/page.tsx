@@ -47,7 +47,7 @@ export default async function StoriesPage() {
               יש לכם סיפור לשתף?
             </h2>
             <p className="text-earth-600 text-sm md:text-base mb-4">
-              צרו קשר עם המשפחה לשיתוף סיפורים נוספים
+              מוזמנים ללחוץ על הקישור ולשתף אותנו בסיפור שלכם עם גל
             </p>
             <a
               href="https://forms.gle/ekM9aDUnRahvSm3v7"

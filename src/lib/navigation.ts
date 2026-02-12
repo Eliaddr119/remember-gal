@@ -6,7 +6,7 @@ export interface NavItem {
 export const navigationItems: NavItem[] = [
   { href: "/about", label: "קצת על גל" },
   { href: "/stories", label: "חברים ומשפחה מספרים" },
-  { href: "/posts", label: "הפוסטים של גל" },
+  { href: "/posts", label: "במילים של גל" },
   { href: "/gallery", label: "גלריה" },
   { href: "/events", label: "אירועים" },
   { href: "/education", label: "יחידות הדרכה" },
