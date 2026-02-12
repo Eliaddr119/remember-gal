@@ -13,7 +13,7 @@ export function Logo({ className = "", size = "md" }: { className?: string; size
   return (
     <Image
       src="/gal-logo.svg"
-      alt="לוגו לזכרה של גל"
+      alt="לוגו לזכותה של גל"
       width={sizeConfig.width}
       height={sizeConfig.height}
       className={`${sizeConfig.class} ${className}`}

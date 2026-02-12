@@ -21,8 +21,8 @@ const secularOne = Secular_One({
 });
 
 export const metadata: Metadata = {
-  title: "לזכרה של גל חפץ ז״ל",
-  description: "אתר הנצחה לזכרה של גל חפץ ז״ל",
+  title: "לזכותה של גל חפץ ז״ל",
+  description: "אתר הנצחה לזכותה של גל חפץ ז״ל",
 };
 
 export default function RootLayout({
