@@ -28,7 +28,7 @@ const events = [
   {
     id: 2,
     title: "יריד תחפושות לזכותה",
-    date: "2024-02-13",
+    date: "2025-02-13",
     time: "16:00",
     location: "שבט המושבה",
     description:
