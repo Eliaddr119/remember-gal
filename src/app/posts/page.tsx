@@ -22,9 +22,6 @@ export default function PostsPage() {
             במילים של גל
           </h1>
         </div>
-        <p className="text-center text-earth-500 mb-6 sm:mb-10 max-w-2xl mx-auto text-base sm:text-lg px-2">
-          פוסטים ששיתפה גל
-        </p>
 
         {/* Instagram-style feed */}
         <div className="max-w-md sm:max-w-lg md:max-w-xl mx-auto space-y-6">

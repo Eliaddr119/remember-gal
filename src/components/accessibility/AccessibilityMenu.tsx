@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useAccessibility } from "@/hooks/useAccessibility";
 
 export function AccessibilityMenu() {
@@ -24,7 +23,6 @@ export function AccessibilityMenu() {
     xlarge: "גדול מאוד",
   };
 
-  // Handle keyboard navigation and close on Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
@@ -33,7 +31,6 @@ export function AccessibilityMenu() {
       }
     };
 
-    // Close menu when clicking outside
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setIsOpen(false);
@@ -78,71 +75,68 @@ export function AccessibilityMenu() {
 
   return (
     <div className="fixed bottom-6 left-6 z-50" ref={menuRef}>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            role="dialog"
-            aria-label="הגדרות נגישות"
-            aria-modal="true"
-            className="absolute bottom-16 left-0 bg-ivory-50 rounded-xl shadow-warm-lg p-5 min-w-[220px] border border-earth-200"
-          >
-            <h3 id="accessibility-title" className="font-bold text-earth-700 mb-4 text-lg">נגישות</h3>
+      <div
+        role="dialog"
+        aria-label="הגדרות נגישות"
+        aria-modal="true"
+        className={`absolute bottom-16 left-0 bg-ivory-50 rounded-xl shadow-warm-lg p-5 min-w-[220px] border border-earth-200 transition-all duration-200 ease-out origin-bottom-left ${
+          isOpen
+            ? "opacity-100 scale-100 translate-y-0"
+            : "opacity-0 scale-95 translate-y-2 pointer-events-none"
+        }`}
+      >
+        <h3 id="accessibility-title" className="font-bold text-earth-700 mb-4 text-lg">נגישות</h3>
 
-            <div className="space-y-5">
-              {/* Font Size Controls */}
-              <fieldset>
-                <legend className="text-sm text-earth-500 mb-3">גודל טקסט</legend>
-                <div className="flex items-center gap-3" role="group" aria-label="שליטה בגודל טקסט">
-                  <button
-                    onClick={handleDecreaseFontSize}
-                    className="w-10 h-10 rounded-full bg-ivory-200 hover:bg-sunflower-200 border border-earth-300 flex items-center justify-center text-lg font-bold text-earth-700 transition-colors"
-                    aria-label="הקטן טקסט"
-                    disabled={fontSize === "small"}
-                    aria-disabled={fontSize === "small"}
-                  >
-                    א-
-                  </button>
-                  <span
-                    className="text-sm flex-1 text-center text-earth-600 font-medium"
-                    aria-live="polite"
-                  >
-                    {fontSizeLabels[fontSize]}
-                  </span>
-                  <button
-                    onClick={handleIncreaseFontSize}
-                    className="w-10 h-10 rounded-full bg-ivory-200 hover:bg-sunflower-200 border border-earth-300 flex items-center justify-center text-lg font-bold text-earth-700 transition-colors"
-                    aria-label="הגדל טקסט"
-                    disabled={fontSize === "xlarge"}
-                    aria-disabled={fontSize === "xlarge"}
-                  >
-                    א+
-                  </button>
-                </div>
-              </fieldset>
-
-              {/* High Contrast Toggle */}
-              <div>
-                <button
-                  onClick={handleToggleHighContrast}
-                  className={`w-full py-2.5 px-4 rounded-lg border transition-all duration-200 ${
-                    highContrast
-                      ? "bg-earth-700 text-ivory-50 border-earth-700"
-                      : "bg-ivory-200 hover:bg-sunflower-200 border-earth-300 text-earth-700"
-                  }`}
-                  aria-pressed={highContrast}
-                  role="switch"
-                  aria-checked={highContrast}
-                >
-                  {highContrast ? "ניגודיות גבוהה: פעיל" : "ניגודיות גבוהה"}
-                </button>
-              </div>
+        <div className="space-y-5">
+          {/* Font Size Controls */}
+          <fieldset>
+            <legend className="text-sm text-earth-500 mb-3">גודל טקסט</legend>
+            <div className="flex items-center gap-3" role="group" aria-label="שליטה בגודל טקסט">
+              <button
+                onClick={handleDecreaseFontSize}
+                className="w-10 h-10 rounded-full bg-ivory-200 hover:bg-sunflower-200 border border-earth-300 flex items-center justify-center text-lg font-bold text-earth-700 transition-colors"
+                aria-label="הקטן טקסט"
+                disabled={fontSize === "small"}
+                aria-disabled={fontSize === "small"}
+              >
+                א-
+              </button>
+              <span
+                className="text-sm flex-1 text-center text-earth-600 font-medium"
+                aria-live="polite"
+              >
+                {fontSizeLabels[fontSize]}
+              </span>
+              <button
+                onClick={handleIncreaseFontSize}
+                className="w-10 h-10 rounded-full bg-ivory-200 hover:bg-sunflower-200 border border-earth-300 flex items-center justify-center text-lg font-bold text-earth-700 transition-colors"
+                aria-label="הגדל טקסט"
+                disabled={fontSize === "xlarge"}
+                aria-disabled={fontSize === "xlarge"}
+              >
+                א+
+              </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </fieldset>
+
+          {/* High Contrast Toggle */}
+          <div>
+            <button
+              onClick={handleToggleHighContrast}
+              className={`w-full py-2.5 px-4 rounded-lg border transition-all duration-200 ${
+                highContrast
+                  ? "bg-earth-700 text-ivory-50 border-earth-700"
+                  : "bg-ivory-200 hover:bg-sunflower-200 border-earth-300 text-earth-700"
+              }`}
+              aria-pressed={highContrast}
+              role="switch"
+              aria-checked={highContrast}
+            >
+              {highContrast ? "ניגודיות גבוהה: פעיל" : "ניגודיות גבוהה"}
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* FAB Button */}
       <button
