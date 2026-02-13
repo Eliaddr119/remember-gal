@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Lightbox } from "@/components/ui/Lightbox";
 
 interface GalleryItem {
@@ -10,45 +11,32 @@ interface GalleryItem {
   height: number;
 }
 
-const PhotoIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1}
-    stroke="currentColor"
-    className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mx-auto mb-2"
-    aria-hidden="true"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-    />
-  </svg>
-);
-
-// Photos with their actual dimensions - aspect ratio is calculated from width/height
 const galleryItems: GalleryItem[] = [
-  { id: 1, alt: "תמונה 1", width: 4, height: 3 },
-  { id: 2, alt: "תמונה 2", width: 3, height: 4 },
-  { id: 3, alt: "תמונה 3", width: 16, height: 9 },
-  { id: 4, alt: "תמונה 4", width: 1, height: 1 },
-  { id: 5, alt: "תמונה 5", width: 2, height: 3 },
-  { id: 6, alt: "תמונה 6", width: 1, height: 1 },
-  { id: 7, alt: "תמונה 7", width: 3, height: 2 },
-  { id: 8, alt: "תמונה 8", width: 9, height: 16 },
-  { id: 9, alt: "תמונה 9", width: 4, height: 5 },
-  { id: 10, alt: "תמונה 10", width: 5, height: 4 },
-  { id: 11, alt: "תמונה 11", width: 1, height: 1 },
-  { id: 12, alt: "תמונה 12", width: 3, height: 4 },
+  { id: 1, alt: "תמונה של גל", width: 1320, height: 1760 },
+  { id: 2, alt: "תמונה של גל", width: 1200, height: 1600 },
+  { id: 3, alt: "תמונה של גל", width: 1600, height: 900 },
+  { id: 4, alt: "תמונה של גל", width: 1320, height: 992 },
+  { id: 5, alt: "תמונה של גל", width: 2012, height: 2677 },
+  { id: 6, alt: "תמונה של גל", width: 1536, height: 2048 },
+  { id: 7, alt: "תמונה של גל", width: 1158, height: 1524 },
+  { id: 8, alt: "תמונה של גל", width: 1200, height: 1600 },
+  { id: 9, alt: "תמונה של גל", width: 1179, height: 1382 },
+  { id: 10, alt: "תמונה של גל", width: 1200, height: 1600 },
+  { id: 11, alt: "תמונה של גל", width: 1687, height: 2048 },
+  { id: 12, alt: "תמונה של גל", width: 900, height: 1600 },
+  { id: 13, alt: "תמונה של גל", width: 1536, height: 2048 },
+  { id: 14, alt: "תמונה של גל", width: 2048, height: 1968 },
+  { id: 15, alt: "תמונה של גל", width: 1320, height: 1650 },
+  { id: 16, alt: "תמונה של גל", width: 1600, height: 1200 },
+  { id: 17, alt: "תמונה של גל", width: 1600, height: 900 },
+  { id: 18, alt: "תמונה של גל", width: 1320, height: 979 },
 ];
 
 export default function GalleryGrid() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const lightboxImages = galleryItems.map((item) => ({
-    src: `/images/gallery/${item.id}.jpg`,
+    src: `/images/gallery/gallery-${item.id}.jpg`,
     alt: item.alt,
   }));
 
@@ -59,33 +47,32 @@ export default function GalleryGrid() {
         className="columns-2 sm:columns-3 md:columns-4 gap-3 sm:gap-4 md:gap-5"
         aria-label={`${galleryItems.length} תמונות בגלריה`}
       >
-        {galleryItems.map((item) => (
+        {galleryItems.map((item, index) => (
           <li
             key={item.id}
             className="mb-3 sm:mb-4 md:mb-5 break-inside-avoid list-none"
           >
             <article
-              className="bg-gradient-to-br from-ivory-100 to-ivory-200 rounded-2xl overflow-hidden border-2 border-dashed border-earth-300 hover:border-sunflower-400 transition-all duration-300 cursor-pointer group shadow-warm hover:shadow-warm-lg"
+              className="rounded-2xl overflow-hidden border border-earth-200/60 hover:border-sunflower-400 transition-all duration-300 cursor-pointer group shadow-warm hover:shadow-warm-lg"
               tabIndex={0}
               role="button"
               aria-label={`${item.alt} - לחצו לצפייה בתמונה`}
-              onClick={() => setSelectedIndex(galleryItems.indexOf(item))}
+              onClick={() => setSelectedIndex(index)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
+                if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
-                  setSelectedIndex(galleryItems.indexOf(item));
+                  setSelectedIndex(index);
                 }
               }}
             >
-              <figure
-                className="w-full flex items-center justify-center text-earth-400 group-hover:text-sunflower-600 transition-colors"
-                style={{ aspectRatio: `${item.width} / ${item.height}` }}
-              >
-                <div className="text-center p-2 sm:p-4">
-                  <PhotoIcon />
-                  <figcaption className="text-xs sm:text-sm font-medium">{item.alt}</figcaption>
-                </div>
-              </figure>
+              <Image
+                src={`/images/gallery/gallery-${item.id}.jpg`}
+                alt={item.alt}
+                width={item.width}
+                height={item.height}
+                className="w-full h-auto group-hover:scale-[1.03] transition-transform duration-300"
+                sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+              />
             </article>
           </li>
         ))}
