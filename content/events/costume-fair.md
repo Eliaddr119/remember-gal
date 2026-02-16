@@ -4,7 +4,7 @@ title: "יריד תחפושות לזכותה"
 date: "2026-02-13"
 time: "16:00"
 location: "שבט המושבה"
-photos: []
+photos: [/images/events/costumes-fair/costumes-1.jpg,/images/events/costumes-fair/costumes-2.jpg,/images/events/costumes-fair/costumes-3.jpg,/images/events/costumes-fair/costumes-4.jpg]
 videos: [/videos/events/costumes-fair/costumes-fair.mp4]
 ---
 גל נולדה בחודש מרץ, ואהבתה לפורים הייתה יוצאת דופן. מדי שנה הייתה משקיעה ומכינה את התחפושות הכי מגניבות, מקוריות ומיוחדות.

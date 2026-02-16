@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import GalleryGrid from "@/components/gallery/GalleryGrid";
+import { getGalleryItems } from "@/lib/gallery";
 
 export const metadata: Metadata = {
   title: "גלריה | לזכות גל",
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function GalleryPage() {
+  const items = getGalleryItems();
   return (
     <div className="min-h-screen bg-warm-gradient relative">
       <SunflowerBackground />
@@ -24,7 +26,7 @@ export default function GalleryPage() {
         </p>
 
         {/* Masonry Photo Grid */}
-        <GalleryGrid />
+        <GalleryGrid items={items} />
 
         {/* Note about adding photos */}
         <div className="mt-10 sm:mt-16 max-w-xl mx-auto px-2">

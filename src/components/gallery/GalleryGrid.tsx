@@ -3,40 +3,17 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Lightbox } from "@/components/ui/Lightbox";
+import type { GalleryItem } from "@/lib/gallery";
 
-interface GalleryItem {
-  id: number;
-  alt: string;
-  width: number;
-  height: number;
+interface GalleryGridProps {
+  items: GalleryItem[];
 }
 
-const galleryItems: GalleryItem[] = [
-  { id: 1, alt: "תמונה של גל", width: 1320, height: 1760 },
-  { id: 2, alt: "תמונה של גל", width: 1200, height: 1600 },
-  { id: 3, alt: "תמונה של גל", width: 1600, height: 900 },
-  { id: 4, alt: "תמונה של גל", width: 1320, height: 992 },
-  { id: 5, alt: "תמונה של גל", width: 2012, height: 2677 },
-  { id: 6, alt: "תמונה של גל", width: 1536, height: 2048 },
-  { id: 7, alt: "תמונה של גל", width: 1158, height: 1524 },
-  { id: 8, alt: "תמונה של גל", width: 1200, height: 1600 },
-  { id: 9, alt: "תמונה של גל", width: 1179, height: 1382 },
-  { id: 10, alt: "תמונה של גל", width: 1200, height: 1600 },
-  { id: 11, alt: "תמונה של גל", width: 1687, height: 2048 },
-  { id: 12, alt: "תמונה של גל", width: 900, height: 1600 },
-  { id: 13, alt: "תמונה של גל", width: 1536, height: 2048 },
-  { id: 14, alt: "תמונה של גל", width: 2048, height: 1968 },
-  { id: 15, alt: "תמונה של גל", width: 1320, height: 1650 },
-  { id: 16, alt: "תמונה של גל", width: 1600, height: 1200 },
-  { id: 17, alt: "תמונה של גל", width: 1600, height: 900 },
-  { id: 18, alt: "תמונה של גל", width: 1320, height: 979 },
-];
-
-export default function GalleryGrid() {
+export default function GalleryGrid({ items }: GalleryGridProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  const lightboxImages = galleryItems.map((item) => ({
-    src: `/images/gallery/gallery-${item.id}.jpg`,
+  const lightboxImages = items.map((item) => ({
+    src: item.src,
     alt: item.alt,
   }));
 
@@ -45,9 +22,9 @@ export default function GalleryGrid() {
       <ul
         role="list"
         className="columns-2 sm:columns-3 md:columns-4 gap-3 sm:gap-4 md:gap-5"
-        aria-label={`${galleryItems.length} תמונות בגלריה`}
+        aria-label={`${items.length} תמונות בגלריה`}
       >
-        {galleryItems.map((item, index) => (
+        {items.map((item, index) => (
           <li
             key={item.id}
             className="mb-3 sm:mb-4 md:mb-5 break-inside-avoid list-none"
@@ -66,7 +43,7 @@ export default function GalleryGrid() {
               }}
             >
               <Image
-                src={`/images/gallery/gallery-${item.id}.jpg`}
+                src={item.src}
                 alt={item.alt}
                 width={item.width}
                 height={item.height}

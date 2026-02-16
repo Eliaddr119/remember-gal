@@ -9,6 +9,6 @@ export const navigationItems: NavItem[] = [
   { href: "/posts", label: "במילים של גל" },
   { href: "/gallery", label: "גלריה" },
   { href: "/traveling-hat", label: "הכובע מטייל" },
-  { href: "/events", label: "אירועים" },
+  { href: "/events", label: "אירועים לזכותה" },
   { href: "/education", label: "יחידות הדרכה" },
 ];
