@@ -8,6 +8,7 @@ import Image from "next/image";
 interface LightboxImage {
   src: string;
   alt: string;
+  type?: "image" | "video";
 }
 
 interface LightboxProps {
@@ -189,26 +190,36 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
           </>
         )}
 
-        {/* Image — tapping the image area does NOT close the lightbox, swipe navigates */}
+        {/* Media — tapping the area does NOT close the lightbox, swipe navigates */}
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.2 }}
-          className="relative z-20 w-[92vw] max-w-5xl"
+          className="relative z-20 w-[92vw] max-w-5xl flex items-center justify-center"
           style={{ height: "70dvh" }}
           onClick={(e) => e.stopPropagation()}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          <Image
-            src={current.src}
-            alt={current.alt}
-            fill
-            className="object-contain"
-            sizes="92vw"
-            priority
-          />
+          {current.type === "video" ? (
+            <video
+              src={current.src}
+              className="max-w-full max-h-full rounded-lg"
+              controls
+              autoPlay
+              aria-label={current.alt}
+            />
+          ) : (
+            <Image
+              src={current.src}
+              alt={current.alt}
+              fill
+              className="object-contain"
+              sizes="92vw"
+              priority
+            />
+          )}
         </motion.div>
       </motion.div>
     </AnimatePresence>,
