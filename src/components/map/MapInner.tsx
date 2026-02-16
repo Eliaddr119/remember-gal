@@ -46,7 +46,7 @@ function useIsMobile() {
 }
 
 // Wrapper that uses native click to bypass Leaflet's event swallowing
-function FullscreenTrigger({ pin, onOpen, isMobile }: { pin: MapPin; onOpen: (pin: MapPin) => void; isMobile: boolean }) {
+function FullscreenTrigger({ pin, imageIndex, onOpen, isMobile }: { pin: MapPin; imageIndex: number; onOpen: (pin: MapPin, index: number) => void; isMobile: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,11 +54,11 @@ function FullscreenTrigger({ pin, onOpen, isMobile }: { pin: MapPin; onOpen: (pi
     if (!el) return;
     const handler = (e: Event) => {
       e.stopPropagation();
-      onOpen(pin);
+      onOpen(pin, imageIndex);
     };
     el.addEventListener("click", handler);
     return () => el.removeEventListener("click", handler);
-  }, [pin, onOpen]);
+  }, [pin, imageIndex, onOpen]);
 
   const w = isMobile ? 180 : 280;
   const h = isMobile ? 130 : 200;
@@ -66,7 +66,7 @@ function FullscreenTrigger({ pin, onOpen, isMobile }: { pin: MapPin; onOpen: (pi
   return (
     <div ref={ref} style={{ width: w, height: h }} className="relative rounded-lg overflow-hidden mx-auto cursor-pointer">
       <Image
-        src={pin.imageUrl}
+        src={pin.imageUrls[imageIndex]}
         alt={pin.title}
         fill
         className="object-cover"
@@ -77,26 +77,90 @@ function FullscreenTrigger({ pin, onOpen, isMobile }: { pin: MapPin; onOpen: (pi
           <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9m11.25-5.25v4.5m0-4.5h-4.5m4.5 0L15 9m-11.25 11.25v-4.5m0 4.5h4.5m-4.5 0L9 15m11.25 5.25v-4.5m0 4.5h-4.5m4.5 0L15 15" />
         </svg>
       </div>
+      {pin.imageUrls.length > 1 && (
+        <div className="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-0.5 rounded-full">
+          {imageIndex + 1}/{pin.imageUrls.length}
+        </div>
+      )}
     </div>
   );
 }
 
-// Centers the map on any marker that is clicked so the popup is fully visible
-function CenterOnMarkerClick() {
+// Image carousel for popups with multiple images
+function PopupImageCarousel({ pin, onOpen, isMobile }: { pin: MapPin; onOpen: (pin: MapPin, index: number) => void; isMobile: boolean }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const prevEl = prevRef.current;
+    const nextEl = nextRef.current;
+    if (!prevEl || !nextEl) return;
+    const prevHandler = (e: Event) => {
+      e.stopPropagation();
+      setCurrentIndex((i) => (i - 1 + pin.imageUrls.length) % pin.imageUrls.length);
+    };
+    const nextHandler = (e: Event) => {
+      e.stopPropagation();
+      setCurrentIndex((i) => (i + 1) % pin.imageUrls.length);
+    };
+    prevEl.addEventListener("click", prevHandler);
+    nextEl.addEventListener("click", nextHandler);
+    return () => {
+      prevEl.removeEventListener("click", prevHandler);
+      nextEl.removeEventListener("click", nextHandler);
+    };
+  }, [pin.imageUrls.length]);
+
+  return (
+    <div className="relative">
+      <FullscreenTrigger pin={pin} imageIndex={currentIndex} onOpen={onOpen} isMobile={isMobile} />
+      {pin.imageUrls.length > 1 && (
+        <>
+          <button
+            ref={prevRef}
+            className="absolute right-1 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+            aria-label="תמונה קודמת"
+          >
+            &#8250;
+          </button>
+          <button
+            ref={nextRef}
+            className="absolute left-1 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+            aria-label="תמונה הבאה"
+          >
+            &#8249;
+          </button>
+        </>
+      )}
+    </div>
+  );
+}
+
+// Centers the popup on the map viewport after it opens
+function CenterOnPopupOpen() {
   const map = useMap();
 
   useMapEvents({
     popupopen(e) {
-      const px = map.project(e.popup.getLatLng()!);
-      px.y -= e.popup.getElement()!.clientHeight / 2;
-      map.panTo(map.unproject(px), { animate: true });
+      // Wait a frame so the popup DOM is fully laid out
+      requestAnimationFrame(() => {
+        const popupEl = e.popup.getElement();
+        if (!popupEl) return;
+        const popupHeight = popupEl.clientHeight;
+        const px = map.project(e.popup.getLatLng()!);
+        // Shift up by half the popup height so it's visually centered
+        px.y -= popupHeight / 2;
+        map.panTo(map.unproject(px), { animate: true });
+      });
     },
   });
 
   return null;
 }
 
-// Flies to a pin when triggered from the list
+// Flies to a pin when triggered from the list, then opens popup
+// CenterOnPopupOpen handles the final centering once the popup is visible
 function FlyToPin({ targetPin, markerRefs }: {
   targetPin: MapPin | null;
   markerRefs: React.MutableRefObject<Record<string, L.Marker>>;
@@ -108,7 +172,10 @@ function FlyToPin({ targetPin, markerRefs }: {
     map.flyTo(targetPin.coordinates, 8, { duration: 1 });
     const marker = markerRefs.current[targetPin.id];
     if (marker) {
-      setTimeout(() => marker.openPopup(), 600);
+      // Open popup after fly animation completes; CenterOnPopupOpen will re-center
+      map.once("moveend", () => {
+        marker.openPopup();
+      });
     }
   }, [targetPin, map, markerRefs]);
 
@@ -121,8 +188,12 @@ interface MapInnerProps {
 
 export default function MapInner({ pins }: MapInnerProps) {
   const [lightboxPin, setLightboxPin] = useState<MapPin | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   const [targetPin, setTargetPin] = useState<MapPin | null>(null);
-  const openLightbox = useCallback((pin: MapPin) => setLightboxPin(pin), []);
+  const openLightbox = useCallback((pin: MapPin, index: number) => {
+    setLightboxPin(pin);
+    setLightboxIndex(index);
+  }, []);
   const markerRefs = useRef<Record<string, L.Marker>>({});
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
@@ -151,7 +222,7 @@ export default function MapInner({ pins }: MapInnerProps) {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <CenterOnMarkerClick />
+          <CenterOnPopupOpen />
           <FlyToPin targetPin={targetPin} markerRefs={markerRefs} />
           {pins.map((pin) => (
             <Marker
@@ -164,8 +235,8 @@ export default function MapInner({ pins }: MapInnerProps) {
             >
               <Popup maxWidth={popupMaxW} minWidth={popupMinW}>
                 <div className="text-center" dir="rtl">
-                  {pin.imageUrl ? (
-                    <FullscreenTrigger pin={pin} onOpen={openLightbox} isMobile={isMobile} />
+                  {pin.imageUrls.length > 0 ? (
+                    <PopupImageCarousel pin={pin} onOpen={openLightbox} isMobile={isMobile} />
                   ) : (
                     <div
                       style={{ width: imgW, height: imgH }}
@@ -215,7 +286,7 @@ export default function MapInner({ pins }: MapInnerProps) {
                   dir="rtl"
                 >
                   <span className="text-xl shrink-0">
-                    {pin.imageUrl ? "📸" : "🎩"}
+                    {pin.imageUrls.length > 0 ? "📸" : "🎩"}
                   </span>
                   <div className="min-w-0">
                     <p className="font-semibold text-earth-800 text-sm sm:text-base m-0">
@@ -241,10 +312,10 @@ export default function MapInner({ pins }: MapInnerProps) {
         </div>
       )}
 
-      {lightboxPin && lightboxPin.imageUrl && (
+      {lightboxPin && lightboxPin.imageUrls.length > 0 && (
         <Lightbox
-          images={[{ src: lightboxPin.imageUrl, alt: lightboxPin.title }]}
-          initialIndex={0}
+          images={lightboxPin.imageUrls.map((url) => ({ src: url, alt: lightboxPin.title }))}
+          initialIndex={lightboxIndex}
           onClose={() => setLightboxPin(null)}
         />
       )}

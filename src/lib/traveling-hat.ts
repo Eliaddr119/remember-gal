@@ -6,7 +6,7 @@ export interface MapPin {
   id: string;
   title: string;
   coordinates: [number, number];
-  imageUrl: string;
+  imageUrls: string[];
   description: string;
   photographer: string;
   photographerRelation: string;
@@ -24,11 +24,19 @@ export function getPins(): MapPin[] {
       const fileContents = fs.readFileSync(filePath, "utf8");
       const { data, content } = matter(fileContents);
 
+      // Support both imageUrls (array) and legacy imageUrl (string)
+      let imageUrls: string[] = [];
+      if (Array.isArray(data.imageUrls)) {
+        imageUrls = data.imageUrls as string[];
+      } else if (data.imageUrl) {
+        imageUrls = [data.imageUrl as string];
+      }
+
       return {
         id: data.id as string,
         title: data.title as string,
         coordinates: data.coordinates as [number, number],
-        imageUrl: (data.imageUrl as string) || "",
+        imageUrls,
         photographer: (data.photographer as string) || "",
         photographerRelation: (data.photographerRelation as string) || "",
         description: content.trim(),
