@@ -285,8 +285,11 @@ export default function MapInner({ pins }: MapInnerProps) {
                   className="w-full flex items-center gap-3 px-4 py-3 text-right hover:bg-sunflower-50 transition-colors"
                   dir="rtl"
                 >
-                  <span className="text-xl shrink-0">
-                    {pin.imageUrls.length > 0 ? "📸" : "🎩"}
+                  <span className="shrink-0 inline-block w-5 h-5">
+                    <svg viewBox="0 0 24 24" className="w-full h-full" style={{ filter: "drop-shadow(0 1px 2px rgba(255,119,0,0.3))" }}>
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#FF7700" stroke="#FBBF24" strokeWidth="1.5" />
+                      <circle cx="12" cy="9" r="3" fill="#FFFBEB" />
+                    </svg>
                   </span>
                   <div className="min-w-0">
                     <p className="font-semibold text-earth-800 text-sm sm:text-base m-0">
@@ -301,10 +304,6 @@ export default function MapInner({ pins }: MapInnerProps) {
                       </p>
                     )}
                   </div>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-earth-300 shrink-0 mr-auto">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                  </svg>
                 </button>
               </li>
             ))}
