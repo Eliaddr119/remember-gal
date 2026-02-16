@@ -18,9 +18,7 @@ export function InstagramPost({ post }: InstagramPostProps) {
       {/* Header */}
       <div dir="ltr" className="flex items-center gap-3 px-4 py-3">
         <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-sunflower-400 via-sunflower-500 to-earth-500 p-[2px]">
-          <div className="w-full h-full rounded-full bg-ivory-50 flex items-center justify-center">
-            <span className="text-sm font-bold text-earth-700">G</span>
-          </div>
+          <Image src="/images/posts/instagram-profile.jpg" alt="גל" width={36} height={36} className="w-full h-full rounded-full object-cover" />
         </div>
         <span className="font-bold text-sm text-earth-800">gal_hefez</span>
       </div>
