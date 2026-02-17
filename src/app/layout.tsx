@@ -32,6 +32,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="he" dir="rtl">
+      <head>
+        <script async src="https://tally.so/widgets/embed.js" />
+      </head>
       <body className={`${rubik.variable} ${secularOne.variable} font-rubik antialiased min-h-screen flex flex-col`}>
         <AccessibilityProvider>
           <SkipLink />

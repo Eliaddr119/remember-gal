@@ -28,6 +28,27 @@ export default function TravelingHatPage() {
 
         {/* Interactive Map + Location List */}
         <TravelingHatMap pins={pins} />
+
+        {/* Form popup button */}
+        <div className="mt-12 max-w-lg mx-auto">
+          <div className="bg-sunflower-gradient rounded-xl p-6 text-center shadow-warm">
+            <h2 className="text-xl md:text-2xl font-bold text-earth-800 mb-2">
+              הכובע היה איתכם? שתפו אותנו!
+            </h2>
+            <p className="text-earth-600 text-sm md:text-base mb-4">
+              לחצו כדי לשתף תמונה מהמסע של הכובע
+            </p>
+            <button
+              type="button"
+              data-tally-open="q4dDG8"
+              data-tally-layout="modal"
+              data-tally-align-left="1"
+              className="inline-block bg-earth-700 text-ivory-50 px-6 py-2.5 rounded-lg font-bold text-sm md:text-base hover:bg-earth-800 active:bg-earth-900 transition-colors shadow-warm"
+            >
+              שיתוף תמונה
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

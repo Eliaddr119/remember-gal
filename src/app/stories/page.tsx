@@ -40,23 +40,24 @@ export default async function StoriesPage() {
           </div>
         </section>
 
-        {/* Call to action */}
+        {/* Form popup button */}
         <div className="mt-12 max-w-lg mx-auto">
           <div className="bg-sunflower-gradient rounded-xl p-6 text-center shadow-warm">
             <h2 className="text-xl md:text-2xl font-bold text-earth-800 mb-2">
               יש לכם סיפור לשתף?
             </h2>
             <p className="text-earth-600 text-sm md:text-base mb-4">
-              מוזמנים ללחוץ על הקישור ולשתף אותנו בסיפור שלכם עם גל
+              מוזמנים לשתף אותנו בסיפור שלכם עם גל
             </p>
-            <a
-              href="https://forms.gle/ekM9aDUnRahvSm3v7"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              data-tally-open="2EeaBb"
+              data-tally-layout="modal"
+              data-tally-align-left="1"
               className="inline-block bg-earth-700 text-ivory-50 px-6 py-2.5 rounded-lg font-bold text-sm md:text-base hover:bg-earth-800 active:bg-earth-900 transition-colors shadow-warm"
             >
               לשיתוף סיפור
-            </a>
+            </button>
           </div>
         </div>
       </div>

@@ -96,9 +96,6 @@ export default function EventsPage() {
 
           {/* Past Events */}
           <section aria-labelledby="past-events-heading">
-            <h2 id="past-events-heading" className="text-xl md:text-2xl font-bold text-earth-700 mb-4">
-              אירועים שהיו
-            </h2>
             <div className="space-y-3" role="list" aria-label="רשימת אירועים שעברו">
               {pastEvents.map((event) => (
                 <article key={event.id} role="listitem">
