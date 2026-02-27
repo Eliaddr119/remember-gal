@@ -31,6 +31,7 @@ export function InstagramPost({ post }: InstagramPostProps) {
             alt={post.title || "פוסט של גל"}
             width={800}
             height={800}
+            sizes="(max-width: 640px) 100vw, 500px"
             className="w-full h-auto"
           />
         </div>

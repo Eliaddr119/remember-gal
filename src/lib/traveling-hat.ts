@@ -1,6 +1,4 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
+import { apiFetch } from "@/lib/api-fetch";
 
 export interface MapPin {
   id: string;
@@ -12,36 +10,27 @@ export interface MapPin {
   photographerRelation: string;
 }
 
-const pinsDirectory = path.join(process.cwd(), "content/traveling-hat");
+interface PinRow {
+  id: string;
+  title: string;
+  lat: string | number | null;
+  lng: string | number | null;
+  image_urls: unknown;
+  photographer: string | null;
+  photographer_relation: string | null;
+  description: string | null;
+}
 
-export function getPins(): MapPin[] {
-  const fileNames = fs.readdirSync(pinsDirectory);
+export async function getPins(): Promise<MapPin[]> {
+  const data = await apiFetch<PinRow[]>("/api/traveling-hat");
 
-  const pins = fileNames
-    .filter((name) => name.endsWith(".md"))
-    .map((fileName) => {
-      const filePath = path.join(pinsDirectory, fileName);
-      const fileContents = fs.readFileSync(filePath, "utf8");
-      const { data, content } = matter(fileContents);
-
-      // Support both imageUrls (array) and legacy imageUrl (string)
-      let imageUrls: string[] = [];
-      if (Array.isArray(data.imageUrls)) {
-        imageUrls = data.imageUrls as string[];
-      } else if (data.imageUrl) {
-        imageUrls = [data.imageUrl as string];
-      }
-
-      return {
-        id: data.id as string,
-        title: data.title as string,
-        coordinates: data.coordinates as [number, number],
-        imageUrls,
-        photographer: (data.photographer as string) || "",
-        photographerRelation: (data.photographerRelation as string) || "",
-        description: content.trim(),
-      };
-    });
-
-  return pins;
+  return (data || []).map((row) => ({
+    id: row.id,
+    title: row.title,
+    coordinates: [parseFloat(String(row.lat)), parseFloat(String(row.lng))] as [number, number],
+    imageUrls: Array.isArray(row.image_urls) ? (row.image_urls as string[]) : [],
+    photographer: row.photographer || "",
+    photographerRelation: row.photographer_relation || "",
+    description: row.description || "",
+  }));
 }

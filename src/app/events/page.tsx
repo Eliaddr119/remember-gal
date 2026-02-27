@@ -19,8 +19,8 @@ function formatDate(dateString: string): string {
   });
 }
 
-export default function EventsPage() {
-  const events = getEvents();
+export default async function EventsPage() {
+  const events = await getEvents();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const upcomingEvents = events.filter((e) => new Date(e.date) >= today);

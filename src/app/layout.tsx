@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Rubik, Secular_One } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+import SiteChrome from "@/components/layout/SiteChrome";
 import { AccessibilityProvider } from "@/components/accessibility/AccessibilityProvider";
-import { AccessibilityMenu } from "@/components/accessibility/AccessibilityMenu";
 import { SkipLink } from "@/components/accessibility/SkipLink";
 
 const rubik = Rubik({
@@ -38,12 +36,7 @@ export default function RootLayout({
       <body className={`${rubik.variable} ${secularOne.variable} font-rubik antialiased min-h-screen flex flex-col`}>
         <AccessibilityProvider>
           <SkipLink />
-          <Header />
-          <main id="main-content" className="flex-1 pt-20 md:pt-24">
-            {children}
-          </main>
-          <Footer />
-          <AccessibilityMenu />
+          <SiteChrome>{children}</SiteChrome>
         </AccessibilityProvider>
       </body>
     </html>

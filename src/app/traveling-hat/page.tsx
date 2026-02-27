@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: "הכובע של גל מטייל בעולם - מפה אינטראקטיבית",
 };
 
-export default function TravelingHatPage() {
-  const pins = getPins();
+export default async function TravelingHatPage() {
+  const pins = await getPins();
 
   return (
     <div className="min-h-screen bg-warm-gradient relative">

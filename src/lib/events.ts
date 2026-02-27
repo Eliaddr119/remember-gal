@@ -1,6 +1,4 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
+import { apiFetch } from "@/lib/api-fetch";
 
 export interface Event {
   id: string;
@@ -13,32 +11,28 @@ export interface Event {
   videos: string[];
 }
 
-const eventsDirectory = path.join(process.cwd(), "content/events");
+interface EventRow {
+  id: string;
+  title: string;
+  date: string | null;
+  time: string | null;
+  location: string | null;
+  description: string | null;
+  photos: unknown;
+  videos: unknown;
+}
 
-export function getEvents(): Event[] {
-  const fileNames = fs.readdirSync(eventsDirectory);
+export async function getEvents(): Promise<Event[]> {
+  const data = await apiFetch<EventRow[]>("/api/events");
 
-  const events = fileNames
-    .filter((name) => name.endsWith(".md"))
-    .map((fileName) => {
-      const filePath = path.join(eventsDirectory, fileName);
-      const fileContents = fs.readFileSync(filePath, "utf8");
-      const { data, content } = matter(fileContents);
-
-      return {
-        id: data.id as string,
-        title: data.title as string,
-        date: data.date as string,
-        time: (data.time as string) || "",
-        location: (data.location as string) || "",
-        description: content.trim(),
-        photos: Array.isArray(data.photos) ? (data.photos as string[]) : [],
-        videos: Array.isArray(data.videos) ? (data.videos as string[]) : [],
-      };
-    });
-
-  // Sort by date descending (newest first)
-  events.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-  return events;
+  return (data || []).map((row) => ({
+    id: row.id,
+    title: row.title,
+    date: row.date || "",
+    time: row.time || "",
+    location: row.location || "",
+    description: row.description || "",
+    photos: Array.isArray(row.photos) ? (row.photos as string[]) : [],
+    videos: Array.isArray(row.videos) ? (row.videos as string[]) : [],
+  }));
 }

@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: "תמונות וזיכרונות חזותיים של גל",
 };
 
-export default function GalleryPage() {
-  const items = getGalleryItems();
+export default async function GalleryPage() {
+  const items = await getGalleryItems();
   return (
     <div className="min-h-screen bg-warm-gradient relative">
       <SunflowerBackground />
