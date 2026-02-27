@@ -3,6 +3,10 @@ import sharp from "sharp";
 import { supabaseServer } from "@/lib/supabase/server";
 import { requireAuth } from "@/lib/auth-helpers";
 
+const ALLOWED_BUCKETS = new Set(["images"]);
+const MAX_IMAGE_SIZE = 20 * 1024 * 1024;  // 20 MB
+const MAX_VIDEO_SIZE = 150 * 1024 * 1024; // 150 MB
+
 export const config = { api: { bodyParser: false } };
 
 export async function POST(req: NextRequest) {
@@ -17,9 +21,26 @@ export async function POST(req: NextRequest) {
 
     if (!file) return NextResponse.json({ error: "No file provided" }, { status: 400 });
 
-    const raw = Buffer.from(await file.arrayBuffer());
-    const isImage = file.type.startsWith("image/");
+    if (!ALLOWED_BUCKETS.has(bucket)) {
+      return NextResponse.json({ error: "Invalid bucket" }, { status: 400 });
+    }
 
+    const isImage = file.type.startsWith("image/");
+    const isVideo = file.type.startsWith("video/");
+
+    if (!isImage && !isVideo) {
+      return NextResponse.json({ error: "Only image and video files are allowed" }, { status: 400 });
+    }
+
+    const sizeLimit = isImage ? MAX_IMAGE_SIZE : MAX_VIDEO_SIZE;
+    if (file.size > sizeLimit) {
+      return NextResponse.json(
+        { error: `File exceeds ${isImage ? "20" : "150"} MB limit` },
+        { status: 400 }
+      );
+    }
+
+    const raw = Buffer.from(await file.arrayBuffer());
     let uploadBuffer: Buffer;
     let contentType: string;
     let fileName: string;
@@ -33,7 +54,7 @@ export async function POST(req: NextRequest) {
       fileName = `${folder ? folder + "/" : ""}${Date.now()}.webp`;
     } else {
       uploadBuffer = raw;
-      contentType = file.type || "video/mp4";
+      contentType = file.type;
       const ext = file.name.split(".").pop() ?? "mp4";
       fileName = `${folder ? folder + "/" : ""}${Date.now()}.${ext}`;
     }

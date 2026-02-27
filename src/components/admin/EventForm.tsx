@@ -153,14 +153,19 @@ export default function EventForm({ event, isNew, eventId }: Props) {
         <Field label="סרטונים">
           <div className="space-y-3">
             {videos.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-3">
                 {videos.map((v, i) => (
-                  <div key={i} className="relative group">
-                    <video src={v} className="h-20 w-20 object-cover rounded-lg border border-gray-200" muted />
+                  <div key={i} className="relative group border border-gray-200 rounded-lg overflow-hidden bg-black">
+                    <video
+                      src={v}
+                      controls
+                      preload="metadata"
+                      className="w-full max-h-64 object-contain"
+                    />
                     <button
                       type="button"
                       onClick={() => setVideos(videos.filter((_, j) => j !== i))}
-                      className="absolute top-0.5 right-0.5 bg-black/60 text-white rounded-full w-5 h-5 text-xs items-center justify-center hidden group-hover:flex hover:bg-red-500"
+                      className="absolute top-2 left-2 bg-black/60 text-white rounded-full w-7 h-7 text-sm flex items-center justify-center hover:bg-red-500 transition-colors"
                     >
                       ×
                     </button>
