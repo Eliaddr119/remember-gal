@@ -7,7 +7,7 @@ const ALLOWED_BUCKETS = new Set(["images"]);
 const MAX_IMAGE_SIZE = 20 * 1024 * 1024;  // 20 MB
 const MAX_VIDEO_SIZE = 150 * 1024 * 1024; // 150 MB
 
-export const config = { api: { bodyParser: false } };
+export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   const unauth = await requireAuth(req);
