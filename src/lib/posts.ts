@@ -7,7 +7,7 @@ export interface Post {
   caption: string;
 }
 
-interface PostRow {
+export interface PostRow {
   id: number;
   image_url: string | null;
   title: string | null;

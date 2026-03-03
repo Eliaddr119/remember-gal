@@ -10,7 +10,7 @@ export interface Story {
   date: string;
 }
 
-interface StoryRow {
+export interface StoryRow {
   id: number;
   author: string;
   relation: string | null;

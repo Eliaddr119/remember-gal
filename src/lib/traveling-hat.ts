@@ -10,7 +10,7 @@ export interface MapPin {
   photographerRelation: string;
 }
 
-interface PinRow {
+export interface PinRow {
   id: string;
   title: string;
   lat: string | number | null;

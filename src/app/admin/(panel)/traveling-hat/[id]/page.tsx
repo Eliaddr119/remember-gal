@@ -1,9 +1,10 @@
 import { apiFetch } from "@/lib/api-fetch";
 import TravelingHatForm from "@/components/admin/TravelingHatForm";
+import type { PinRow } from "@/lib/traveling-hat";
 
 export default async function TravelingHatEditPage({ params }: { params: { id: string } }) {
   const isNew = params.id === "new";
-  const pin = isNew ? null : await apiFetch(`/api/traveling-hat/${params.id}`);
+  const pin = isNew ? null : await apiFetch<PinRow>(`/api/traveling-hat/${params.id}`);
 
   return (
     <div>
