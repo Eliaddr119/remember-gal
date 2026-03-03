@@ -10,7 +10,9 @@ export async function GET() {
     .order("date", { ascending: false });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json(data);
+  const res = NextResponse.json(data);
+  res.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
+  return res;
 }
 
 export async function POST(req: NextRequest) {

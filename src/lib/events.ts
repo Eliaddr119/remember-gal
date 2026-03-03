@@ -23,7 +23,7 @@ export interface EventRow {
 }
 
 export async function getEvents(): Promise<Event[]> {
-  const data = await apiFetch<EventRow[]>("/api/events");
+  const data = await apiFetch<EventRow[]>("/api/events", { revalidate: 300 });
 
   return (data || []).map((row) => ({
     id: row.id,

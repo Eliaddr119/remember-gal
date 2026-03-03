@@ -5,6 +5,7 @@ export interface Post {
   imageUrl: string;
   title: string;
   caption: string;
+  mediaType: "image" | "video";
 }
 
 export interface PostRow {
@@ -14,13 +15,21 @@ export interface PostRow {
   content: string | null;
 }
 
-export async function getPosts(): Promise<Post[]> {
-  const data = await apiFetch<PostRow[]>("/api/posts");
+function isVideoUrl(url: string) {
+  return /\.(mp4|webm|mov|avi|mkv)(\?.*)?$/i.test(url);
+}
 
-  return (data || []).map((row) => ({
-    id: row.id,
-    imageUrl: row.image_url || "",
-    title: row.title || "",
-    caption: row.content || "",
-  }));
+export async function getPosts(): Promise<Post[]> {
+  const data = await apiFetch<PostRow[]>("/api/posts", { revalidate: 300 });
+
+  return (data || []).map((row) => {
+    const imageUrl = row.image_url || "";
+    return {
+      id: row.id,
+      imageUrl,
+      title: row.title || "",
+      caption: row.content || "",
+      mediaType: isVideoUrl(imageUrl) ? "video" : "image",
+    };
+  });
 }

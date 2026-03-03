@@ -3,6 +3,8 @@ import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import { InstagramPost } from "@/components/ui/InstagramPost";
 import { getPosts } from "@/lib/posts";
 
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: "במילים של גל | לזכותה של גל חפץ ז״ל",
   description: "פוסטים ששיתפה גל",

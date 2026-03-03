@@ -20,7 +20,7 @@ export interface StoryRow {
 }
 
 export async function getStories(): Promise<Story[]> {
-  const data = await apiFetch<StoryRow[]>("/api/stories");
+  const data = await apiFetch<StoryRow[]>("/api/stories", { revalidate: 300 });
 
   return Promise.all(
     (data || []).map(async (row) => {

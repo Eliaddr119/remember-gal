@@ -31,7 +31,8 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl">
       <head>
-        <script async src="https://tally.so/widgets/embed.js" />
+        <link rel="preconnect" href="https://supabase.co" />
+        <link rel="dns-prefetch" href="https://supabase.co" />
       </head>
       <body className={`${rubik.variable} ${secularOne.variable} font-rubik antialiased min-h-screen flex flex-col`}>
         <AccessibilityProvider>

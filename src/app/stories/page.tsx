@@ -1,7 +1,10 @@
 import { Metadata } from "next";
+import Script from "next/script";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import { StoryCard } from "@/components/ui/StoryCard";
 import { getStories } from "@/lib/stories";
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "חברים ומשפחה מספרים | לזכותה של גל חפץ ז״ל",
@@ -13,6 +16,7 @@ export default async function StoriesPage() {
 
   return (
     <div className="min-h-screen bg-warm-gradient relative">
+      <Script src="https://tally.so/widgets/embed.js" strategy="lazyOnload" />
       <SunflowerBackground />
 
       <div className="container mx-auto px-4 py-10 relative z-10">

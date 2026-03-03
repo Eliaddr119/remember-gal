@@ -23,17 +23,28 @@ export function InstagramPost({ post }: InstagramPostProps) {
         <span className="font-bold text-sm text-earth-800">gal_hefez</span>
       </div>
 
-      {/* Image */}
+      {/* Media */}
       {post.imageUrl && (
         <div className="relative bg-gradient-to-br from-sunflower-100 via-ivory-100 to-earth-100">
-          <Image
-            src={post.imageUrl}
-            alt={post.title || "פוסט של גל"}
-            width={800}
-            height={800}
-            sizes="(max-width: 640px) 100vw, 500px"
-            className="w-full h-auto"
-          />
+          {post.mediaType === "video" ? (
+            <video
+              src={post.imageUrl}
+              controls
+              playsInline
+              preload="metadata"
+              className="w-full h-auto"
+              aria-label={post.title || "סרטון של גל"}
+            />
+          ) : (
+            <Image
+              src={post.imageUrl}
+              alt={post.title || "פוסט של גל"}
+              width={800}
+              height={800}
+              sizes="(max-width: 640px) 100vw, 500px"
+              className="w-full h-auto"
+            />
+          )}
         </div>
       )}
 

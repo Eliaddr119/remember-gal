@@ -1,5 +1,3 @@
-"use client";
-
 import { Sunflower1, Sunflower2, Sunflower3 } from "./Logo";
 
 export function SunflowerBackground() {
