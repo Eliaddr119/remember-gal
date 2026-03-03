@@ -1,6 +1,4 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
+import { apiFetch } from "@/lib/api-fetch";
 
 export interface Post {
   id: number;
@@ -9,25 +7,20 @@ export interface Post {
   caption: string;
 }
 
-const postsDirectory = path.join(process.cwd(), "content/posts");
+export interface PostRow {
+  id: number;
+  image_url: string | null;
+  title: string | null;
+  content: string | null;
+}
 
-export function getPosts(): Post[] {
-  const fileNames = fs.readdirSync(postsDirectory);
+export async function getPosts(): Promise<Post[]> {
+  const data = await apiFetch<PostRow[]>("/api/posts");
 
-  const posts = fileNames
-    .filter((name) => name.endsWith(".md"))
-    .map((fileName) => {
-      const filePath = path.join(postsDirectory, fileName);
-      const fileContents = fs.readFileSync(filePath, "utf8");
-      const { data, content } = matter(fileContents);
-
-      return {
-        id: data.id as number,
-        imageUrl: data.imageUrl as string,
-        title: (data.title as string) || "",
-        caption: content.trim(),
-      };
-    });
-
-  return posts.sort((a, b) => a.id - b.id);
+  return (data || []).map((row) => ({
+    id: row.id,
+    imageUrl: row.image_url || "",
+    title: row.title || "",
+    caption: row.content || "",
+  }));
 }

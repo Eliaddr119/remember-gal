@@ -1,6 +1,4 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
+import { apiFetch } from "@/lib/api-fetch";
 import { remark } from "remark";
 import html from "remark-html";
 
@@ -12,31 +10,32 @@ export interface Story {
   date: string;
 }
 
-const storiesDirectory = path.join(process.cwd(), "content/stories");
+export interface StoryRow {
+  id: number;
+  author: string;
+  relation: string | null;
+  date: string | null;
+  content_html: string | null;
+  content_markdown: string | null;
+}
 
 export async function getStories(): Promise<Story[]> {
-  const fileNames = fs.readdirSync(storiesDirectory);
+  const data = await apiFetch<StoryRow[]>("/api/stories");
 
-  const stories = await Promise.all(
-    fileNames
-      .filter((name) => name.endsWith(".md"))
-      .map(async (fileName) => {
-        const filePath = path.join(storiesDirectory, fileName);
-        const fileContents = fs.readFileSync(filePath, "utf8");
-        const { data, content } = matter(fileContents);
-
-        const processed = await remark().use(html).process(content);
-        const contentHtml = processed.toString();
-
-        return {
-          id: data.id as number,
-          author: data.author as string,
-          relation: data.relation as string,
-          date: data.date as string,
-          contentHtml,
-        };
-      })
+  return Promise.all(
+    (data || []).map(async (row) => {
+      let contentHtml = row.content_html || "";
+      if (!contentHtml && row.content_markdown) {
+        const processed = await remark().use(html).process(row.content_markdown);
+        contentHtml = processed.toString();
+      }
+      return {
+        id: row.id,
+        author: row.author,
+        relation: row.relation || "",
+        date: row.date || "",
+        contentHtml,
+      };
+    })
   );
-
-  return stories.sort((a, b) => a.id - b.id);
 }

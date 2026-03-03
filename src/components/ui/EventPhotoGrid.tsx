@@ -63,6 +63,7 @@ export function EventPhotoGrid({ photos, videos = [], eventTitle }: EventPhotoGr
                 src={media}
                 alt={`${eventTitle} - תמונה ${i + 1}`}
                 fill
+                sizes="(max-width: 640px) 25vw, 180px"
                 className="object-cover"
               />
             )}

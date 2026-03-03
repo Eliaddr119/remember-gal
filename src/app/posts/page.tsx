@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: "פוסטים ששיתפה גל",
 };
 
-export default function PostsPage() {
-  const posts = getPosts();
+export default async function PostsPage() {
+  const posts = await getPosts();
 
   return (
     <div className="min-h-screen bg-warm-gradient relative">
