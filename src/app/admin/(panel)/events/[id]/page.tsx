@@ -1,9 +1,10 @@
 import { apiFetch } from "@/lib/api-fetch";
 import EventForm from "@/components/admin/EventForm";
+import type { EventRow } from "@/lib/events";
 
 export default async function EventEditPage({ params }: { params: { id: string } }) {
   const isNew = params.id === "new";
-  const event = isNew ? null : await apiFetch(`/api/events/${params.id}`);
+  const event = isNew ? null : await apiFetch<EventRow>(`/api/events/${params.id}`);
 
   return (
     <div>

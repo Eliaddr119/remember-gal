@@ -11,7 +11,7 @@ export interface Event {
   videos: string[];
 }
 
-interface EventRow {
+export interface EventRow {
   id: string;
   title: string;
   date: string | null;
