@@ -3,12 +3,17 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import ImageUpload from "./ImageUpload";
+import VideoUpload from "./VideoUpload";
 
 interface GalleryRow {
   id: number;
   image_url: string;
   width: number | null;
   height: number | null;
+}
+
+function isVideoUrl(url: string) {
+  return /\.(mp4|webm|mov|avi|mkv)(\?.*)?$/i.test(url);
 }
 
 export default function GalleryAdminClient({ initialItems }: { initialItems: GalleryRow[] }) {
@@ -39,28 +44,50 @@ export default function GalleryAdminClient({ initialItems }: { initialItems: Gal
     router.refresh();
   }
 
+  const mediaCount = items.length;
+  const videoCount = items.filter((i) => isVideoUrl(i.image_url)).length;
+
   return (
     <div className="space-y-6">
       <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">הוספת תמונה</h2>
-        <ImageUpload
-          onUpload={handleUpload}
-          bucket="images"
-          folder="gallery"
-          label="בחר תמונה לגלריה"
-        />
+        <h2 className="text-sm font-semibold text-gray-700 mb-3">הוספת מדיה</h2>
+        <div className="grid grid-cols-2 gap-3">
+          <ImageUpload
+            onUpload={handleUpload}
+            bucket="images"
+            folder="gallery"
+            label="בחר תמונה לגלריה"
+          />
+          <VideoUpload
+            onUpload={handleUpload}
+            bucket="images"
+            folder="gallery"
+          />
+        </div>
       </div>
 
       <div>
-        <p className="text-sm text-gray-500 mb-3">{items.length} תמונות בגלריה</p>
+        <p className="text-sm text-gray-500 mb-3">
+          {mediaCount} פריטים בגלריה
+          {videoCount > 0 && ` (${videoCount} סרטונים)`}
+        </p>
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
           {items.map((item) => (
             <div key={item.id} className="relative group aspect-square">
-              <img
-                src={item.image_url}
-                alt=""
-                className="w-full h-full object-cover rounded-lg border border-gray-200"
-              />
+              {isVideoUrl(item.image_url) ? (
+                <video
+                  src={item.image_url}
+                  preload="metadata"
+                  muted
+                  className="w-full h-full object-cover rounded-lg border border-gray-200"
+                />
+              ) : (
+                <img
+                  src={item.image_url}
+                  alt=""
+                  className="w-full h-full object-cover rounded-lg border border-gray-200"
+                />
+              )}
 
               {confirmDelete === item.id ? (
                 <div className="absolute inset-0 bg-black/70 rounded-lg flex flex-col items-center justify-center gap-2">
@@ -95,7 +122,7 @@ export default function GalleryAdminClient({ initialItems }: { initialItems: Gal
 
         {items.length === 0 && (
           <div className="bg-white rounded-xl border border-dashed border-gray-300 py-16 text-center">
-            <p className="text-gray-400 text-sm">הגלריה ריקה — העלה תמונה ראשונה</p>
+            <p className="text-gray-400 text-sm">הגלריה ריקה — העלה תמונה או סרטון ראשון</p>
           </div>
         )}
       </div>

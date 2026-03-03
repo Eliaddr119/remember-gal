@@ -4,6 +4,7 @@ import { useState } from "react";
 import FormShell from "./FormShell";
 import Field, { inputCls, textareaCls } from "./Field";
 import ImageUpload from "./ImageUpload";
+import VideoUpload from "./VideoUpload";
 
 interface PostRow {
   title?: string | null;
@@ -17,14 +18,18 @@ interface Props {
   postId: string;
 }
 
+function isVideoUrl(url: string) {
+  return /\.(mp4|webm|mov|avi|mkv)(\?.*)?$/i.test(url);
+}
+
 export default function PostForm({ post, isNew, postId }: Props) {
   const [title, setTitle] = useState(post?.title ?? "");
-  const [imageUrl, setImageUrl] = useState(post?.image_url ?? "");
+  const [mediaUrl, setMediaUrl] = useState(post?.image_url ?? "");
   const [content, setContent] = useState(post?.content ?? "");
   const [uploading, setUploading] = useState(false);
 
   async function handleSave() {
-    const payload = { title, image_url: imageUrl || null, content };
+    const payload = { title, image_url: mediaUrl || null, content };
     const url = isNew ? "/api/posts" : `/api/posts/${postId}`;
     const res = await fetch(url, {
       method: isNew ? "POST" : "PUT",
@@ -38,6 +43,9 @@ export default function PostForm({ post, isNew, postId }: Props) {
     return {};
   }
 
+  const hasVideo = mediaUrl && isVideoUrl(mediaUrl);
+  const hasImage = mediaUrl && !hasVideo;
+
   return (
     <FormShell backHref="/admin/posts" onSubmit={handleSave} disabled={uploading}>
       <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
@@ -45,27 +53,49 @@ export default function PostForm({ post, isNew, postId }: Props) {
           <input value={title} onChange={(e) => setTitle(e.target.value)} className={inputCls} />
         </Field>
 
-        <Field label="תמונה">
+        <Field label="מדיה (תמונה או סרטון)">
           <div className="space-y-3">
-            {imageUrl && (
+            {hasImage && (
               <div className="relative inline-block">
-                <img src={imageUrl} alt="" className="h-40 rounded-lg object-cover border border-gray-200" />
+                <img src={mediaUrl} alt="" className="h-40 rounded-lg object-cover border border-gray-200" />
                 <button
                   type="button"
-                  onClick={() => setImageUrl("")}
+                  onClick={() => setMediaUrl("")}
                   className="absolute top-1 left-1 bg-black/60 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center hover:bg-black"
                 >
                   ×
                 </button>
               </div>
             )}
-            <ImageUpload
-              onUpload={(url) => setImageUrl(url)}
-              onUploadingChange={setUploading}
-              bucket="images"
-              folder="posts"
-              label="העלאת תמונה"
-            />
+            {hasVideo && (
+              <div className="relative group border border-gray-200 rounded-lg overflow-hidden bg-black">
+                <video src={mediaUrl} controls preload="metadata" className="w-full max-h-64 object-contain" />
+                <button
+                  type="button"
+                  onClick={() => setMediaUrl("")}
+                  className="absolute top-2 left-2 bg-black/60 text-white rounded-full w-7 h-7 text-sm flex items-center justify-center hover:bg-red-500 transition-colors"
+                >
+                  ×
+                </button>
+              </div>
+            )}
+            {!mediaUrl && (
+              <div className="grid grid-cols-2 gap-3">
+                <ImageUpload
+                  onUpload={setMediaUrl}
+                  onUploadingChange={setUploading}
+                  bucket="images"
+                  folder="posts"
+                  label="העלאת תמונה"
+                />
+                <VideoUpload
+                  onUpload={setMediaUrl}
+                  onUploadingChange={setUploading}
+                  bucket="images"
+                  folder="posts"
+                />
+              </div>
+            )}
           </div>
         </Field>
 

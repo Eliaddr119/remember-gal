@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import FormShell from "./FormShell";
 import Field, { inputCls, textareaCls } from "./Field";
 import ImageUpload from "./ImageUpload";
+import VideoUpload from "./VideoUpload";
 
 interface EventRow {
   title?: string | null;
@@ -36,31 +37,6 @@ export default function EventForm({ event, isNew, eventId }: Props) {
   );
   const [uploading, setUploading] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
-  const [videoError, setVideoError] = useState("");
-  const videoInputRef = useRef<HTMLInputElement>(null);
-
-  async function handleVideoFile(file: File) {
-    if (!file.type.startsWith("video/")) {
-      setVideoError("נא לבחור קובץ וידאו בלבד");
-      return;
-    }
-    setUploadingVideo(true);
-    setVideoError("");
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("bucket", "images");
-    formData.append("folder", "events");
-    try {
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "שגיאה בהעלאה");
-      setVideos((prev) => [...prev, data.url]);
-    } catch (e) {
-      setVideoError(e instanceof Error ? e.message : "שגיאה בהעלאה");
-    } finally {
-      setUploadingVideo(false);
-    }
-  }
 
   async function handleSave() {
     const payload = {
@@ -173,34 +149,12 @@ export default function EventForm({ event, isNew, eventId }: Props) {
                 ))}
               </div>
             )}
-            <div
-              onClick={() => videoInputRef.current?.click()}
-              className="flex flex-col items-center justify-center gap-1 border-2 border-dashed rounded-lg px-4 py-3 cursor-pointer transition-colors text-sm border-gray-300 hover:border-gray-400 bg-gray-50"
-            >
-              {uploadingVideo ? (
-                <span className="text-gray-500">מעלה...</span>
-              ) : (
-                <>
-                  <span className="text-gray-400 text-xl">🎬</span>
-                  <span className="text-gray-600 font-medium">הוסף סרטון</span>
-                  <span className="text-gray-400 text-xs">MP4, MOV, WEBM</span>
-                </>
-              )}
-            </div>
-            <input
-              ref={videoInputRef}
-              type="file"
-              accept="video/*"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) handleVideoFile(file);
-                e.target.value = "";
-              }}
+            <VideoUpload
+              onUpload={(url) => setVideos((prev) => [...prev, url])}
+              onUploadingChange={setUploadingVideo}
+              bucket="images"
+              folder="events"
             />
-            {videoError && (
-              <p className="text-red-500 text-xs mt-1 p-2 bg-red-50 rounded">{videoError}</p>
-            )}
           </div>
         </Field>
       </div>
