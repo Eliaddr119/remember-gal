@@ -59,7 +59,7 @@ export async function GET(
     const body = Buffer.concat(chunks);
 
     return new NextResponse(body, { status: 200, headers });
-  } catch (e) {
+  } catch {
     return new NextResponse("Not found", { status: 404 });
   }
 }
