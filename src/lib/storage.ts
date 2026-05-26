@@ -22,12 +22,12 @@ export function getPublicUrl(key: string): string {
 }
 
 export async function uploadBuffer(key: string, body: Buffer, contentType: string): Promise<string> {
-  await s3.send(new PutObjectCommand({ Bucket: BUCKET, Key: key, Body: body, ContentType: contentType }));
+  await s3.send(new PutObjectCommand({ Bucket: BUCKET, Key: key, Body: body, ContentType: contentType, ACL: "public-read" }));
   return getPublicUrl(key);
 }
 
 export async function createPresignedUploadUrl(key: string, contentType: string): Promise<{ signedUrl: string; publicUrl: string }> {
-  const command = new PutObjectCommand({ Bucket: BUCKET, Key: key, ContentType: contentType });
+  const command = new PutObjectCommand({ Bucket: BUCKET, Key: key, ContentType: contentType, ACL: "public-read" });
   const signedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
   return { signedUrl, publicUrl: getPublicUrl(key) };
 }
