@@ -13,16 +13,16 @@ export function Header() {
           {/* Logo on the right (RTL) */}
           <Link href="/" className="flex items-center gap-3 group" aria-label="לזכותה של גל חפץ ז״ל - חזרה לדף הבית">
             <Logo size="md" className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 transition-transform group-hover:scale-105" />
-            <span className="text-base md:text-lg lg:text-xl font-bold text-earth-800 group-hover:text-earth-600 transition-colors" aria-hidden="true">
+            <span className="whitespace-nowrap text-base hidden xl:inline xl:text-lg 2xl:text-xl font-bold text-earth-800 group-hover:text-earth-600 transition-colors" aria-hidden="true">
               לזכותה של גל חפץ ז״ל
             </span>
           </Link>
 
           {/* Desktop Navigation on the left (RTL) */}
-          <Navigation className="hidden md:flex" />
+          <Navigation className="hidden lg:flex" />
 
-          {/* Mobile Menu Button - shows on screens smaller than md (768px) */}
-          <MobileMenu className="md:hidden" />
+          {/* Mobile Menu Button - shows on screens smaller than lg (1024px) */}
+          <MobileMenu className="lg:hidden" />
         </div>
       </div>
     </header>

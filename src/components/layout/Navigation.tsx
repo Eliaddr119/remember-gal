@@ -14,7 +14,7 @@ export function Navigation({ className = "", onItemClick }: NavigationProps) {
 
   return (
     <nav className={className} aria-label="ניווט ראשי">
-      <ul className="flex items-center gap-1">
+      <ul className="flex items-center gap-0.5 xl:gap-1">
         {navigationItems.map((item) => {
           const isActive = pathname === item.href;
           return (
@@ -22,7 +22,7 @@ export function Navigation({ className = "", onItemClick }: NavigationProps) {
               <Link
                 href={item.href}
                 onClick={onItemClick}
-                className={`text-base md:text-lg px-4 py-2 rounded-lg transition-all duration-200 ${
+                className={`whitespace-nowrap text-sm xl:text-base px-2 xl:px-4 py-2 rounded-lg transition-all duration-200 ${
                   isActive
                     ? "bg-earth-700 text-ivory-50 shadow-warm"
                     : "text-earth-700 hover:bg-sunflower-300/50 hover:text-earth-800"
