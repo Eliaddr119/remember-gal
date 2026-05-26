@@ -1,19 +1,24 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
+const endpoint = process.env.AWS_ENDPOINT_URL_S3!;
+
 const s3 = new S3Client({
   region: process.env.AWS_REGION ?? "auto",
-  endpoint: process.env.AWS_ENDPOINT_URL_S3,
+  endpoint,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
   },
+  forcePathStyle: false,
 });
 
 export const BUCKET = process.env.BUCKET_NAME!;
 
 export function getPublicUrl(key: string): string {
-  return `https://${BUCKET}.fly.storage.tigris.dev/${key}`;
+  // Derives public URL from endpoint: https://t3.storageapi.dev → https://<bucket>.t3.storageapi.dev/<key>
+  const host = new URL(endpoint).host;
+  return `https://${BUCKET}.${host}/${key}`;
 }
 
 export async function uploadBuffer(key: string, body: Buffer, contentType: string): Promise<string> {

@@ -9,7 +9,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "*.fly.storage.tigris.dev",
+        hostname: "*.t3.storageapi.dev",
         pathname: "/**",
       },
     ],
