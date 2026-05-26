@@ -16,7 +16,7 @@ export default async function StoriesPage() {
 
   return (
     <div className="min-h-screen bg-warm-gradient relative">
-      <Script src="https://tally.so/widgets/embed.js" strategy="lazyOnload" />
+      <Script src="https://tally.so/widgets/embed.js" strategy="afterInteractive" />
       <SunflowerBackground />
 
       <div className="container mx-auto px-4 py-10 relative z-10">

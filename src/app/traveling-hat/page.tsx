@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Script from "next/script";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import TravelingHatMap from "@/components/map/TravelingHatMap";
 import { getPins } from "@/lib/traveling-hat";
@@ -13,6 +14,7 @@ export default async function TravelingHatPage() {
 
   return (
     <div className="min-h-screen bg-warm-gradient relative">
+      <Script src="https://tally.so/widgets/embed.js" strategy="afterInteractive" />
       <SunflowerBackground />
 
       <div className="container mx-auto px-3 sm:px-4 py-8 sm:py-12 relative z-10">
