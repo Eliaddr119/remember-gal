@@ -5,15 +5,6 @@ const nextConfig = {
       bodySizeLimit: "150mb",
     },
   },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "*.t3.storageapi.dev",
-        pathname: "/**",
-      },
-    ],
-  },
 };
 
 export default nextConfig;

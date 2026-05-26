@@ -16,9 +16,7 @@ const s3 = new S3Client({
 export const BUCKET = process.env.BUCKET_NAME!;
 
 export function getPublicUrl(key: string): string {
-  // Derives public URL from endpoint: https://t3.storageapi.dev → https://<bucket>.t3.storageapi.dev/<key>
-  const host = new URL(endpoint).host;
-  return `https://${BUCKET}.${host}/${key}`;
+  return `/api/media/${key}`;
 }
 
 export async function uploadBuffer(key: string, body: Buffer, contentType: string): Promise<string> {
