@@ -1,4 +1,4 @@
-import { apiFetch } from "@/lib/api-fetch";
+import sql from "@/lib/db";
 
 export interface Post {
   id: number;
@@ -20,9 +20,8 @@ function isVideoUrl(url: string) {
 }
 
 export async function getPosts(): Promise<Post[]> {
-  const data = await apiFetch<PostRow[]>("/api/posts", { revalidate: 300 });
-
-  return (data || []).map((row) => {
+  const rows = await sql`SELECT * FROM posts ORDER BY id ASC`;
+  return rows.map((row) => {
     const imageUrl = row.image_url || "";
     return {
       id: row.id,

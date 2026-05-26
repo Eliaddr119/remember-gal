@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Metadata } from "next";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import TravelingHatMap from "@/components/map/TravelingHatMap";

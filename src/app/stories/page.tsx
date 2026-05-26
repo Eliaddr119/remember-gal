@@ -4,7 +4,7 @@ import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import { StoryCard } from "@/components/ui/StoryCard";
 import { getStories } from "@/lib/stories";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "חברים ומשפחה מספרים | לזכותה של גל חפץ ז״ל",

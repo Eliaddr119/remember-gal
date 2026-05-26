@@ -1,4 +1,4 @@
-import { apiFetch } from "@/lib/api-fetch";
+import sql from "@/lib/db";
 import { remark } from "remark";
 import html from "remark-html";
 
@@ -20,10 +20,9 @@ export interface StoryRow {
 }
 
 export async function getStories(): Promise<Story[]> {
-  const data = await apiFetch<StoryRow[]>("/api/stories", { revalidate: 300 });
-
+  const rows = await sql`SELECT * FROM stories ORDER BY id ASC`;
   return Promise.all(
-    (data || []).map(async (row) => {
+    rows.map(async (row) => {
       let contentHtml = row.content_html || "";
       if (!contentHtml && row.content_markdown) {
         const processed = await remark().use(html).process(row.content_markdown);

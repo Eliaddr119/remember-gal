@@ -1,4 +1,4 @@
-import { apiFetch } from "@/lib/api-fetch";
+import sql from "@/lib/db";
 
 export interface Event {
   id: string;
@@ -23,9 +23,8 @@ export interface EventRow {
 }
 
 export async function getEvents(): Promise<Event[]> {
-  const data = await apiFetch<EventRow[]>("/api/events", { revalidate: 300 });
-
-  return (data || []).map((row) => ({
+  const rows = await sql`SELECT * FROM events ORDER BY date DESC`;
+  return rows.map((row) => ({
     id: row.id,
     title: row.title,
     date: row.date || "",

@@ -1,4 +1,4 @@
-import { apiFetch } from "@/lib/api-fetch";
+import sql from "@/lib/db";
 
 export interface GalleryItem {
   id: number;
@@ -9,7 +9,7 @@ export interface GalleryItem {
   type: "image" | "video";
 }
 
-interface GalleryRow {
+export interface GalleryRow {
   id: number;
   image_url: string;
   width: number | null;
@@ -21,9 +21,8 @@ function isVideoUrl(url: string) {
 }
 
 export async function getGalleryItems(): Promise<GalleryItem[]> {
-  const data = await apiFetch<GalleryRow[]>("/api/gallery", { revalidate: 300 });
-
-  return (data || []).map((row) => {
+  const rows = await sql`SELECT * FROM gallery ORDER BY id ASC`;
+  return rows.map((row) => {
     const type = isVideoUrl(row.image_url) ? "video" : "image";
     return {
       id: row.id,

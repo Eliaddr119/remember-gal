@@ -1,31 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { supabaseServer } from "@/lib/supabase/server";
+import sql from "@/lib/db";
 import { requireAuth } from "@/lib/auth-helpers";
 
 export async function GET() {
-  const { data, error } = await supabaseServer
-    .from("traveling_hat")
-    .select("*")
-    .order("created_at", { ascending: true });
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json(data);
+  try {
+    const data = await sql`SELECT * FROM traveling_hat ORDER BY created_at ASC`;
+    return NextResponse.json(data);
+  } catch (e) {
+    return NextResponse.json({ error: e instanceof Error ? e.message : "Database error" }, { status: 500 });
+  }
 }
 
 export async function POST(req: NextRequest) {
   const unauth = await requireAuth(req);
   if (unauth) return unauth;
-
-  const body = await req.json();
-  const { data, error } = await supabaseServer
-    .from("traveling_hat")
-    .insert(body)
-    .select()
-    .single();
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  revalidatePath("/admin", "layout");
-  revalidatePath("/traveling-hat");
-  return NextResponse.json(data, { status: 201 });
+  try {
+    const body = await req.json();
+    const [data] = await sql`INSERT INTO traveling_hat ${sql(body)} RETURNING *`;
+    revalidatePath("/admin", "layout");
+    revalidatePath("/traveling-hat");
+    return NextResponse.json(data, { status: 201 });
+  } catch (e) {
+    return NextResponse.json({ error: e instanceof Error ? e.message : "Database error" }, { status: 500 });
+  }
 }

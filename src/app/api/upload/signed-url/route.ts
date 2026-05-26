@@ -1,22 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseServer } from "@/lib/supabase/server";
+import { createPresignedUploadUrl } from "@/lib/storage";
 import { requireAuth } from "@/lib/auth-helpers";
 
 export async function POST(req: NextRequest) {
   const unauth = await requireAuth(req);
   if (unauth) return unauth;
 
-  const { bucket, folder, filename } = await req.json();
+  const { folder, filename } = await req.json();
   const ext = (filename as string)?.split(".").pop() ?? "mp4";
-  const path = `${folder ? folder + "/" : ""}${Date.now()}.${ext}`;
+  const key = `${folder ? folder + "/" : ""}${Date.now()}.${ext}`;
 
-  const { data, error } = await supabaseServer.storage
-    .from(bucket)
-    .createSignedUploadUrl(path);
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-
-  const { data: urlData } = supabaseServer.storage.from(bucket).getPublicUrl(path);
-
-  return NextResponse.json({ signedUrl: data.signedUrl, publicUrl: urlData.publicUrl });
+  try {
+    const { signedUrl, publicUrl } = await createPresignedUploadUrl(key, "video/*");
+    return NextResponse.json({ signedUrl, publicUrl });
+  } catch (e) {
+    return NextResponse.json({ error: e instanceof Error ? e.message : "שגיאה" }, { status: 500 });
+  }
 }

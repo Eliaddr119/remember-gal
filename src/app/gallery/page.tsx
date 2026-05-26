@@ -3,7 +3,7 @@ import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import GalleryGrid from "@/components/gallery/GalleryGrid";
 import { getGalleryItems } from "@/lib/gallery";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "גלריה | לזכות גל",

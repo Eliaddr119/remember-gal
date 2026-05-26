@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
-import { supabaseServer } from "@/lib/supabase/server";
+import { uploadBuffer } from "@/lib/storage";
 import { requireAuth } from "@/lib/auth-helpers";
 
-const ALLOWED_BUCKETS = new Set(["images"]);
 const MAX_IMAGE_SIZE = 20 * 1024 * 1024;  // 20 MB
 const MAX_VIDEO_SIZE = 150 * 1024 * 1024; // 150 MB
 
@@ -16,14 +15,9 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
-    const bucket = (formData.get("bucket") as string) || "images";
     const folder = (formData.get("folder") as string) || "";
 
     if (!file) return NextResponse.json({ error: "No file provided" }, { status: 400 });
-
-    if (!ALLOWED_BUCKETS.has(bucket)) {
-      return NextResponse.json({ error: "Invalid bucket" }, { status: 400 });
-    }
 
     const isImage = file.type.startsWith("image/");
     const isVideo = file.type.startsWith("video/");
@@ -34,41 +28,31 @@ export async function POST(req: NextRequest) {
 
     const sizeLimit = isImage ? MAX_IMAGE_SIZE : MAX_VIDEO_SIZE;
     if (file.size > sizeLimit) {
-      return NextResponse.json(
-        { error: `File exceeds ${isImage ? "20" : "150"} MB limit` },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: `File exceeds ${isImage ? "20" : "150"} MB limit` }, { status: 400 });
     }
 
     const raw = Buffer.from(await file.arrayBuffer());
-    let uploadBuffer: Buffer;
+    let buffer: Buffer;
     let contentType: string;
-    let fileName: string;
+    let key: string;
 
     if (isImage) {
-      uploadBuffer = await sharp(raw)
+      buffer = await sharp(raw)
         .resize({ width: 2000, height: 2000, fit: "inside", withoutEnlargement: true })
         .webp({ quality: 82 })
         .toBuffer();
       contentType = "image/webp";
-      fileName = `${folder ? folder + "/" : ""}${Date.now()}.webp`;
+      key = `${folder ? folder + "/" : ""}${Date.now()}.webp`;
     } else {
-      uploadBuffer = raw;
+      buffer = raw;
       contentType = file.type;
       const ext = file.name.split(".").pop() ?? "mp4";
-      fileName = `${folder ? folder + "/" : ""}${Date.now()}.${ext}`;
+      key = `${folder ? folder + "/" : ""}${Date.now()}.${ext}`;
     }
 
-    const { error } = await supabaseServer.storage
-      .from(bucket)
-      .upload(fileName, uploadBuffer, { contentType, upsert: false });
-
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-
-    const { data: urlData } = supabaseServer.storage.from(bucket).getPublicUrl(fileName);
-    return NextResponse.json({ url: urlData.publicUrl }, { status: 201 });
+    const url = await uploadBuffer(key, buffer, contentType);
+    return NextResponse.json({ url }, { status: 201 });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "שגיאה בהעלאה";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: e instanceof Error ? e.message : "שגיאה בהעלאה" }, { status: 500 });
   }
 }
