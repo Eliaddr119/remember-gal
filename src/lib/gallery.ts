@@ -1,4 +1,5 @@
 import { apiFetch } from "@/lib/api-fetch";
+import { withCache } from "@/lib/cache";
 
 export interface GalleryItem {
   id: number;
@@ -21,17 +22,18 @@ function isVideoUrl(url: string) {
 }
 
 export async function getGalleryItems(): Promise<GalleryItem[]> {
-  const data = await apiFetch<GalleryRow[]>("/api/gallery", { revalidate: 300 });
-
-  return (data || []).map((row) => {
-    const type = isVideoUrl(row.image_url) ? "video" : "image";
-    return {
-      id: row.id,
-      src: row.image_url,
-      alt: type === "video" ? "סרטון של גל" : "תמונה של גל",
-      width: row.width || 800,
-      height: row.height || 800,
-      type,
-    };
+  return withCache("gallery", async () => {
+    const data = await apiFetch<GalleryRow[]>("/api/gallery", { revalidate: 300 });
+    return (data || []).map((row) => {
+      const type = isVideoUrl(row.image_url) ? "video" : "image";
+      return {
+        id: row.id,
+        src: row.image_url,
+        alt: type === "video" ? "סרטון של גל" : "תמונה של גל",
+        width: row.width || 800,
+        height: row.height || 800,
+        type,
+      };
+    });
   });
 }

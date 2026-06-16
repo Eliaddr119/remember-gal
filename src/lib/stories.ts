@@ -1,4 +1,5 @@
 import { apiFetch } from "@/lib/api-fetch";
+import { withCache } from "@/lib/cache";
 import { remark } from "remark";
 import html from "remark-html";
 
@@ -20,22 +21,23 @@ export interface StoryRow {
 }
 
 export async function getStories(): Promise<Story[]> {
-  const data = await apiFetch<StoryRow[]>("/api/stories", { revalidate: 300 });
-
-  return Promise.all(
-    (data || []).map(async (row) => {
-      let contentHtml = row.content_html || "";
-      if (!contentHtml && row.content_markdown) {
-        const processed = await remark().use(html).process(row.content_markdown);
-        contentHtml = processed.toString();
-      }
-      return {
-        id: row.id,
-        author: row.author,
-        relation: row.relation || "",
-        date: row.date || "",
-        contentHtml,
-      };
-    })
-  );
+  return withCache("stories", async () => {
+    const data = await apiFetch<StoryRow[]>("/api/stories", { revalidate: 300 });
+    return Promise.all(
+      (data || []).map(async (row) => {
+        let contentHtml = row.content_html || "";
+        if (!contentHtml && row.content_markdown) {
+          const processed = await remark().use(html).process(row.content_markdown);
+          contentHtml = processed.toString();
+        }
+        return {
+          id: row.id,
+          author: row.author,
+          relation: row.relation || "",
+          date: row.date || "",
+          contentHtml,
+        };
+      })
+    );
+  });
 }

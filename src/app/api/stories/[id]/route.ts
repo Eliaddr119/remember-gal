@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { supabaseServer } from "@/lib/supabase/server";
 import { requireAuth } from "@/lib/auth-helpers";
+import { invalidateCache } from "@/lib/cache";
 
 export async function GET(
   _req: NextRequest,
@@ -33,6 +34,7 @@ export async function PUT(
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  invalidateCache("stories");
   revalidatePath("/admin", "layout");
   revalidatePath("/stories");
   return NextResponse.json(data);
@@ -51,6 +53,7 @@ export async function DELETE(
     .eq("id", params.id);
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  invalidateCache("stories");
   revalidatePath("/admin", "layout");
   revalidatePath("/stories");
   return new NextResponse(null, { status: 204 });

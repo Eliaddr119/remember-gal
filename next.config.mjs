@@ -6,6 +6,8 @@ const nextConfig = {
     },
   },
   images: {
+    minimumCacheTTL: 2592000, // 30 days — images on this site never change
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",

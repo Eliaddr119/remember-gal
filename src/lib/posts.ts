@@ -1,4 +1,5 @@
 import { apiFetch } from "@/lib/api-fetch";
+import { withCache } from "@/lib/cache";
 
 export interface Post {
   id: number;
@@ -20,16 +21,17 @@ function isVideoUrl(url: string) {
 }
 
 export async function getPosts(): Promise<Post[]> {
-  const data = await apiFetch<PostRow[]>("/api/posts", { revalidate: 300 });
-
-  return (data || []).map((row) => {
-    const imageUrl = row.image_url || "";
-    return {
-      id: row.id,
-      imageUrl,
-      title: row.title || "",
-      caption: row.content || "",
-      mediaType: isVideoUrl(imageUrl) ? "video" : "image",
-    };
+  return withCache("posts", async () => {
+    const data = await apiFetch<PostRow[]>("/api/posts", { revalidate: 300 });
+    return (data || []).map((row) => {
+      const imageUrl = row.image_url || "";
+      return {
+        id: row.id,
+        imageUrl,
+        title: row.title || "",
+        caption: row.content || "",
+        mediaType: isVideoUrl(imageUrl) ? "video" : "image",
+      };
+    });
   });
 }

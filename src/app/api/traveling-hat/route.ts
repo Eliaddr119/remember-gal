@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { supabaseServer } from "@/lib/supabase/server";
 import { requireAuth } from "@/lib/auth-helpers";
+import { invalidateCache } from "@/lib/cache";
 
 export async function GET() {
   const { data, error } = await supabaseServer
@@ -10,7 +11,9 @@ export async function GET() {
     .order("created_at", { ascending: true });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json(data);
+  const res = NextResponse.json(data);
+  res.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
+  return res;
 }
 
 export async function POST(req: NextRequest) {
@@ -25,6 +28,7 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  invalidateCache("traveling-hat");
   revalidatePath("/admin", "layout");
   revalidatePath("/traveling-hat");
   return NextResponse.json(data, { status: 201 });
