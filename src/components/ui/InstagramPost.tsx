@@ -3,12 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Post } from "@/lib/posts";
+import { getSiteConfig } from "@/lib/site-config";
 
 interface InstagramPostProps {
   post: Post;
 }
 
-export function InstagramPost({ post }: InstagramPostProps) {
+export async function InstagramPost({ post }: InstagramPostProps) {
+  const { instagram_profile_photo_url } = await getSiteConfig();
   const [expanded, setExpanded] = useState(false);
   const hasCaption = post.title || post.caption;
   const isLongCaption = post.caption.length > 150;
@@ -18,7 +20,7 @@ export function InstagramPost({ post }: InstagramPostProps) {
       {/* Header */}
       <div dir="ltr" className="flex items-center gap-3 px-4 py-3">
         <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-sunflower-400 via-sunflower-500 to-earth-500 p-[2px]">
-          <Image src="/images/posts/instagram-profile.jpg" alt="גל" width={36} height={36} className="w-full h-full rounded-full object-cover" />
+          <Image src={ instagram_profile_photo_url } alt="גל" width={36} height={36} className="w-full h-full rounded-full object-cover" />
         </div>
         <span className="font-bold text-sm text-earth-800">gal_hefez</span>
       </div>

@@ -3,6 +3,7 @@ import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import { InstagramPost } from "@/components/ui/InstagramPost";
 import { getPosts } from "@/lib/posts";
 
+
 export const revalidate = 300;
 
 export const metadata: Metadata = {
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 
 export default async function PostsPage() {
   const posts = await getPosts();
+  
 
   return (
     <div className="min-h-screen bg-warm-gradient relative">

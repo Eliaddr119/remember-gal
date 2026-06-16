@@ -3,6 +3,7 @@ import { supabaseServer } from "@/lib/supabase/server";
 export interface SiteConfig {
   main_photo_url: string;
   about_photo_url: string;
+  instagram_profile_photo_url: string;
 }
 
 export async function getSiteConfig(): Promise<SiteConfig> {
@@ -18,5 +19,7 @@ export async function getSiteConfig(): Promise<SiteConfig> {
   return {
     main_photo_url: config.main_photo_url || "",
     about_photo_url: config.about_photo_url || "",
+    instagram_profile_photo_url: config.instagram_profile_photo || "",
+
   };
 }
