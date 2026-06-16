@@ -190,11 +190,20 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
             />
           ) : (
             <>
-              {/* Spinner shown until image is ready */}
+              {/* Blurry CDN image shown instantly while optimized version loads */}
               {!imageLoaded && (
-                <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
-                  <div className="w-9 h-9 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                </div>
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={current.src}
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-contain scale-110 blur-xl opacity-70 pointer-events-none"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+                    <div className="w-9 h-9 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                  </div>
+                </>
               )}
               <Image
                 src={current.src}

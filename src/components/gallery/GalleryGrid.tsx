@@ -12,6 +12,7 @@ interface GalleryGridProps {
 
 export default function GalleryGrid({ items }: GalleryGridProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [preloadSrc, setPreloadSrc] = useState<string | null>(null);
 
   const lightboxImages = items.map((item) => ({
     src: item.src,
@@ -37,6 +38,8 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
               role="button"
               aria-label={`${item.alt} - לחצו לצפייה`}
               onClick={() => setSelectedIndex(index)}
+              onMouseEnter={() => item.type !== "video" && setPreloadSrc(item.src)}
+              onMouseLeave={() => setPreloadSrc(null)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
@@ -79,6 +82,13 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
           </li>
         ))}
       </ul>
+
+      {/* Preload full-size image on hover so it's ready before click */}
+      {preloadSrc && (
+        <div aria-hidden="true" style={{ position: "fixed", width: 1, height: 1, overflow: "hidden", opacity: 0, pointerEvents: "none", top: 0, left: 0 }}>
+          <Image src={preloadSrc} alt="" fill sizes="92vw" priority />
+        </div>
+      )}
 
       {selectedIndex !== null && (
         <Lightbox

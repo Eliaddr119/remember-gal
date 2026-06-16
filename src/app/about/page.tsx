@@ -1,15 +1,17 @@
 import { Metadata } from "next";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import Image from "next/image";
-import { getSiteConfig } from "@/lib/site-config";
+import { WARM_BLUR_PLACEHOLDER } from "@/lib/image-placeholder";
+
+const aboutPhotoUrl = process.env.NEXT_PUBLIC_ABOUT_PHOTO_URL ?? "";
 
 export const metadata: Metadata = {
   title: "קצת על גל | לזכותה של גל חפץ ז״ל",
   description: "הכירו את גל",
 };
 
-export default async function AboutPage() {
-  const { about_photo_url } = await getSiteConfig();
+export default function AboutPage() {
+  const about_photo_url = aboutPhotoUrl;
   return (
     <div className="min-h-screen bg-warm-gradient relative">
       <SunflowerBackground />
@@ -39,6 +41,8 @@ export default async function AboutPage() {
                   height={600}
                   className="w-full h-auto"
                   priority
+                  placeholder="blur"
+                  blurDataURL={WARM_BLUR_PLACEHOLDER}
                 />
               </div>
             </figure>

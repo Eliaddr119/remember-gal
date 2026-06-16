@@ -17,6 +17,7 @@ function isVideo(url: string): boolean {
 
 export function EventPhotoGrid({ photos, videos = [], eventTitle }: EventPhotoGridProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [preloadSrc, setPreloadSrc] = useState<string | null>(null);
 
   if (photos.length === 0 && videos.length === 0) return null;
 
@@ -39,6 +40,8 @@ export function EventPhotoGrid({ photos, videos = [], eventTitle }: EventPhotoGr
             type="button"
             className="relative aspect-square rounded-md overflow-hidden cursor-pointer focus:outline-none focus:ring-2 focus:ring-sunflower-400 focus:ring-offset-2"
             onClick={() => setSelectedIndex(i)}
+            onMouseEnter={() => !isVideo(media) && setPreloadSrc(media)}
+            onMouseLeave={() => setPreloadSrc(null)}
             aria-label={
               isVideo(media)
                 ? `${eventTitle} - סרטון ${i - photos.length + 1}, לחצו לצפייה`
@@ -74,6 +77,12 @@ export function EventPhotoGrid({ photos, videos = [], eventTitle }: EventPhotoGr
           </button>
         ))}
       </div>
+
+      {preloadSrc && (
+        <div aria-hidden="true" style={{ position: "fixed", width: 1, height: 1, overflow: "hidden", opacity: 0, pointerEvents: "none", top: 0, left: 0 }}>
+          <Image src={preloadSrc} alt="" fill sizes="92vw" priority />
+        </div>
+      )}
 
       {selectedIndex !== null && (
         <Lightbox

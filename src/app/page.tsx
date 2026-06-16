@@ -2,10 +2,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Logo, Signature } from "@/components/ui/Logo";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
-import { getSiteConfig } from "@/lib/site-config";
+import { WARM_BLUR_PLACEHOLDER } from "@/lib/image-placeholder";
 
-export default async function Home() {
-  const { main_photo_url } = await getSiteConfig();
+const mainPhotoUrl = process.env.NEXT_PUBLIC_MAIN_PHOTO_URL ?? "";
+
+export default function Home() {
+  const main_photo_url = mainPhotoUrl;
   return (
     <div className="min-h-screen bg-warm-gradient relative overflow-hidden">
       <SunflowerBackground />
@@ -47,6 +49,8 @@ export default async function Home() {
                   fill
                   className="object-cover"
                   priority
+                  placeholder="blur"
+                  blurDataURL={WARM_BLUR_PLACEHOLDER}
                 />
               </div>
             </figure>
