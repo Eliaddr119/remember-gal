@@ -2,8 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { Logo, Signature } from "@/components/ui/Logo";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
+import { getSiteConfig } from "@/lib/site-config";
 
-export default function Home() {
+export default async function Home() {
+  const { main_photo_url } = await getSiteConfig();
   return (
     <div className="min-h-screen bg-warm-gradient relative overflow-hidden">
       <SunflowerBackground />
@@ -36,17 +38,19 @@ export default function Home() {
           </div>
 
           {/* Hero Image */}
-          <figure className="relative mx-auto max-w-md mb-8" role="img" aria-label="תמונה של גל">
-            <div className="aspect-[4/3] rounded-2xl shadow-warm-lg border-4 border-sunflower-300/50 overflow-hidden relative">
-              <Image
-                src="/images/main_page_photo.PNG"
-                alt="תמונה של גל"
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-          </figure>
+          {main_photo_url && (
+            <figure className="relative mx-auto max-w-md mb-8" role="img" aria-label="תמונה של גל">
+              <div className="aspect-[4/3] rounded-2xl shadow-warm-lg border-4 border-sunflower-300/50 overflow-hidden relative">
+                <Image
+                  src={main_photo_url}
+                  alt="תמונה של גל"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </figure>
+          )}
 
           {/* Subtitle */}
           <p className="text-base md:text-lg lg:text-xl text-earth-600 mb-8 max-w-lg mx-auto leading-relaxed">

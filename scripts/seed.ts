@@ -221,6 +221,38 @@ async function seedTravelingHat() {
   }
 }
 
+// ─── Site Config ──────────────────────────────────────────────────────────────
+
+async function seedSiteConfig() {
+  console.log("Seeding site config...");
+
+  const assets: { key: string; localPath: string; storagePath: string }[] = [
+    {
+      key: "main_photo_url",
+      localPath: path.join(ROOT, "public/images/main_page_photo.PNG"),
+      storagePath: "site/main_page_photo.PNG",
+    },
+    {
+      key: "about_photo_url",
+      localPath: path.join(ROOT, "public/images/about-page-photo.jpg"),
+      storagePath: "site/about-page-photo.jpg",
+    },
+  ];
+
+  for (const asset of assets) {
+    if (!fs.existsSync(asset.localPath)) {
+      console.log(`  ⚠ skipping ${asset.key}: file not found`);
+      continue;
+    }
+    const url = await uploadFile(asset.localPath, "images", asset.storagePath);
+    const { error } = await supabase
+      .from("site_config")
+      .upsert({ key: asset.key, value: url });
+    if (error) console.error(`  ✗ ${asset.key}: ${error.message}`);
+    else console.log(`  ✓ ${asset.key}`);
+  }
+}
+
 // ─── Gallery ──────────────────────────────────────────────────────────────────
 
 async function seedGallery() {
@@ -256,6 +288,7 @@ async function seedGallery() {
 
 async function main() {
   console.log("Starting seed...\n");
+  await seedSiteConfig();
   await seedStories();
   await seedPosts();
   await seedEvents();

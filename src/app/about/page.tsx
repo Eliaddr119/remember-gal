@@ -1,13 +1,15 @@
 import { Metadata } from "next";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import Image from "next/image";
+import { getSiteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "קצת על גל | לזכותה של גל חפץ ז״ל",
   description: "הכירו את גל",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { about_photo_url } = await getSiteConfig();
   return (
     <div className="min-h-screen bg-warm-gradient relative">
       <SunflowerBackground />
@@ -26,19 +28,21 @@ export default function AboutPage() {
         </div>
 
         <div className="max-w-3xl mx-auto">
-          {/* Featured Image Placeholder */}
-          <figure className="relative mb-8 max-w-md mx-auto" aria-label="תמונה של גל">
-            <div className="rounded-2xl overflow-hidden shadow-warm">
-              <Image
-                src="/images/about-page-photo.jpg"
-                alt="תמונה של גל"
-                width={800}
-                height={600}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          </figure>
+          {/* Featured Image */}
+          {about_photo_url && (
+            <figure className="relative mb-8 max-w-md mx-auto" aria-label="תמונה של גל">
+              <div className="rounded-2xl overflow-hidden shadow-warm">
+                <Image
+                  src={about_photo_url}
+                  alt="תמונה של גל"
+                  width={800}
+                  height={600}
+                  className="w-full h-auto"
+                  priority
+                />
+              </div>
+            </figure>
+          )}
 
           {/* Biography Card */}
           <article

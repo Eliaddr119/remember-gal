@@ -34,3 +34,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+plan.txt
+
+# Personal content — seeded to DB via scripts/seed.ts, not committed to repo
+/content/
+/public/images/gallery/
+/public/images/events/
+/public/images/posts/
+/public/images/traveling-hat/
+/public/images/about-page-photo.jpg
+/public/images/main_page_photo.PNG
+/public/videos/
