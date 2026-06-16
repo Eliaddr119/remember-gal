@@ -19,7 +19,7 @@ export async function getSiteConfig(): Promise<SiteConfig> {
   return {
     main_photo_url: config.main_photo_url || "",
     about_photo_url: config.about_photo_url || "",
-    instagram_profile_photo_url: config.instagram_profile_photo || "",
+    instagram_profile_photo_url: config.instagram_profile_photo_url || "",
 
   };
 }

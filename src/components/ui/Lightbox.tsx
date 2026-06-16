@@ -20,6 +20,7 @@ interface LightboxProps {
 export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [mounted, setMounted] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const hasMultiple = images.length > 1;
   const touchStartX = useRef<number | null>(null);
   const scrollY = useRef(0);
@@ -31,6 +32,11 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
   const goPrev = useCallback(() => {
     setCurrentIndex((i) => (i - 1 + images.length) % images.length);
   }, [images.length]);
+
+  // Reset loading state on every image change
+  useEffect(() => {
+    setImageLoaded(false);
+  }, [currentIndex]);
 
   // SSR guard for portal
   useEffect(() => {
@@ -49,7 +55,6 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
       }
     };
 
-    // iOS-safe scroll lock: fix the body in place
     scrollY.current = window.scrollY;
     document.body.style.position = "fixed";
     document.body.style.top = `-${scrollY.current}px`;
@@ -70,7 +75,7 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
     };
   }, [onClose, goNext, goPrev, hasMultiple]);
 
-  // Swipe handlers — only for the image area
+  // Swipe handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -78,12 +83,8 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (touchStartX.current === null || !hasMultiple) return;
     const diff = e.changedTouches[0].clientX - touchStartX.current;
-    const threshold = 50;
-    if (diff > threshold) {
-      goPrev();
-    } else if (diff < -threshold) {
-      goNext();
-    }
+    if (diff > 50) goPrev();
+    else if (diff < -50) goNext();
     touchStartX.current = null;
   };
 
@@ -106,10 +107,23 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
         onTouchMove={(e) => e.preventDefault()}
       >
         {/* Backdrop */}
-        <div
-          className="absolute inset-0 bg-earth-900/90"
-          aria-hidden="true"
-        />
+        <div className="absolute inset-0 bg-earth-900/90" aria-hidden="true" />
+
+        {/* Preload prev + next images while viewing current */}
+        {hasMultiple && [-1, 1].map((offset) => {
+          const idx = (currentIndex + offset + images.length) % images.length;
+          const img = images[idx];
+          if (img.type === "video") return null;
+          return (
+            <div
+              key={idx}
+              aria-hidden="true"
+              style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", opacity: 0, pointerEvents: "none" }}
+            >
+              <Image src={img.src} alt="" fill sizes="92vw" priority />
+            </div>
+          );
+        })}
 
         {/* Close button */}
         <button
@@ -117,20 +131,8 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
           className="absolute top-3 left-3 z-30 flex items-center justify-center w-11 h-11 rounded-full bg-white/20 text-white active:bg-white/40 transition-colors"
           aria-label="סגור תצוגה"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
@@ -149,20 +151,8 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
               className="absolute right-2 z-30 flex items-center justify-center w-12 h-12 rounded-full bg-white/20 text-white active:bg-white/40 transition-colors"
               aria-label="תמונה קודמת"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2.5}
-                stroke="currentColor"
-                className="w-7 h-7"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-7 h-7" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
               </svg>
             </button>
 
@@ -171,26 +161,14 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
               className="absolute left-2 z-30 flex items-center justify-center w-12 h-12 rounded-full bg-white/20 text-white active:bg-white/40 transition-colors"
               aria-label="תמונה הבאה"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2.5}
-                stroke="currentColor"
-                className="w-7 h-7"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 19.5L8.25 12l7.5-7.5"
-                />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-7 h-7" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
               </svg>
             </button>
           </>
         )}
 
-        {/* Media — tapping the area does NOT close the lightbox, swipe navigates */}
+        {/* Media */}
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0, scale: 0.95 }}
@@ -211,14 +189,23 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
               aria-label={current.alt}
             />
           ) : (
-            <Image
-              src={current.src}
-              alt={current.alt}
-              fill
-              className="object-contain"
-              sizes="92vw"
-              priority
-            />
+            <>
+              {/* Spinner shown until image is ready */}
+              {!imageLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+                  <div className="w-9 h-9 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                </div>
+              )}
+              <Image
+                src={current.src}
+                alt={current.alt}
+                fill
+                className={`object-contain transition-opacity duration-200 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+                sizes="92vw"
+                priority
+                onLoad={() => setImageLoaded(true)}
+              />
+            </>
           )}
         </motion.div>
       </motion.div>

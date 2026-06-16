@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Lightbox } from "@/components/ui/Lightbox";
 import type { GalleryItem } from "@/lib/gallery";
+import { WARM_BLUR_PLACEHOLDER } from "@/lib/image-placeholder";
 
 interface GalleryGridProps {
   items: GalleryItem[];
@@ -69,6 +70,9 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
                   height={item.height}
                   className="w-full h-auto group-hover:scale-[1.03] transition-transform duration-300"
                   sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                  placeholder="blur"
+                  blurDataURL={WARM_BLUR_PLACEHOLDER}
+                  priority={index < 6}
                 />
               )}
             </article>

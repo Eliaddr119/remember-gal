@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Lightbox } from "./Lightbox";
+import { WARM_BLUR_PLACEHOLDER } from "@/lib/image-placeholder";
 
 interface EventPhotoGridProps {
   photos: string[];
@@ -65,6 +66,9 @@ export function EventPhotoGrid({ photos, videos = [], eventTitle }: EventPhotoGr
                 fill
                 sizes="(max-width: 640px) 25vw, 180px"
                 className="object-cover"
+                placeholder="blur"
+                blurDataURL={WARM_BLUR_PLACEHOLDER}
+                priority={i < 4}
               />
             )}
           </button>

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import { InstagramPost } from "@/components/ui/InstagramPost";
 import { getPosts } from "@/lib/posts";
-
+import { getSiteConfig } from "@/lib/site-config";
 
 export const revalidate = 300;
 
@@ -12,7 +12,10 @@ export const metadata: Metadata = {
 };
 
 export default async function PostsPage() {
-  const posts = await getPosts();
+  const [posts, { instagram_profile_photo_url }] = await Promise.all([
+    getPosts(),
+    getSiteConfig(),
+  ]);
   
 
   return (
@@ -30,7 +33,7 @@ export default async function PostsPage() {
         {/* Instagram-style feed */}
         <div className="max-w-md sm:max-w-lg md:max-w-xl mx-auto space-y-6">
           {posts.map((post) => (
-            <InstagramPost key={post.id} post={post} />
+            <InstagramPost key={post.id} post={post} profilePhotoUrl={instagram_profile_photo_url} />
           ))}
         </div>
       </div>

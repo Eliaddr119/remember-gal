@@ -7,6 +7,7 @@ import "leaflet/dist/leaflet.css";
 import Image from "next/image";
 import type { MapPin } from "@/lib/traveling-hat";
 import { Lightbox } from "@/components/ui/Lightbox";
+import { WARM_BLUR_PLACEHOLDER } from "@/lib/image-placeholder";
 
 // Fix Leaflet default icon issue in Next.js
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -71,6 +72,9 @@ function FullscreenTrigger({ pin, imageIndex, onOpen, isMobile }: { pin: MapPin;
         fill
         className="object-cover"
         sizes={`${w}px`}
+        placeholder="blur"
+        blurDataURL={WARM_BLUR_PLACEHOLDER}
+        priority
       />
       <div className="absolute top-2 left-2 bg-black/50 rounded-full w-7 h-7 flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="white" className="w-3.5 h-3.5">
