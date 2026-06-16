@@ -1,5 +1,4 @@
 import { apiFetch } from "@/lib/api-fetch";
-import { withCache } from "@/lib/cache";
 
 export interface MapPin {
   id: string;
@@ -23,16 +22,14 @@ export interface PinRow {
 }
 
 export async function getPins(): Promise<MapPin[]> {
-  return withCache("traveling-hat", async () => {
-    const data = await apiFetch<PinRow[]>("/api/traveling-hat");
-    return (data || []).map((row) => ({
-      id: row.id,
-      title: row.title,
-      coordinates: [parseFloat(String(row.lat)), parseFloat(String(row.lng))] as [number, number],
-      imageUrls: Array.isArray(row.image_urls) ? (row.image_urls as string[]) : [],
-      photographer: row.photographer || "",
-      photographerRelation: row.photographer_relation || "",
-      description: row.description || "",
-    }));
-  });
+  const data = await apiFetch<PinRow[]>("/api/traveling-hat");
+  return (data || []).map((row) => ({
+    id: row.id,
+    title: row.title,
+    coordinates: [parseFloat(String(row.lat)), parseFloat(String(row.lng))] as [number, number],
+    imageUrls: Array.isArray(row.image_urls) ? (row.image_urls as string[]) : [],
+    photographer: row.photographer || "",
+    photographerRelation: row.photographer_relation || "",
+    description: row.description || "",
+  }));
 }

@@ -1,5 +1,4 @@
 import { apiFetch } from "@/lib/api-fetch";
-import { withCache } from "@/lib/cache";
 
 export interface Event {
   id: string;
@@ -24,17 +23,15 @@ export interface EventRow {
 }
 
 export async function getEvents(): Promise<Event[]> {
-  return withCache("events", async () => {
-    const data = await apiFetch<EventRow[]>("/api/events", { revalidate: 300 });
-    return (data || []).map((row) => ({
-      id: row.id,
-      title: row.title,
-      date: row.date || "",
-      time: row.time || "",
-      location: row.location || "",
-      description: row.description || "",
-      photos: Array.isArray(row.photos) ? (row.photos as string[]) : [],
-      videos: Array.isArray(row.videos) ? (row.videos as string[]) : [],
-    }));
-  });
+  const data = await apiFetch<EventRow[]>("/api/events", { revalidate: 300 });
+  return (data || []).map((row) => ({
+    id: row.id,
+    title: row.title,
+    date: row.date || "",
+    time: row.time || "",
+    location: row.location || "",
+    description: row.description || "",
+    photos: Array.isArray(row.photos) ? (row.photos as string[]) : [],
+    videos: Array.isArray(row.videos) ? (row.videos as string[]) : [],
+  }));
 }

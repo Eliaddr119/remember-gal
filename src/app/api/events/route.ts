@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { supabaseServer } from "@/lib/supabase/server";
 import { requireAuth } from "@/lib/auth-helpers";
-import { invalidateCache } from "@/lib/cache";
 
 export async function GET() {
   const { data, error } = await supabaseServer
@@ -28,7 +27,6 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  invalidateCache("events");
   revalidatePath("/admin", "layout");
   revalidatePath("/events");
   return NextResponse.json(data, { status: 201 });
