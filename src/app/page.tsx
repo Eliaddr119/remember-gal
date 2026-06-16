@@ -4,10 +4,8 @@ import { Logo, Signature } from "@/components/ui/Logo";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import { WARM_BLUR_PLACEHOLDER } from "@/lib/image-placeholder";
 
-const mainPhotoUrl = process.env.NEXT_PUBLIC_MAIN_PHOTO_URL ?? "";
-
 export default function Home() {
-  const main_photo_url = mainPhotoUrl;
+  const main_photo_url = "/images/main_page_photo.PNG";
   return (
     <div className="min-h-screen bg-warm-gradient relative overflow-hidden">
       <SunflowerBackground />

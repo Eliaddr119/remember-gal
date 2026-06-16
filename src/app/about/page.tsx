@@ -3,15 +3,13 @@ import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
 import Image from "next/image";
 import { WARM_BLUR_PLACEHOLDER } from "@/lib/image-placeholder";
 
-const aboutPhotoUrl = process.env.NEXT_PUBLIC_ABOUT_PHOTO_URL ?? "";
-
 export const metadata: Metadata = {
   title: "קצת על גל | לזכותה של גל חפץ ז״ל",
   description: "הכירו את גל",
 };
 
 export default function AboutPage() {
-  const about_photo_url = aboutPhotoUrl;
+  const about_photo_url = "/images/about-page-photo.jpg";
   return (
     <div className="min-h-screen bg-warm-gradient relative">
       <SunflowerBackground />
