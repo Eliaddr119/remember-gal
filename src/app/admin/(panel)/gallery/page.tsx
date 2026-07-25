@@ -4,6 +4,7 @@ import GalleryAdminClient from "@/components/admin/GalleryAdminClient";
 interface GalleryItem {
   id: number;
   image_url: string;
+  thumb_url: string | null;
   width: number | null;
   height: number | null;
 }

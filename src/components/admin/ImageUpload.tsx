@@ -2,8 +2,18 @@
 
 import { useState, useRef, DragEvent } from "react";
 
+export interface UploadResult {
+  url: string;
+  thumbUrl?: string;
+  width?: number | null;
+  height?: number | null;
+}
+
 interface ImageUploadProps {
-  onUpload: (url: string) => void;
+  /** Called with just the full-size URL. Kept for existing single-image forms. */
+  onUpload?: (url: string) => void;
+  /** Called with the full upload result (thumbnail + dimensions). Prefer this. */
+  onResult?: (result: UploadResult) => void;
   onUploadingChange?: (uploading: boolean) => void;
   bucket?: string;
   folder?: string;
@@ -12,6 +22,7 @@ interface ImageUploadProps {
 
 export default function ImageUpload({
   onUpload,
+  onResult,
   onUploadingChange,
   bucket = "images",
   folder = "",
@@ -40,7 +51,8 @@ export default function ImageUpload({
       const res = await fetch("/api/upload", { method: "POST", body: formData });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "שגיאה בהעלאה");
-      onUpload(data.url);
+      onUpload?.(data.url);
+      onResult?.(data as UploadResult);
     } catch (e) {
       setError(e instanceof Error ? e.message : "שגיאה בהעלאה");
     } finally {

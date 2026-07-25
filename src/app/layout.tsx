@@ -5,6 +5,12 @@ import SiteChrome from "@/components/layout/SiteChrome";
 import { AccessibilityProvider } from "@/components/accessibility/AccessibilityProvider";
 import { SkipLink } from "@/components/accessibility/SkipLink";
 
+// Origin that serves gallery images. Derived from env in prod; falls back to the
+// known project host so the preconnect is still correct in local/dev builds.
+const SUPABASE_ORIGIN = (
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://ilylmlusnqyqdhywnmhk.supabase.co"
+).replace(/\/+$/, "");
+
 const rubik = Rubik({
   subsets: ["hebrew", "latin"],
   variable: "--font-rubik",
@@ -31,8 +37,11 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl">
       <head>
-        <link rel="preconnect" href="https://supabase.co" />
-        <link rel="dns-prefetch" href="https://supabase.co" />
+        {/* Preconnect to the exact origin that serves our images so the first
+            photo doesn't pay DNS + TLS setup. No crossOrigin: our <img> loads
+            are non-CORS, so a plain preconnect matches the connection they use. */}
+        <link rel="preconnect" href={SUPABASE_ORIGIN} />
+        <link rel="dns-prefetch" href={SUPABASE_ORIGIN} />
       </head>
       <body className={`${rubik.variable} ${secularOne.variable} font-rubik antialiased min-h-screen flex flex-col`}>
         <AccessibilityProvider>

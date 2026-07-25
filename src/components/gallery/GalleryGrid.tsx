@@ -67,7 +67,8 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
                 </div>
               ) : (
                 <Image
-                  src={item.src}
+                  // Grid shows the small thumbnail; the lightbox loads full src.
+                  src={item.thumbSrc}
                   alt={item.alt}
                   width={item.width}
                   height={item.height}
@@ -75,7 +76,7 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
                   sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
                   placeholder="blur"
                   blurDataURL={WARM_BLUR_PLACEHOLDER}
-                  priority={index < 6}
+                  priority={index < 4}
                 />
               )}
             </article>

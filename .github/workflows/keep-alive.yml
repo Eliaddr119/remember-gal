@@ -11,6 +11,17 @@ jobs:
     steps:
       - name: Ping keep-alive endpoint
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${{ secrets.PROD_URL }}/api/keep-alive")
+          # URL is hardcoded (public site) so this no longer depends on a
+          # PROD_URL secret. -L follows redirects; --retry rides out transient
+          # blips (cold starts, brief network errors) instead of emailing a
+          # failure. Only a real, repeated non-2xx fails the job.
+          STATUS=$(curl -sS -L \
+            --retry 5 --retry-delay 10 --retry-all-errors \
+            --max-time 60 \
+            -o /dev/null -w "%{http_code}" \
+            "https://for-gal.up.railway.app/api/keep-alive")
           echo "Response: $STATUS"
-          [ "$STATUS" = "200" ] || exit 1
+          case "$STATUS" in
+            2*) echo "Keep-alive OK" ;;
+            *) echo "Keep-alive failed with status $STATUS"; exit 1 ;;
+          esac

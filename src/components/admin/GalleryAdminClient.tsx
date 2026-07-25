@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import ImageUpload from "./ImageUpload";
+import ImageUpload, { type UploadResult } from "./ImageUpload";
 import VideoUpload from "./VideoUpload";
 
 interface GalleryRow {
   id: number;
   image_url: string;
+  thumb_url: string | null;
   width: number | null;
   height: number | null;
 }
@@ -22,17 +23,32 @@ export default function GalleryAdminClient({ initialItems }: { initialItems: Gal
   const [confirmDelete, setConfirmDelete] = useState<number | null>(null);
   const [deleting, setDeleting] = useState<number | null>(null);
 
-  async function handleUpload(url: string) {
+  async function saveItem(body: Record<string, unknown>) {
     const res = await fetch("/api/gallery", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ image_url: url, width: null, height: null }),
+      body: JSON.stringify(body),
     });
     if (res.ok) {
       const newItem = await res.json();
       setItems((prev) => [...prev, newItem]);
       router.refresh();
     }
+  }
+
+  // Images carry a thumbnail + real dimensions from the upload route.
+  function handleImageUpload(result: UploadResult) {
+    return saveItem({
+      image_url: result.url,
+      thumb_url: result.thumbUrl ?? null,
+      width: result.width ?? null,
+      height: result.height ?? null,
+    });
+  }
+
+  // Videos have no generated thumbnail.
+  function handleVideoUpload(url: string) {
+    return saveItem({ image_url: url, thumb_url: null, width: null, height: null });
   }
 
   async function handleDelete(id: number) {
@@ -53,13 +69,13 @@ export default function GalleryAdminClient({ initialItems }: { initialItems: Gal
         <h2 className="text-sm font-semibold text-gray-700 mb-3">הוספת מדיה</h2>
         <div className="grid grid-cols-2 gap-3">
           <ImageUpload
-            onUpload={handleUpload}
+            onResult={handleImageUpload}
             bucket="images"
             folder="gallery"
             label="בחר תמונה לגלריה"
           />
           <VideoUpload
-            onUpload={handleUpload}
+            onUpload={handleVideoUpload}
             bucket="images"
             folder="gallery"
           />
@@ -83,8 +99,9 @@ export default function GalleryAdminClient({ initialItems }: { initialItems: Gal
                 />
               ) : (
                 <img
-                  src={item.image_url}
+                  src={item.thumb_url || item.image_url}
                   alt=""
+                  loading="lazy"
                   className="w-full h-full object-cover rounded-lg border border-gray-200"
                 />
               )}

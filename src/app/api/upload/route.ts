@@ -3,6 +3,12 @@ import sharp from "sharp";
 import { supabaseServer } from "@/lib/supabase/server";
 import { requireAuth } from "@/lib/auth-helpers";
 
+// Keep libvips lean: its thread pool defaults to the CPU count (Railway reports
+// many cores) and it keeps an operation cache — both hold memory we don't need
+// for occasional admin uploads.
+sharp.concurrency(1);
+sharp.cache(false);
+
 const ALLOWED_BUCKETS = new Set(["images"]);
 const MAX_IMAGE_SIZE = 20 * 1024 * 1024;  // 20 MB
 const MAX_VIDEO_SIZE = 150 * 1024 * 1024; // 150 MB
@@ -41,32 +47,61 @@ export async function POST(req: NextRequest) {
     }
 
     const raw = Buffer.from(await file.arrayBuffer());
-    let uploadBuffer: Buffer;
-    let contentType: string;
-    let fileName: string;
+    const base = `${folder ? folder + "/" : ""}${Date.now()}`;
+    // These assets are timestamp-named and never change, so cache them hard.
+    const cacheControl = "2592000"; // 30 days
+    const publicUrl = (name: string) =>
+      supabaseServer.storage.from(bucket).getPublicUrl(name).data.publicUrl;
 
     if (isImage) {
-      uploadBuffer = await sharp(raw)
-        .resize({ width: 2000, height: 2000, fit: "inside", withoutEnlargement: true })
-        .webp({ quality: 82 })
-        .toBuffer();
-      contentType = "image/webp";
-      fileName = `${folder ? folder + "/" : ""}${Date.now()}.webp`;
-    } else {
-      uploadBuffer = raw;
-      contentType = file.type;
-      const ext = file.name.split(".").pop() ?? "mp4";
-      fileName = `${folder ? folder + "/" : ""}${Date.now()}.${ext}`;
+      // One decode, two outputs: a display-size original and a small grid thumb.
+      const pipeline = sharp(raw).rotate(); // honour EXIF orientation
+      const [mainBuffer, thumbBuffer] = await Promise.all([
+        pipeline
+          .clone()
+          .resize({ width: 2000, height: 2000, fit: "inside", withoutEnlargement: true })
+          .webp({ quality: 82 })
+          .toBuffer(),
+        // ~600px is plenty for the multi-column grid, at a fraction of the bytes.
+        pipeline
+          .clone()
+          .resize({ width: 600, height: 600, fit: "inside", withoutEnlargement: true })
+          .webp({ quality: 72 })
+          .toBuffer(),
+      ]);
+      const meta = await sharp(mainBuffer).metadata();
+
+      const mainName = `${base}.webp`;
+      const thumbName = `${base}_thumb.webp`;
+      const opts = { contentType: "image/webp", cacheControl, upsert: false };
+      const [mainRes, thumbRes] = await Promise.all([
+        supabaseServer.storage.from(bucket).upload(mainName, mainBuffer, opts),
+        supabaseServer.storage.from(bucket).upload(thumbName, thumbBuffer, opts),
+      ]);
+      if (mainRes.error) return NextResponse.json({ error: mainRes.error.message }, { status: 500 });
+      if (thumbRes.error) return NextResponse.json({ error: thumbRes.error.message }, { status: 500 });
+
+      return NextResponse.json(
+        {
+          url: publicUrl(mainName),
+          thumbUrl: publicUrl(thumbName),
+          width: meta.width ?? null,
+          height: meta.height ?? null,
+        },
+        { status: 201 }
+      );
     }
 
+    // Video — stored as-is (no thumbnail).
+    const ext = file.name.split(".").pop() ?? "mp4";
+    const videoName = `${base}.${ext}`;
     const { error } = await supabaseServer.storage
       .from(bucket)
-      .upload(fileName, uploadBuffer, { contentType, upsert: false });
+      .upload(videoName, raw, { contentType: file.type, cacheControl, upsert: false });
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-    const { data: urlData } = supabaseServer.storage.from(bucket).getPublicUrl(fileName);
-    return NextResponse.json({ url: urlData.publicUrl }, { status: 201 });
+    return NextResponse.json({ url: publicUrl(videoName) }, { status: 201 });
   } catch (e) {
     const message = e instanceof Error ? e.message : "שגיאה בהעלאה";
     return NextResponse.json({ error: message }, { status: 500 });

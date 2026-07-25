@@ -3,6 +3,8 @@ import { apiFetch } from "@/lib/api-fetch";
 export interface GalleryItem {
   id: number;
   src: string;
+  /** Small grid image. Falls back to the full-size src when no thumb exists. */
+  thumbSrc: string;
   alt: string;
   width: number;
   height: number;
@@ -12,6 +14,7 @@ export interface GalleryItem {
 interface GalleryRow {
   id: number;
   image_url: string;
+  thumb_url: string | null;
   width: number | null;
   height: number | null;
 }
@@ -27,6 +30,7 @@ export async function getGalleryItems(): Promise<GalleryItem[]> {
     return {
       id: row.id,
       src: row.image_url,
+      thumbSrc: row.thumb_url || row.image_url,
       alt: type === "video" ? "סרטון של גל" : "תמונה של גל",
       width: row.width || 800,
       height: row.height || 800,
