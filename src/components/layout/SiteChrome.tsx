@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
-import { AccessibilityMenu } from "@/components/accessibility/AccessibilityMenu";
+import OpenNagish from "@/components/accessibility/OpenNagish";
 
 export default function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -18,7 +18,7 @@ export default function SiteChrome({ children }: { children: React.ReactNode }) 
         {children}
       </main>
       <Footer />
-      <AccessibilityMenu />
+      <OpenNagish />
     </>
   );
 }
