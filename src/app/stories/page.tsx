@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import Script from "next/script";
 import { SunflowerBackground } from "@/components/ui/SunflowerBackground";
-import { StoryCard } from "@/components/ui/StoryCard";
-import { getStories } from "@/lib/stories";
+import StoriesFeed from "@/components/stories/StoriesFeed";
+import { getStories, getStoryCategories } from "@/lib/stories";
 
 export const revalidate = 300;
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function StoriesPage() {
-  const stories = await getStories();
+  const [stories, categories] = await Promise.all([getStories(), getStoryCategories()]);
 
   return (
     <div className="min-h-screen bg-warm-gradient relative">
@@ -31,17 +31,7 @@ export default async function StoriesPage() {
         </p>
 
         <section aria-label="סיפורים וזיכרונות">
-          <div className="max-w-3xl lg:max-w-4xl mx-auto space-y-8" role="list" aria-label={`${stories.length} סיפורים`}>
-            {stories.map((story) => (
-              <article key={story.id} role="listitem" className="relative">
-                <StoryCard
-                  author={story.author}
-                  relation={story.relation}
-                  contentHtml={story.contentHtml}
-                />
-              </article>
-            ))}
-          </div>
+          <StoriesFeed stories={stories} categories={categories} />
         </section>
 
         {/* Form popup button */}

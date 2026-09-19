@@ -5,7 +5,7 @@ import { requireAuth } from "@/lib/auth-helpers";
 
 export async function GET() {
   const { data, error } = await supabaseServer
-    .from("stories")
+    .from("story_categories")
     .select("*")
     .order("sort_order", { ascending: true })
     .order("id", { ascending: true });
@@ -21,21 +21,20 @@ export async function POST(req: NextRequest) {
   if (unauth) return unauth;
 
   const body = await req.json();
+  const name = String(body.name ?? "").trim();
+  if (!name) return NextResponse.json({ error: "חסר שם קטגוריה" }, { status: 400 });
 
-  // New stories go to the end of the list rather than jumping to the top.
-  if (body.sort_order === undefined) {
-    const { data: last } = await supabaseServer
-      .from("stories")
-      .select("sort_order")
-      .order("sort_order", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    body.sort_order = (last?.sort_order ?? 0) + 1;
-  }
+  // New categories go to the end of the tab row.
+  const { data: last } = await supabaseServer
+    .from("story_categories")
+    .select("sort_order")
+    .order("sort_order", { ascending: false })
+    .limit(1)
+    .maybeSingle();
 
   const { data, error } = await supabaseServer
-    .from("stories")
-    .insert(body)
+    .from("story_categories")
+    .insert({ name, sort_order: (last?.sort_order ?? 0) + 1 })
     .select()
     .single();
 
@@ -45,7 +44,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(data, { status: 201 });
 }
 
-/** Bulk reorder: body is { order: number[] } — story ids in display order. */
+/** Bulk reorder: body is { order: number[] } — category ids in display order. */
 export async function PUT(req: NextRequest) {
   const unauth = await requireAuth(req);
   if (unauth) return unauth;
@@ -56,10 +55,9 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: "order חייב להיות מערך של מזהים" }, { status: 400 });
   }
 
-  // One round-trip per row, fired together — sequentially this takes seconds.
   const results = await Promise.all(
     (order as number[]).map((id, index) =>
-      supabaseServer.from("stories").update({ sort_order: index + 1 }).eq("id", id)
+      supabaseServer.from("story_categories").update({ sort_order: index + 1 }).eq("id", id)
     )
   );
 

@@ -3,6 +3,8 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import L from "leaflet";
+// Leaflet ships CSS without TypeScript declarations.
+// @ts-expect-error -- the stylesheet is handled by the Next.js bundler.
 import "leaflet/dist/leaflet.css";
 import Image from "next/image";
 import type { MapPin } from "@/lib/traveling-hat";
@@ -34,6 +36,23 @@ const pinIcon = new L.DivIcon({
   iconAnchor: [14, 28],
   popupAnchor: [0, -28],
 });
+
+// CARTO's Voyager basemap labels the whole world in English. It needs a (free,
+// non-commercial) key — without one every tile is stamped "API KEY REQUIRED", so
+// fall back to plain OpenStreetMap, which labels each country in its own script.
+const CARTO_KEY = process.env.NEXT_PUBLIC_CARTO_KEY;
+
+const basemap = CARTO_KEY
+  ? {
+      url: `https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`,
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    }
+  : {
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    };
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -223,8 +242,9 @@ export default function MapInner({ pins }: MapInnerProps) {
           style={{ height: "100%", width: "100%" }}
         >
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution={basemap.attribution}
+            url={basemap.url}
+            detectRetina
           />
           <CenterOnPopupOpen />
           <FlyToPin targetPin={targetPin} markerRefs={markerRefs} />

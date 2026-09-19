@@ -8,6 +8,7 @@ export interface Story {
   relation: string;
   contentHtml: string;
   date: string;
+  categoryId: number | null;
 }
 
 export interface StoryRow {
@@ -17,6 +18,14 @@ export interface StoryRow {
   date: string | null;
   content_html: string | null;
   content_markdown: string | null;
+  category_id: number | null;
+  sort_order: number;
+}
+
+export interface StoryCategory {
+  id: number;
+  name: string;
+  sort_order: number;
 }
 
 export async function getStories(): Promise<Story[]> {
@@ -33,8 +42,14 @@ export async function getStories(): Promise<Story[]> {
         author: row.author,
         relation: row.relation || "",
         date: row.date || "",
+        categoryId: row.category_id ?? null,
         contentHtml,
       };
     })
   );
+}
+
+export async function getStoryCategories(): Promise<StoryCategory[]> {
+  const data = await apiFetch<StoryCategory[]>("/api/story-categories", { revalidate: 300 });
+  return data || [];
 }
