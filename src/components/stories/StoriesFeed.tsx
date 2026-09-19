@@ -54,6 +54,8 @@ export default function StoriesFeed({ stories, categories }: Props) {
   const [openKey, setOpenKey] = useState(() => groups[0]?.key ?? "");
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
+  // Clicking the open section's own heading closes it; the chips above always
+  // open the one they name.
   const openGroup = useCallback((key: string, scroll: boolean) => {
     setOpenKey((current) => (current === key && !scroll ? "" : key));
     if (scroll) {
@@ -147,11 +149,11 @@ export default function StoriesFeed({ stories, categories }: Props) {
                     <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                   </svg>
 
-                  <span className="flex-1 text-xl md:text-2xl font-bold text-earth-800">
+                  <span className="flex-1 min-w-0 text-lg md:text-2xl font-bold text-earth-800">
                     {group.label}
                   </span>
 
-                  <span className="text-sm text-earth-500">
+                  <span className="shrink-0 text-xs md:text-sm text-earth-500">
                     {group.stories.length} סיפורים
                   </span>
                 </button>

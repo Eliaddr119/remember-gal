@@ -3,8 +3,6 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import L from "leaflet";
-// Leaflet ships CSS without TypeScript declarations.
-// @ts-expect-error -- the stylesheet is handled by the Next.js bundler.
 import "leaflet/dist/leaflet.css";
 import Image from "next/image";
 import type { MapPin } from "@/lib/traveling-hat";

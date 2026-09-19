@@ -386,8 +386,17 @@ textarea:focus-visible,
 }
 
 /* Story content (rendered from markdown) */
-.story-content p {
+.story-content {
   font-size: 1rem;
+  /* Expanding a card animates its height. Without this, Chrome's scroll
+     anchoring treats the growing text as an anchor and slides the page down
+     to follow it, so "קרא עוד" appears to scroll away under your finger. */
+  overflow-anchor: none;
+}
+
+.story-content p {
+  /* 1em, not 1rem, so the clamp below shares this exact base */
+  font-size: 1em;
   line-height: 1.8;
   color: #6B4F3A;
   margin-bottom: 1rem;
@@ -397,10 +406,25 @@ textarea:focus-visible,
   margin-bottom: 0;
 }
 
+/* Collapsed story card: exactly 4 line boxes (4 x 1.8em). Expressed in em off
+   the same font size the paragraphs use, so the cut lands on a line boundary
+   even when the accessibility widget rescales the page — a rem-based height
+   drifts against the paragraphs and leaves a sliver of line 5 under the fade. */
+.story-content--clamped {
+  max-height: 7.2em;
+}
+
 @media (min-width: 768px) {
-  .story-content p {
+  .story-content {
     font-size: 1.25rem;
+  }
+
+  .story-content p {
     line-height: 2;
+  }
+
+  .story-content--clamped {
+    max-height: 8em;
   }
 }
 

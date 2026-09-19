@@ -9,25 +9,42 @@ interface StoryCardProps {
   date?: string;
 }
 
-const COLLAPSED_HEIGHT = 150;
-
 export function StoryCard({ author, relation, contentHtml, date }: StoryCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [overflows, setOverflows] = useState(true);
   const [fullHeight, setFullHeight] = useState<number>();
   const contentRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const contentId = useId();
+  const expandedRef = useRef(expanded);
+  expandedRef.current = expanded;
 
-  // Measure the text so short stories get no "read more" affordance at all,
-  // and so expanding animates to the real height instead of a magic number.
+  // The clamp itself is CSS; JS only decides whether there is anything hidden
+  // (so short stories get no "read more") and how far to animate on expand.
   useEffect(() => {
     const el = contentRef.current;
     if (!el) return;
+
+    // Whether the text overflows can only change when the line count changes,
+    // i.e. when the width changes. Re-measuring on every resize notification
+    // would read clientHeight mid max-height transition, where the box is still
+    // its old size — that reports "fits", which hides the toggle and strands
+    // the card open. Keyed on width, expand/collapse is skipped entirely.
+    let measuredAtWidth = -1;
+
     const measure = () => {
       setFullHeight(el.scrollHeight);
-      setOverflows(el.scrollHeight > COLLAPSED_HEIGHT + 24);
+      if (expandedRef.current || el.clientWidth === measuredAtWidth) return;
+      measuredAtWidth = el.clientWidth;
+      setOverflows(el.scrollHeight > el.clientHeight + 4);
     };
+
     measure();
+    // Webfonts reflow the text after first paint and change the line count.
+    document.fonts?.ready.then(() => {
+      measuredAtWidth = -1;
+      measure();
+    }).catch(() => {});
     const observer = new ResizeObserver(measure);
     observer.observe(el);
     return () => observer.disconnect();
@@ -35,8 +52,26 @@ export function StoryCard({ author, relation, contentHtml, date }: StoryCardProp
 
   const clamped = !expanded && overflows;
 
+  function toggle() {
+    const next = !expanded;
+    // Measure now rather than trusting the last observed value: a stale
+    // fullHeight that is shorter than the text would clip the end of the story.
+    if (next && contentRef.current) setFullHeight(contentRef.current.scrollHeight);
+    setExpanded(next);
+    // Expanding stays put under your finger. Collapsing would otherwise leave
+    // you stranded somewhere below the card, so return to its top.
+    if (!next) {
+      requestAnimationFrame(() =>
+        cardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+      );
+    }
+  }
+
   return (
-    <div className="group relative bg-white rounded-2xl border border-earth-200/50 shadow-[0_2px_12px_rgba(204,85,0,0.07)] hover:shadow-warm hover:border-sunflower-300/70 transition-all duration-300 overflow-hidden">
+    <div
+      ref={cardRef}
+      className="group relative scroll-mt-24 md:scroll-mt-28 bg-white rounded-2xl border border-earth-200/50 shadow-[0_2px_12px_rgba(204,85,0,0.07)] hover:shadow-warm hover:border-sunflower-300/70 transition-all duration-300 overflow-hidden"
+    >
       {/* Sunflower accent along the top edge */}
       <div className="h-1 bg-gradient-to-l from-sunflower-200 via-sunflower-400 to-sunflower-200" />
 
@@ -49,31 +84,26 @@ export function StoryCard({ author, relation, contentHtml, date }: StoryCardProp
       {/* Story content */}
       <div className="px-5 md:px-7 py-5 md:py-6">
         <div className="relative border-r-[3px] border-sunflower-300 pr-4 md:pr-6">
-          <span
-            aria-hidden="true"
-            className="pointer-events-none select-none absolute -top-4 left-0 text-6xl leading-none text-sunflower-100 font-serif"
-          >
-            &rdquo;
-          </span>
-
+          {/* Both ends of the toggle stay real lengths — the clamp class when
+              collapsed, a pixel height when expanded. max-height cannot animate
+              to or from `none`, which would make the collapse snap. */}
           <div className="relative">
             <div
               id={contentId}
               ref={contentRef}
-              className="story-content overflow-hidden transition-[max-height] duration-500 ease-in-out"
-              style={{ maxHeight: clamped ? COLLAPSED_HEIGHT : fullHeight }}
+              className={`story-content overflow-hidden transition-[max-height] duration-500 ease-in-out ${
+                clamped ? "story-content--clamped" : ""
+              }`}
+              style={clamped ? undefined : { maxHeight: fullHeight }}
               dangerouslySetInnerHTML={{ __html: contentHtml }}
             />
-            {clamped && (
-              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white via-white/85 to-transparent pointer-events-none" />
-            )}
           </div>
 
           {(overflows || date) && (
             <div className="mt-4 flex items-center justify-between gap-3">
               {overflows ? (
                 <button
-                  onClick={() => setExpanded(!expanded)}
+                  onClick={toggle}
                   aria-expanded={expanded}
                   aria-controls={contentId}
                   className="inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-sunflower-700 bg-sunflower-50 hover:bg-sunflower-100 border border-sunflower-200 rounded-full px-4 py-1.5 transition-colors"
