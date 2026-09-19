@@ -388,9 +388,25 @@ textarea:focus-visible,
 /* Story content (rendered from markdown) */
 .story-content {
   font-size: 1rem;
-  /* Expanding a card animates its height. Without this, Chrome's scroll
-     anchoring treats the growing text as an anchor and slides the page down
-     to follow it, so "קרא עוד" appears to scroll away under your finger. */
+  /* Decelerating curve reads as smoother than a symmetric ease on a phone,
+     where the box travels several screens' worth of height. Kept short for the
+     same reason — every frame of a max-height change reflows the page below. */
+  transition: max-height 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-content {
+    transition: none;
+  }
+}
+
+/* Expanding a story card animates its height. Chrome's scroll anchoring picks
+   a node *below* the growing card and scrolls the page to keep that node
+   visually fixed, which drags the story out from under your finger. Setting
+   this on an ancestor suppresses anchoring for its whole subtree, so it has to
+   sit on the page container — putting it on the card alone only rules the card
+   out as the anchor and leaves the elements after it to be chosen instead. */
+.no-scroll-anchor {
   overflow-anchor: none;
 }
 

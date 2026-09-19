@@ -15,7 +15,7 @@ export default async function StoriesPage() {
   const [stories, categories] = await Promise.all([getStories(), getStoryCategories()]);
 
   return (
-    <div className="min-h-screen bg-warm-gradient relative">
+    <div className="min-h-screen bg-warm-gradient relative no-scroll-anchor">
       <Script src="https://tally.so/widgets/embed.js" strategy="afterInteractive" />
       <SunflowerBackground />
 

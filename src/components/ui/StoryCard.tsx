@@ -61,8 +61,12 @@ export function StoryCard({ author, relation, contentHtml, date }: StoryCardProp
     // Expanding stays put under your finger. Collapsing would otherwise leave
     // you stranded somewhere below the card, so return to its top.
     if (!next) {
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       requestAnimationFrame(() =>
-        cardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+        cardRef.current?.scrollIntoView({
+          behavior: reduced ? "auto" : "smooth",
+          block: "start",
+        })
       );
     }
   }
@@ -70,7 +74,7 @@ export function StoryCard({ author, relation, contentHtml, date }: StoryCardProp
   return (
     <div
       ref={cardRef}
-      className="group relative scroll-mt-24 md:scroll-mt-28 bg-white rounded-2xl border border-earth-200/50 shadow-[0_2px_12px_rgba(204,85,0,0.07)] hover:shadow-warm hover:border-sunflower-300/70 transition-all duration-300 overflow-hidden"
+      className="group relative scroll-mt-24 md:scroll-mt-28 bg-white rounded-2xl border border-earth-200/50 shadow-[0_2px_12px_rgba(204,85,0,0.07)] hover:shadow-warm hover:border-sunflower-300/70 transition-[box-shadow,border-color] duration-300 overflow-hidden"
     >
       {/* Sunflower accent along the top edge */}
       <div className="h-1 bg-gradient-to-l from-sunflower-200 via-sunflower-400 to-sunflower-200" />
@@ -91,7 +95,7 @@ export function StoryCard({ author, relation, contentHtml, date }: StoryCardProp
             <div
               id={contentId}
               ref={contentRef}
-              className={`story-content overflow-hidden transition-[max-height] duration-500 ease-in-out ${
+              className={`story-content overflow-hidden ${
                 clamped ? "story-content--clamped" : ""
               }`}
               style={clamped ? undefined : { maxHeight: fullHeight }}
