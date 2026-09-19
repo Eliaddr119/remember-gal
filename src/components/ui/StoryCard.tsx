@@ -83,7 +83,7 @@ export function StoryCard({ author, relation, contentHtml, date }: StoryCardProp
 
       {/* Story content */}
       <div className="px-5 md:px-7 py-5 md:py-6">
-        <div className="relative border-r-[3px] border-sunflower-300 pr-4 md:pr-6">
+        <div className="relative">
           {/* Both ends of the toggle stay real lengths — the clamp class when
               collapsed, a pixel height when expanded. max-height cannot animate
               to or from `none`, which would make the collapse snap. */}
